@@ -19,6 +19,24 @@ public abstract class Artefact
     private BufferedImage images;
     private double insurance;
 
+    @Override
+    public String toString()
+    {
+        return "Artefact{" +
+                "insurance=" + insurance +
+                ", images=" + images +
+                ", height=" + height +
+                ", width=" + width +
+                ", dateOfCreation=" + dateOfCreation +
+                ", author='" + author + '\'' +
+                ", currentRoom='" + currentRoom + '\'' +
+                ", originCountry='" + originCountry + '\'' +
+                ", style='" + style + '\'' +
+                ", historicEra='" + historicEra + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public boolean possibleToMove()
     {
         //todo implement feat

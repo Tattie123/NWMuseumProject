@@ -105,4 +105,21 @@ public class DataBase
             return false;
         }
     }
+
+    public static String searchArtefact3D(String name) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement("SELECT * FROM artefact3ds WHERE name = ?;");
+            ps.setString(1, name);
+            var rs = ps.executeQuery();
+            // todo add return and fix
+        } catch (SQLException e)
+        {
+            return null;
+        }
+    }
 }

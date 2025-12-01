@@ -3,11 +3,12 @@ package org.museum;
 import org.junit.jupiter.api.*;
 import org.museum.artefacts.artefacts3d.Artefact3D;
 import org.museum.artefacts.artefacts3d.Furniture;
+
 import java.awt.image.BufferedImage;
-import java.time.LocalDate;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class DataBaseTest
@@ -50,13 +51,20 @@ class DataBaseTest
 
     @Test
     @Order(3)
+    void searchArtefact3D() throws Exception
+    {
+        assertNotNull(DataBase.searchArtefact3D("Dining Table"));
+    }
+
+    @Test
+    @Order(4)
     void deleteArtefact3D() throws Exception
     {
         assertTrue(DataBase.deleteArtefact3D("Dining Table"));
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     void clearArtefact3D() throws Exception
     {
         assertTrue(DataBase.clearArtefact3D());
