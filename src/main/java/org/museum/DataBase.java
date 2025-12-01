@@ -1,13 +1,11 @@
 package org.museum;
 
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.Date;
+import java.sql.Connection
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 import com.sun.tools.javac.Main;
-import org.museum.artefacts.Artefact;
 import org.museum.artefacts.artefacts3d.Artefact3D;
 
 public class DataBase

@@ -3,7 +3,6 @@ package org.museum.artefacts;
 import org.museum.Inventory;
 
 import java.awt.image.BufferedImage;
-import java.sql.Blob;
 import java.util.Date;
 
 public abstract class Artefact

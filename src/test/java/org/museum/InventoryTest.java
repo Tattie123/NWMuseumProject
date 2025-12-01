@@ -2,7 +2,6 @@ package org.museum;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.museum.artefacts.Artefact;
 import org.museum.artefacts.Painting;
 
 import static org.junit.jupiter.api.Assertions.*;
