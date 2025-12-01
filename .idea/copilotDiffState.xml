@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/src/main/java/org/museum/artefacts/Painting.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/org/museum/artefacts/Painting.java" />
+              <option name="originalContent" value="package org.museum.artefacts;&#10;&#10;import java.awt.image.BufferedImage;&#10;import java.util.Date;&#10;&#10;public class Painting extends Artefact&#10;{&#10;    public Painting(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance)&#10;    {&#10;        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, images, insurance);&#10;    }&#10;}&#10;" />
+              <option name="updatedContent" value="package org.museum.artefacts;&#10;&#10;import java.awt.image.BufferedImage;&#10;import java.util.Date;&#10;&#10;public class Painting extends Artefact&#10;{&#10;    public Painting(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance)&#10;    {&#10;        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, images, insurance);&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

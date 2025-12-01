@@ -1,7 +1,9 @@
 package org.museum.artefacts;
 
-import java.awt.*;
+import org.museum.Inventory;
+
 import java.awt.image.BufferedImage;
+import java.sql.Blob;
 import java.util.Date;
 
 public abstract class Artefact
@@ -14,7 +16,7 @@ public abstract class Artefact
     private Date dateOfCreation;
     private double width;
     private double height;
-    private List images;
+    private BufferedImage images;
     private double insurance;
 
     public boolean possibleToMove()
@@ -27,5 +29,76 @@ public abstract class Artefact
     {
         //todo implement feat
         return true;
+    }
+
+    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance)
+    {
+        this.historicEra = historicEra;
+        this.style = style;
+        this.originCountry = originCountry;
+        this.currentRoom = currentRoom;
+        this.author = author;
+        this.dateOfCreation = dateOfCreation;
+        this.width = width;
+        this.height = height;
+        this.images = images;
+        this.insurance = insurance;
+
+        Inventory.addArtefact(this);
+    }
+
+    public String getHistoricEra()
+    {
+        return historicEra;
+    }
+
+    public String getStyle()
+    {
+        return style;
+    }
+
+    public String getOriginCountry()
+    {
+        return originCountry;
+    }
+
+    public String getCurrentRoom()
+    {
+        return currentRoom;
+    }
+
+    public String getAuthor()
+    {
+        return author;
+    }
+
+    public Date getDateOfCreation()
+    {
+        return dateOfCreation;
+    }
+
+    public java.sql.Date getSQLDateOfCreation()
+    {
+        return new java.sql.Date(dateOfCreation.getTime());
+    }
+
+    public double getWidth()
+    {
+        return width;
+    }
+
+    public double getHeight()
+    {
+        return height;
+    }
+
+    public BufferedImage getImages()
+    {
+        return images;
+    }
+
+    public double getInsurance()
+    {
+        return insurance;
     }
 }
