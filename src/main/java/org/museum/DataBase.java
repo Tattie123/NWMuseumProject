@@ -47,8 +47,8 @@ public class DataBase
         try
         {
             var ps = connection.prepareStatement(
-                    "INSERT INTO artefact3ds (historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO artefact3ds (historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, artefact3d.getHistoricEra());
             ps.setString(2, artefact3d.getStyle());
             ps.setString(3, artefact3d.getOriginCountry());
@@ -59,6 +59,7 @@ public class DataBase
             ps.setDouble(8, artefact3d.getHeight());
             ps.setDouble(9, artefact3d.getInsurance());
             ps.setDouble(10, artefact3d.getDepth());
+            ps.setString(11, artefact3d.getName());
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e)
@@ -77,6 +78,26 @@ public class DataBase
         try
         {
             var ps = connection.prepareStatement("DELETE FROM artefact3ds;");
+            var ps2 = connection.prepareStatement("ALTER TABLE artefact3ds AUTO_INCREMENT = 1;");
+            int rowsAffected = ps.executeUpdate();
+            ps2.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean deleteArtefact3D(String name) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement("DELETE FROM artefact3ds WHERE name = ?;");
+            ps.setString(1, name);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e)

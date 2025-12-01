@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class Painting extends Artefact
 {
-    public Painting(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance)
+    public Painting(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name)
     {
-        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, images, insurance);
+        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, images, insurance, name);
     }
 }

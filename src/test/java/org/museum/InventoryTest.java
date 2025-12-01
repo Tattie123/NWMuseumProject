@@ -27,7 +27,7 @@ class InventoryTest
     @Test
     void addArtefact()
     {
-        Painting painting = new Painting("Historic Era", "Style", "Origin Country", "Current Room", "Author", null, 10.0, 20.0, null, 1000.0);
+        Painting painting = new Painting("Historic Era", "Style", "Origin Country", "Current Room", "Author", null, 10.0, 20.0, null, 1000.0, "name");
         assertNotNull(painting, "painting is not null");
         assertTrue(inventory1.getArtifacts().contains(painting), "Inventory should have the correct painting");
     }

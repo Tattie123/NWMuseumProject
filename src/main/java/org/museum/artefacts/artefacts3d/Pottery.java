@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class Pottery extends Artefact3D
 {
-    public Pottery(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance, double depth)
+    public Pottery(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance, double depth, String name)
     {
-        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, images, insurance, depth);
+        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, images, insurance, depth, name);
     }
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 
 public abstract class Artefact
 {
+    private String name;
     private String historicEra;
     private String style;
     private String originCountry;
@@ -31,8 +32,9 @@ public abstract class Artefact
         return true;
     }
 
-    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance)
+    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name)
     {
+        this.name = name;
         this.historicEra = historicEra;
         this.style = style;
         this.originCountry = originCountry;
@@ -55,6 +57,11 @@ public abstract class Artefact
     public String getStyle()
     {
         return style;
+    }
+
+    public String getName()
+    {
+        return name;
     }
 
     public String getOriginCountry()
