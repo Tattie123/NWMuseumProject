@@ -1,7 +1,7 @@
 package org.museum;
 
 import com.sun.tools.javac.Main;
-import org.museum.artefacts.artefacts3d.Artefact3D;
+import org.museum.artefacts.Artefact;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -44,12 +44,12 @@ public class DataBase
     }
 
     /**
-     * Add a 3D artefact to the database
-     * @param artefact3d
+     * Add an artefact to the database
+     * @param artefact
      * @return
      * @throws Exception
      */
-    public static boolean addArtefact3d(Artefact3D artefact3d) throws Exception
+    public static boolean addArtefact(Artefact artefact) throws Exception
     {
         if (connection == null)
             connection = getConnection();
@@ -57,20 +57,21 @@ public class DataBase
         try
         {
             var ps = connection.prepareStatement(
-                    "INSERT INTO artefact3ds (historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, type) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            ps.setString(1, artefact3d.getHistoricEra());
-            ps.setString(2, artefact3d.getStyle());
-            ps.setString(3, artefact3d.getOriginCountry());
-            ps.setString(4, artefact3d.getCurrentRoom());
-            ps.setString(5, artefact3d.getAuthor());
-            ps.setDate(6, artefact3d.getSQLDateOfCreation());
-            ps.setDouble(7, artefact3d.getWidth());
-            ps.setDouble(8, artefact3d.getHeight());
-            ps.setDouble(9, artefact3d.getInsurance());
-            ps.setDouble(10, artefact3d.getDepth());
-            ps.setString(11, artefact3d.getName());
-            ps.setString(12, artefact3d.getType());
+                    "INSERT INTO artefacts (historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, type, material) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setString(1, artefact.getHistoricEra());
+            ps.setString(2, artefact.getStyle());
+            ps.setString(3, artefact.getOriginCountry());
+            ps.setString(4, artefact.getCurrentRoom());
+            ps.setString(5, artefact.getAuthor());
+            ps.setDate(6, artefact.getSQLDateOfCreation());
+            ps.setDouble(7, artefact.getWidth());
+            ps.setDouble(8, artefact.getHeight());
+            ps.setDouble(9, artefact.getInsurance());
+            ps.setDouble(10, artefact.getDepth());
+            ps.setString(11, artefact.getName());
+            ps.setString(12, artefact.getType());
+            ps.setString(13, artefact.getMaterialString());
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e)
@@ -86,15 +87,15 @@ public class DataBase
      * @return
      * @throws Exception
      */
-    public static boolean clearArtefact3D() throws Exception
+    public static boolean clearArtefacts() throws Exception
     {
         if (connection == null)
             connection = getConnection();
 
         try
         {
-            var ps = connection.prepareStatement("DELETE FROM artefact3ds;");
-            var ps2 = connection.prepareStatement("ALTER TABLE artefact3ds AUTO_INCREMENT = 1;");
+            var ps = connection.prepareStatement("DELETE FROM artefacts;");
+            var ps2 = connection.prepareStatement("ALTER TABLE artefacts AUTO_INCREMENT = 1;");
             int rowsAffected = ps.executeUpdate();
             ps2.executeUpdate();
             return rowsAffected > 0;
@@ -106,19 +107,19 @@ public class DataBase
     }
 
     /**
-     * Delete a 3D artefact from the database by name
+     * Delete an artefact from the database by name
      * @param name
      * @return
      * @throws Exception
      */
-    public static boolean deleteArtefact3D(String name) throws Exception
+    public static boolean deleteArtefact(String name) throws Exception
     {
         if (connection == null)
             connection = getConnection();
 
         try
         {
-            var ps = connection.prepareStatement("DELETE FROM artefact3ds WHERE name = ?;");
+            var ps = connection.prepareStatement("DELETE FROM artefacts WHERE name = ?;");
             ps.setString(1, name);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -130,19 +131,19 @@ public class DataBase
     }
 
     /**
-     * Search for the current room of a 3D artefact by name
+     * Search for the current room of an artefact by name
      * @param name
      * @return
      * @throws Exception
      */
-    public static String searchArtefact3DRoom(String name) throws Exception
+    public static String searchArtefactRoom(String name) throws Exception
     {
         if (connection == null)
             connection = getConnection();
 
         try
         {
-            var ps = connection.prepareStatement("SELECT currentRoom FROM artefact3ds WHERE name = ?;");
+            var ps = connection.prepareStatement("SELECT currentRoom FROM artefacts WHERE name = ?;");
             ps.setString(1, name);
             var rs = ps.executeQuery();
             if (rs.next())
@@ -150,6 +151,37 @@ public class DataBase
                 return rs.getString("currentRoom");
             }
             return null;
+        } catch (SQLException e)
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Search for all artefacts of one type with a given type
+     * @param type
+     * @return
+     * @throws Exception
+     */
+    public static String searchArtefactsWithType(String type) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement("SELECT name FROM artefacts WHERE type = ?;");
+            ps.setString(1, type);
+            var rs = ps.executeQuery();
+            String names = "";
+            while (rs.next())
+            {
+                names += rs.getString("name") + ", ";
+            }
+            if (names.isEmpty())
+                return null;
+            names = names.substring(0, names.length() - 2);
+            return names;
         } catch (SQLException e)
         {
             return null;

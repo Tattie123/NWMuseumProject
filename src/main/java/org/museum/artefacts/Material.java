@@ -1,4 +1,4 @@
-package org.museum.artefacts.artefacts3d;
+package org.museum.artefacts;
 
 public enum Material
 {
