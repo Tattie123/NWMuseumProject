@@ -21,4 +21,5 @@ public abstract class Artefact3D extends Artefact
         return depth;
     }
 
+
 }

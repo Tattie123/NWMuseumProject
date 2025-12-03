@@ -15,6 +15,11 @@ public class DataBase
 
     private static final String PROP_FILE = "db.properties";
 
+    /**
+     * Get a connection to the database
+     * @return
+     * @throws Exception
+     */
     public static Connection getConnection() throws Exception
     {
 
@@ -38,6 +43,12 @@ public class DataBase
         return connection;
     }
 
+    /**
+     * Add a 3D artefact to the database
+     * @param artefact3d
+     * @return
+     * @throws Exception
+     */
     public static boolean addArtefact3d(Artefact3D artefact3d) throws Exception
     {
         if (connection == null)
@@ -46,8 +57,8 @@ public class DataBase
         try
         {
             var ps = connection.prepareStatement(
-                    "INSERT INTO artefact3ds (historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO artefact3ds (historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, type) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, artefact3d.getHistoricEra());
             ps.setString(2, artefact3d.getStyle());
             ps.setString(3, artefact3d.getOriginCountry());
@@ -59,6 +70,7 @@ public class DataBase
             ps.setDouble(9, artefact3d.getInsurance());
             ps.setDouble(10, artefact3d.getDepth());
             ps.setString(11, artefact3d.getName());
+            ps.setString(12, artefact3d.getType());
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e)
@@ -69,6 +81,11 @@ public class DataBase
         }
     }
 
+    /**
+     * Clear all 3D artefacts from the database
+     * @return
+     * @throws Exception
+     */
     public static boolean clearArtefact3D() throws Exception
     {
         if (connection == null)
@@ -88,6 +105,12 @@ public class DataBase
         }
     }
 
+    /**
+     * Delete a 3D artefact from the database by name
+     * @param name
+     * @return
+     * @throws Exception
+     */
     public static boolean deleteArtefact3D(String name) throws Exception
     {
         if (connection == null)
@@ -106,17 +129,27 @@ public class DataBase
         }
     }
 
-    public static String searchArtefact3D(String name) throws Exception
+    /**
+     * Search for the current room of a 3D artefact by name
+     * @param name
+     * @return
+     * @throws Exception
+     */
+    public static String searchArtefact3DRoom(String name) throws Exception
     {
         if (connection == null)
             connection = getConnection();
 
         try
         {
-            var ps = connection.prepareStatement("SELECT * FROM artefact3ds WHERE name = ?;");
+            var ps = connection.prepareStatement("SELECT currentRoom FROM artefact3ds WHERE name = ?;");
             ps.setString(1, name);
             var rs = ps.executeQuery();
-            // todo add return and fix
+            if (rs.next())
+            {
+                return rs.getString("currentRoom");
+            }
+            return null;
         } catch (SQLException e)
         {
             return null;

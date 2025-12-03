@@ -7,8 +7,7 @@ import org.museum.artefacts.artefacts3d.Furniture;
 import java.awt.image.BufferedImage;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class DataBaseTest
@@ -51,10 +50,11 @@ class DataBaseTest
 
     @Test
     @Order(3)
-    void searchArtefact3D() throws Exception
+    void SearchRoom() throws Exception
     {
-        assertNotNull(DataBase.searchArtefact3D("Dining Table"));
+        assertEquals("Room C", DataBase.searchArtefact3DRoom("Side Table"));
     }
+
 
     @Test
     @Order(4)
@@ -65,6 +65,13 @@ class DataBaseTest
 
     @Test
     @Order(5)
+    void SearchRoomAfterDeletion() throws Exception
+    {
+        assertNull(DataBase.searchArtefact3DRoom("Dining Table"));
+    }
+
+    @Test
+    @Order(6)
     void clearArtefact3D() throws Exception
     {
         assertTrue(DataBase.clearArtefact3D());

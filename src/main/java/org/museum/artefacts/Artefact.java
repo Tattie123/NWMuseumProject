@@ -19,6 +19,11 @@ public abstract class Artefact
     private BufferedImage images;
     private double insurance;
 
+    public String getType()
+    {
+        return this.getClass().getSimpleName();
+    }
+
     @Override
     public String toString()
     {
