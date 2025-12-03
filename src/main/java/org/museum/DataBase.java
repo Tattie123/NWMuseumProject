@@ -1,6 +1,5 @@
 package org.museum;
 
-import com.sun.tools.javac.Main;
 import org.museum.artefacts.Artefact;
 
 import java.io.InputStream;
@@ -20,28 +19,36 @@ public class DataBase
      * @return
      * @throws Exception
      */
-    public static Connection getConnection() throws Exception
-    {
+    public static Connection getConnection() throws Exception {
 
-        String url, user, password;
+        String propertiesFile;
 
-        //load from a local file
-        try (InputStream fis = Main.class.getClassLoader().getResourceAsStream(PROP_FILE))
-        {
-            Properties p = new Properties();
-            p.load(fis);
-            url = p.getProperty("db.url");
-            user = p.getProperty("db.user");
-            if (url.isBlank() || user.isBlank())
-                throw new Exception("Missing database login information");
-            password = p.getProperty("db.password");
-        } catch (Exception e)
-        {
-            throw new Exception("No properties file found...");
+        // If running on GitHub CI, use CI properties
+        if (System.getenv("GITHUB_ACTIONS") != null) {
+            propertiesFile = "db-ci.properties";
+        } else {
+            propertiesFile = "db.properties";
         }
-        connection = DriverManager.getConnection(url, user, password);
-        return connection;
+
+        Properties p = new Properties();
+        InputStream stream = DataBase.class.getClassLoader().getResourceAsStream(propertiesFile);
+
+        if (stream == null) {
+            throw new Exception("Properties file not found: " + propertiesFile);
+        }
+
+        p.load(stream);
+
+        String url = p.getProperty("db.url");
+        String user = p.getProperty("db.user");
+        String password = p.getProperty("db.password");
+
+        if (url == null || user == null)
+            throw new Exception("Invalid DB configuration");
+
+        return DriverManager.getConnection(url, user, password);
     }
+
 
     /**
      * Add an artefact to the database

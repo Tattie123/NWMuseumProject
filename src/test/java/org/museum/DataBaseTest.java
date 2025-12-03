@@ -6,6 +6,8 @@ import org.museum.artefacts.artefacts3d.Artefact3D;
 import org.museum.artefacts.artefacts3d.Furniture;
 
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.sql.Connection;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,10 +22,19 @@ class DataBaseTest
     Artefact3D Table5;
 
     @BeforeAll
-    static void beforeAll() throws Exception
-    {
+    static void beforeAll() throws Exception {
+        Connection conn = DataBase.getConnection();
+
+        // Run schema (required in CI)
+        InputStream in = DataBaseTest.class.getClassLoader().getResourceAsStream("schema.sql");
+        if (in != null) {
+            String sql = new String(in.readAllBytes());
+            conn.createStatement().execute(sql);
+        }
+
         DataBase.clearArtefacts();
     }
+
 
     @BeforeEach
     void setUp()

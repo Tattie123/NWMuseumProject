@@ -3,7 +3,7 @@ name: Java CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     services:
@@ -29,13 +29,13 @@ jobs:
           java-version: '24'
           distribution: 'temurin'
 
-      - name: Wait for MySQL
+      - name: Wait for MySQL to be ready
         run: |
           sudo apt-get install -y mysql-client
           until mysql -h 127.0.0.1 -u root -proot -e "SELECT 1;" &> /dev/null; do
             echo "Waiting for MySQL..."
-            sleep 4
+            sleep 3
           done
 
       - name: Run tests
-        run: mvn -B test
+        run: mvn test
