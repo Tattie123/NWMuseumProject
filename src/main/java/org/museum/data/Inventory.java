@@ -1,4 +1,4 @@
-package org.museum;
+package org.museum.data;
 
 import org.museum.other.Room;
 import org.museum.artefacts.Artefact;

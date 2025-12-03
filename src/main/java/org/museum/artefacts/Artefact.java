@@ -1,6 +1,6 @@
 package org.museum.artefacts;
 
-import org.museum.Inventory;
+import org.museum.data.Inventory;
 import org.museum.artefacts.artefacts3d.Artefact3D;
 
 import java.awt.image.BufferedImage;
@@ -14,7 +14,7 @@ public abstract class Artefact
     private String originCountry;
     private String currentRoom;
     private String author;
-    private Date dateOfCreation;
+    private java.sql.Date dateOfCreation;
     private double width;
     private double height;
     private BufferedImage images;
@@ -71,7 +71,7 @@ public abstract class Artefact
      * @param insurance
      * @param name
      */
-    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name)
+    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name)
     {
         this.name = name;
         this.historicEra = historicEra;
@@ -104,7 +104,7 @@ public abstract class Artefact
      * @param name
      * @param depth
      */
-    protected Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name, double depth, Material material)
+    protected Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name, double depth, Material material)
     {
         this.name = name;
         this.historicEra = historicEra;
@@ -158,11 +158,6 @@ public abstract class Artefact
         return dateOfCreation;
     }
 
-    public java.sql.Date getSQLDateOfCreation()
-    {
-        return new java.sql.Date(dateOfCreation.getTime());
-    }
-
     public double getWidth()
     {
         return width;
@@ -187,7 +182,7 @@ public abstract class Artefact
     {
         if (this instanceof Artefact3D)
             return depth;
-        return -1;
+        return 0;
     }
 
     public String getMaterialString()

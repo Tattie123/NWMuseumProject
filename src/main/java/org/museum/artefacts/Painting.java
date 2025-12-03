@@ -1,11 +1,10 @@
 package org.museum.artefacts;
 
 import java.awt.image.BufferedImage;
-import java.util.Date;
 
 public class Painting extends Artefact
 {
-    public Painting(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name)
+    public Painting(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name)
     {
         super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, images, insurance, name);
     }

@@ -1,9 +1,10 @@
-package org.museum;
+package org.museum.data;
 
 import org.museum.artefacts.Artefact;
 
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -71,7 +72,7 @@ public class DataBase
             ps.setString(3, artefact.getOriginCountry());
             ps.setString(4, artefact.getCurrentRoom());
             ps.setString(5, artefact.getAuthor());
-            ps.setDate(6, artefact.getSQLDateOfCreation());
+            ps.setDate(6, (Date) artefact.getDateOfCreation());
             ps.setDouble(7, artefact.getWidth());
             ps.setDouble(8, artefact.getHeight());
             ps.setDouble(9, artefact.getInsurance());
