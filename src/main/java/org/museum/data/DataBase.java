@@ -1,6 +1,7 @@
 package org.museum.data;
 
 import org.museum.artefacts.Artefact;
+import org.museum.other.Loan;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -190,6 +191,72 @@ public class DataBase
                 return null;
             names = names.substring(0, names.length() - 2);
             return names;
+        } catch (SQLException e)
+        {
+            return null;
+        }
+    }
+
+    public static boolean addLoan(Loan loan1) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement(
+                    "INSERT INTO loans (isApproved, name, contactInfo, telNum, artefactName, startDate, endDate) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?)");
+            ps.setBoolean(1, loan1.isApproved());
+            ps.setString(2, loan1.getName());
+            ps.setString(3, loan1.getContactInfo());
+            ps.setString(4, loan1.getTelNum());
+            ps.setString(5, loan1.getArtefactName());
+            ps.setDate(6, loan1.getStartDate());
+            ps.setDate(7, loan1.getEndDate());
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean clearLoans() throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement("DELETE FROM loans;");
+            var ps2 = connection.prepareStatement("ALTER TABLE loans AUTO_INCREMENT = 1;");
+            int rowsAffected = ps.executeUpdate();
+            ps2.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static String searchLoans(String name) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement("SELECT contactInfo FROM loans WHERE name = ?;");
+            ps.setString(1, name);
+            var rs = ps.executeQuery();
+            if (rs.next())
+            {
+                return rs.getString("contactInfo");
+            }
+            return null;
         } catch (SQLException e)
         {
             return null;

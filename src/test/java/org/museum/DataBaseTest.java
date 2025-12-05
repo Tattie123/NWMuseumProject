@@ -8,6 +8,7 @@ import org.museum.artefacts.artefacts3d.Furniture;
 import org.museum.artefacts.artefacts3d.Pottery;
 import org.museum.artefacts.artefacts3d.Sculpture;
 import org.museum.data.DataBase;
+import org.museum.other.Loan;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -42,6 +43,12 @@ class DataBaseTest
     Painting Painting4;
     Painting Painting5;
 
+    Loan Loan1;
+    Loan Loan2;
+    Loan Loan3;
+    Loan Loan4;
+    Loan Loan5;
+
     @BeforeAll
     static void beforeAll() throws Exception {
         Connection conn = DataBase.getConnection();
@@ -53,7 +60,7 @@ class DataBaseTest
             conn.createStatement().execute(sql);
         }
 
-        DataBase.clearArtefacts();
+        //DataBase.clearArtefacts();
     }
 
 
@@ -85,6 +92,12 @@ class DataBaseTest
         Painting3 = new Painting("Ancient", "Classical", "Greece", "Room Q", "Charlie", java.sql.Date.valueOf("2005-04-10"), 1.5, 2.0, image, 7.0,"Classical Painting");
         Painting4 = new Painting("Medieval", "Gothic", "England", "Room R", "Diana", java.sql.Date.valueOf("2005-05-05"), 1.3, 1.8, image, 5.5, "Gothic Painting");
         Painting5 = new Painting("Victorian", "Eclectic", "England", "Room S", "Ethan", java.sql.Date.valueOf("2005-06-20"), 1.4, 1.9, image, 6.5, "Eclectic Painting");
+
+        Loan1 = new Loan(false, "John Doe", "john@example.com", "1234567890", "Abstract Sculpture", java.sql.Date.valueOf("2023-01-01"), java.sql.Date.valueOf("2023-01-15"));
+        Loan2 = new Loan(false, "Jane Smith", "jane@example.com", "9876543210", "Baroque Painting", java.sql.Date.valueOf("2023-02-01"), java.sql.Date.valueOf("2023-02-15"));
+        Loan3 = new Loan(false, "Alice Johnson", "alice@example.com", "5555555555", "Classical Sculpture", java.sql.Date.valueOf("2023-03-01"), java.sql.Date.valueOf("2023-03-15"));
+        Loan4 = new Loan(false, "Bob Brown", "bob@example.com", "4444444444", "Gothic Painting", java.sql.Date.valueOf("2023-04-01"), java.sql.Date.valueOf("2023-04-15"));
+        Loan5 = new Loan(false, "Charlie Davis", "charlie@example.com", "3333333333", "Eclectic Sculpture", java.sql.Date.valueOf("2023-05-01"), java.sql.Date.valueOf("2023-05-15"));
     }
 
     @Test
@@ -122,7 +135,7 @@ class DataBaseTest
 
     @Test
     @Order(3)
-    void SearchRoom() throws Exception
+    void searchRoom() throws Exception
     {
         assertEquals("Room C", DataBase.searchArtefactRoom("Side Table"));
         assertEquals("Room F", DataBase.searchArtefactRoom("Clay Pot"));
@@ -132,7 +145,7 @@ class DataBaseTest
 
     @Test
     @Order(4)
-    void SearchType() throws Exception
+    void searchType() throws Exception
     {
         assertEquals("Dining Table, Coffee Table, Side Table, Pedestal Table, Console Table", DataBase.searchArtefactsWithType("Furniture"));
         assertEquals("Clay Pot, Ceramic Vase, Porcelain Jar, Glass Bowl, Metal Canister", DataBase.searchArtefactsWithType("Pottery"));
@@ -153,7 +166,7 @@ class DataBaseTest
 
     @Test
     @Order(6)
-    void SearchRoomAfterDeletion() throws Exception
+    void searchRoomAfterDeletion() throws Exception
     {
         assertNull(DataBase.searchArtefactRoom("Dining Table"));
         assertNull(DataBase.searchArtefactRoom("Ceramic Vase"));
@@ -163,10 +176,33 @@ class DataBaseTest
 
     @Test
     @Order(7)
-    void clearArtefact() throws Exception
+    void clearArtefacts() throws Exception
     {
         assertTrue(DataBase.clearArtefacts());
     }
 
+    @Test
+    @Order(8)
+    void addLoans() throws Exception
+    {
+        assertTrue(DataBase.addLoan(Loan1));
+        assertTrue(DataBase.addLoan(Loan2));
+        assertTrue(DataBase.addLoan(Loan3));
+        assertTrue(DataBase.addLoan(Loan4));
+        assertTrue(DataBase.addLoan(Loan5));
+    }
 
+    @Test
+    @Order(9)
+    void searchLoans() throws Exception
+    {
+        assertEquals("john@example.com", DataBase.searchLoans("John Doe"));
+    }
+
+    @Test
+    @Order(10)
+    void clearLoans() throws Exception
+    {
+        assertTrue(DataBase.clearLoans());
+    }
 }

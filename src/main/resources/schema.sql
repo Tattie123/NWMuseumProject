@@ -1,16 +1,27 @@
 CREATE TABLE IF NOT EXISTS artefacts (
-    historicEra TEXT NOT NULL,
-    style TEXT NOT NULL,
-    originCountry TEXT NOT NULL,
-    currentRoom TEXT NOT NULL,
-    author TEXT NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    historicEra VARCHAR(255) NOT NULL,
+    style VARCHAR(255) NOT NULL,
+    originCountry VARCHAR(255) NOT NULL,
+    currentRoom VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
     dateOfCreation DATE NOT NULL,
     width DOUBLE NOT NULL,
     height DOUBLE NOT NULL,
-    insurance DOUBLE NOT NULL,
-    id INT AUTO_INCREMENT PRIMARY KEY,
     depth DOUBLE NOT NULL,
-    name TEXT NOT NULL,
-    type TEXT NOT NULL,
-    material TEXT NOT NULL
+    insurance DOUBLE NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    material VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS loans (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    isApproved BOOLEAN NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    contactInfo VARCHAR(255) NOT NULL,
+    telNum VARCHAR(32) NOT NULL,
+    artefactName VARCHAR(255) NOT NULL,
+    startDate DATE NOT NULL,
+    endDate DATE NOT NULL
 );
