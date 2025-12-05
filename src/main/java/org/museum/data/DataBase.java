@@ -2,6 +2,7 @@ package org.museum.data;
 
 import org.museum.artefacts.Artefact;
 import org.museum.other.Loan;
+import org.museum.other.Room;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -197,7 +198,7 @@ public class DataBase
         }
     }
 
-    public static boolean addLoan(Loan loan1) throws Exception
+    public static boolean addLoan(Loan loan) throws Exception
     {
         if (connection == null)
             connection = getConnection();
@@ -207,13 +208,13 @@ public class DataBase
             var ps = connection.prepareStatement(
                     "INSERT INTO loans (isApproved, name, contactInfo, telNum, artefactName, startDate, endDate) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?)");
-            ps.setBoolean(1, loan1.isApproved());
-            ps.setString(2, loan1.getName());
-            ps.setString(3, loan1.getContactInfo());
-            ps.setString(4, loan1.getTelNum());
-            ps.setString(5, loan1.getArtefactName());
-            ps.setDate(6, loan1.getStartDate());
-            ps.setDate(7, loan1.getEndDate());
+            ps.setBoolean(1, loan.isApproved());
+            ps.setString(2, loan.getName());
+            ps.setString(3, loan.getContactInfo());
+            ps.setString(4, loan.getTelNum());
+            ps.setString(5, loan.getArtefactName());
+            ps.setDate(6, loan.getStartDate());
+            ps.setDate(7, loan.getEndDate());
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e)
@@ -260,6 +261,68 @@ public class DataBase
         } catch (SQLException e)
         {
             return null;
+        }
+    }
+
+    public static boolean addRoom(Room room) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement(
+                    "INSERT INTO rooms (roomNum, roomName, capacity) " +
+                            "VALUES (?, ?, ?)");
+            ps.setString(1, room.getRoomNum());
+            ps.setString(2, room.getRoomName());
+            ps.setInt(3, room.getCapacity());
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static String searchRoomByName(String roomName) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement("SELECT roomNum FROM rooms WHERE roomName LIKE ?;");
+            ps.setString(1, "%" + roomName + "%");
+            var rs = ps.executeQuery();
+            if (rs.next())
+            {
+                return rs.getString("roomNum");
+            }
+            return null;
+        } catch (SQLException e)
+        {
+            return null;
+        }
+    }
+
+    public static boolean clearRooms() throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement("DELETE FROM rooms;");
+            var ps2 = connection.prepareStatement("ALTER TABLE rooms AUTO_INCREMENT = 1;");
+            int rowsAffected = ps.executeUpdate();
+            ps2.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
         }
     }
 }

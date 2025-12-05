@@ -9,6 +9,7 @@ import org.museum.artefacts.artefacts3d.Pottery;
 import org.museum.artefacts.artefacts3d.Sculpture;
 import org.museum.data.DataBase;
 import org.museum.other.Loan;
+import org.museum.other.Room;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -48,6 +49,12 @@ class DataBaseTest
     Loan Loan3;
     Loan Loan4;
     Loan Loan5;
+
+    Room Room1;
+    Room Room2;
+    Room Room3;
+    Room Room4;
+    Room Room5;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -98,6 +105,12 @@ class DataBaseTest
         Loan3 = new Loan(false, "Alice Johnson", "alice@example.com", "5555555555", "Classical Sculpture", java.sql.Date.valueOf("2023-03-01"), java.sql.Date.valueOf("2023-03-15"));
         Loan4 = new Loan(false, "Bob Brown", "bob@example.com", "4444444444", "Gothic Painting", java.sql.Date.valueOf("2023-04-01"), java.sql.Date.valueOf("2023-04-15"));
         Loan5 = new Loan(false, "Charlie Davis", "charlie@example.com", "3333333333", "Eclectic Sculpture", java.sql.Date.valueOf("2023-05-01"), java.sql.Date.valueOf("2023-05-15"));
+
+        Room1 = new Room("Room A", "Ancient Artifacts", 50);
+        Room2 = new Room("Room B", "Medieval Wonders", 40);
+        Room3 = new Room("Room C", "Renaissance Gallery", 60);
+        Room4 = new Room("Room D", "Modern Art", 70);
+        Room5 = new Room("Room E", "Contemporary Creations", 80);
     }
 
     @Test
@@ -204,5 +217,30 @@ class DataBaseTest
     void clearLoans() throws Exception
     {
         assertTrue(DataBase.clearLoans());
+    }
+
+    @Test
+    @Order(11)
+    void addRooms() throws Exception
+    {
+        assertTrue(DataBase.addRoom(Room1));
+        assertTrue(DataBase.addRoom(Room2));
+        assertTrue(DataBase.addRoom(Room3));
+        assertTrue(DataBase.addRoom(Room4));
+        assertTrue(DataBase.addRoom(Room5));
+    }
+
+    @Test
+    @Order(12)
+    void searchRooms() throws Exception
+    {
+        assertEquals("Room B", DataBase.searchRoomByName("Medieval"));
+    }
+
+    @Test
+    @Order(13)
+    void clearRooms() throws Exception
+    {
+        assertTrue(DataBase.clearRooms());
     }
 }

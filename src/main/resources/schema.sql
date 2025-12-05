@@ -25,3 +25,12 @@ CREATE TABLE IF NOT EXISTS loans (
     startDate DATE NOT NULL,
     endDate DATE NOT NULL
 );
+
+create table IF NOT EXISTS rooms
+(
+    id       int auto_increment PRIMARY KEY,
+    roomNum  TEXT null,
+    roomName TEXT null,
+    capacity int  null
+);
+
