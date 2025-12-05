@@ -1,6 +1,7 @@
 package org.museum.artefacts;
 
-import org.museum.Inventory;
+import org.museum.data.Inventory;
+import org.museum.artefacts.artefacts3d.Artefact3D;
 
 import java.awt.image.BufferedImage;
 import java.util.Date;
@@ -13,11 +14,36 @@ public abstract class Artefact
     private String originCountry;
     private String currentRoom;
     private String author;
-    private Date dateOfCreation;
+    private java.sql.Date dateOfCreation;
     private double width;
     private double height;
     private BufferedImage images;
     private double insurance;
+    private double depth;
+    private Material material;
+
+    public String getType()
+    {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Artefact{" +
+                "insurance=" + insurance +
+                ", images=" + images +
+                ", height=" + height +
+                ", width=" + width +
+                ", dateOfCreation=" + dateOfCreation +
+                ", author='" + author + '\'' +
+                ", currentRoom='" + currentRoom + '\'' +
+                ", originCountry='" + originCountry + '\'' +
+                ", style='" + style + '\'' +
+                ", historicEra='" + historicEra + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
     public boolean possibleToMove()
     {
@@ -31,7 +57,21 @@ public abstract class Artefact
         return true;
     }
 
-    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name)
+    /**
+     * Constructor for Artefact without depth
+     * @param historicEra
+     * @param style
+     * @param originCountry
+     * @param currentRoom
+     * @param author
+     * @param dateOfCreation
+     * @param width
+     * @param height
+     * @param images
+     * @param insurance
+     * @param name
+     */
+    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name)
     {
         this.name = name;
         this.historicEra = historicEra;
@@ -44,6 +84,41 @@ public abstract class Artefact
         this.height = height;
         this.images = images;
         this.insurance = insurance;
+
+        Inventory.addArtefact(this);
+    }
+
+
+    /**
+     * Constructor for Artefact with depth and material
+     * @param historicEra
+     * @param style
+     * @param originCountry
+     * @param currentRoom
+     * @param author
+     * @param dateOfCreation
+     * @param width
+     * @param height
+     * @param images
+     * @param insurance
+     * @param name
+     * @param depth
+     */
+    protected Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name, double depth, Material material)
+    {
+        this.name = name;
+        this.historicEra = historicEra;
+        this.style = style;
+        this.originCountry = originCountry;
+        this.currentRoom = currentRoom;
+        this.author = author;
+        this.dateOfCreation = dateOfCreation;
+        this.width = width;
+        this.height = height;
+        this.images = images;
+        this.insurance = insurance;
+        this.depth = depth;
+        this.material = material;
 
         Inventory.addArtefact(this);
     }
@@ -83,11 +158,6 @@ public abstract class Artefact
         return dateOfCreation;
     }
 
-    public java.sql.Date getSQLDateOfCreation()
-    {
-        return new java.sql.Date(dateOfCreation.getTime());
-    }
-
     public double getWidth()
     {
         return width;
@@ -106,5 +176,19 @@ public abstract class Artefact
     public double getInsurance()
     {
         return insurance;
+    }
+
+    public double getDepth()
+    {
+        if (this instanceof Artefact3D)
+            return depth;
+        return 0;
+    }
+
+    public String getMaterialString()
+    {
+        if (material != null)
+            return material.toString();
+        return "";
     }
 }
