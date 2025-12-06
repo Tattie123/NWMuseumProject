@@ -10,7 +10,7 @@ public final class Inventory
 {
     private static Inventory instance;
     private List <Artefact> Artifacts;
-    private List<Room> Rooms;
+    private final List<Room> Rooms;
 
     public String SearchArtefactByName(String name) throws Exception
     {

@@ -8,17 +8,17 @@ import java.util.Date;
 
 public abstract class Artefact
 {
-    private String name;
-    private String historicEra;
-    private String style;
-    private String originCountry;
-    private String currentRoom;
-    private String author;
-    private java.sql.Date dateOfCreation;
-    private double width;
-    private double height;
+    private final String name;
+    private final String historicEra;
+    private final String style;
+    private final String originCountry;
+    private final String currentRoom;
+    private final String author;
+    private final java.sql.Date dateOfCreation;
+    private final double width;
+    private final double height;
     private BufferedImage images;
-    private double insurance;
+    private final double insurance;
     private double depth;
     private Material material;
 

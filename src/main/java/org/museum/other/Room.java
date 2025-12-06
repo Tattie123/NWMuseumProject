@@ -2,9 +2,9 @@ package org.museum.other;
 
 public class Room
 {
-    private String roomNum;
-    private String roomName;
-    private int capacity;
+    private final String roomNum;
+    private final String roomName;
+    private final int capacity;
 
     public boolean checkFits()
     {

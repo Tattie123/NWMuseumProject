@@ -5,12 +5,12 @@ import java.sql.Date;
 public class Loan
 {
     private boolean isApproved;
-    private String name;
-    private String contactInfo;
-    private String telNum; // Must be String since numbers are too large / start with 0 or +
-    private String artefactName;
-    private java.sql.Date startDate;
-    private java.sql.Date endDate;
+    private final String name;
+    private final String contactInfo;
+    private final String telNum; // Must be String since numbers are too large / start with 0 or +
+    private final String artefactName;
+    private final java.sql.Date startDate;
+    private final java.sql.Date endDate;
 
     public boolean approveLoan()
     {
