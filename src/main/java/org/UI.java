@@ -32,7 +32,7 @@ public class UI
                 case "1" -> RequestLoan();
                 case "2" -> SearchArtefactByName();
                 case "3" -> SearchArtefactByRoom();
-//                case "4" -> RequestLoan();
+                case "4" -> SearchArtefactByType();
 //                case "5" -> ViewArtefactInfo();
                 case "6" -> System.out.println("View images of Artefact");
                 case "7" ->
@@ -51,6 +51,22 @@ public class UI
         }while(run);
     }
 
+    private static void SearchArtefactByType()
+    {
+        System.out.println("Please enter the Type of the artefact you wish to search for:");
+        String type = scanner.next();
+        Inventory theInventory = Inventory.getInstance();
+        try
+        {
+            String result = theInventory.SearchArtefactNameByType(type);
+            System.out.println("Result: " + result);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error while Searching" + e.getMessage());
+        }
+    }
+
     private static void SearchArtefactByRoom()
     {
         System.out.println("Please enter the room of the artefact you wish to search for:");
@@ -58,7 +74,7 @@ public class UI
         Inventory theInventory = Inventory.getInstance();
         try
         {
-            String result = theInventory.SearchArtefactByRoom(roomName);
+            String result = theInventory.SearchArtefactNameByRoom(roomName);
             System.out.println("Result: " + result);
         }
         catch (Exception e)

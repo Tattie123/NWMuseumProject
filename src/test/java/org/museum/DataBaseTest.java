@@ -147,21 +147,37 @@ class DataBaseTest
 
     @Test
     @Order(3)
-    void searchArtefactByName() throws Exception
+    void searchArtefacts() throws Exception
     {
-        assertNotNull(theInventory.SearchArtefactByName("Dining Table"));
+        assertEquals("Furniture, Room E", theInventory.SearchArtefactByName("Console Table"));
+        assertEquals("Pottery, Room H", theInventory.SearchArtefactByName("Porcelain Jar"));
+        assertEquals("Sculpture, Room K", theInventory.SearchArtefactByName("Abstract Sculpture"));
+        assertEquals("Coffee Table", theInventory.SearchArtefactNameByRoom("Room B"));
+        assertEquals("Glass Bowl", theInventory.SearchArtefactNameByRoom("Room I"));
+        assertEquals("Abstract Sculpture", theInventory.SearchArtefactNameByRoom("Room K"));
+        assertEquals("""
+                Dining Table
+                Coffee Table
+                Side Table
+                Pedestal Table
+                Console Table""", theInventory.SearchArtefactNameByType("Furniture"));
+        assertEquals("""
+                Clay Pot
+                Ceramic Vase
+                Porcelain Jar
+                Glass Bowl
+                Metal Canister""", theInventory.SearchArtefactNameByType("Pottery"));
+        assertEquals("""
+                Abstract Sculpture
+                Baroque Sculpture
+                Classical Sculpture
+                Gothic Sculpture
+                Eclectic Sculpture""", theInventory.SearchArtefactNameByType("Sculpture"));
     }
+
 
     @Test
     @Order(4)
-    void searchArtefactByRoom() throws Exception
-    {
-
-    }
-
-
-    @Test
-    @Order(5)
     void deleteArtefact() throws Exception
     {
         assertTrue(DataBase.deleteArtefact("Dining Table"));
@@ -171,20 +187,41 @@ class DataBaseTest
     }
 
     @Test
-    @Order(6)
+    @Order(5)
     void searchRoomAfterDeletion() throws Exception
     {
+        assertEquals("Furniture, Room E", theInventory.SearchArtefactByName("Console Table"));
+        assertEquals("Pottery, Room H", theInventory.SearchArtefactByName("Porcelain Jar"));
+        assertEquals("Sculpture, Room K", theInventory.SearchArtefactByName("Abstract Sculpture"));
+        assertEquals("Coffee Table", theInventory.SearchArtefactNameByRoom("Room B"));
+        assertEquals("Glass Bowl", theInventory.SearchArtefactNameByRoom("Room I"));
+        assertEquals("Abstract Sculpture", theInventory.SearchArtefactNameByRoom("Room K"));
+        assertEquals("""
+                Coffee Table
+                Side Table
+                Pedestal Table
+                Console Table""", theInventory.SearchArtefactNameByType("Furniture"));
+        assertEquals("""
+                Clay Pot
+                Porcelain Jar
+                Glass Bowl
+                Metal Canister""", theInventory.SearchArtefactNameByType("Pottery"));
+        assertEquals("""
+                Abstract Sculpture
+                Classical Sculpture
+                Gothic Sculpture
+                Eclectic Sculpture""", theInventory.SearchArtefactNameByType("Sculpture"));
     }
 
     @Test
-    @Order(7)
+    @Order(6)
     void clearArtefacts() throws Exception
     {
         assertTrue(DataBase.clearArtefacts());
     }
 
     @Test
-    @Order(8)
+    @Order(7)
     void addLoans() throws Exception
     {
         assertTrue(DataBase.addLoan(Loan1));
@@ -195,21 +232,21 @@ class DataBaseTest
     }
 
     @Test
-    @Order(9)
+    @Order(8)
     void searchLoans() throws Exception
     {
         assertEquals("john@example.com", DataBase.searchLoans("John Doe"));
     }
 
     @Test
-    @Order(10)
+    @Order(9)
     void clearLoans() throws Exception
     {
         assertTrue(DataBase.clearLoans());
     }
 
     @Test
-    @Order(11)
+    @Order(10)
     void addRooms() throws Exception
     {
         assertTrue(DataBase.addRoom(Room1));
@@ -220,14 +257,14 @@ class DataBaseTest
     }
 
     @Test
-    @Order(12)
+    @Order(11)
     void searchRooms() throws Exception
     {
         assertEquals("Room B", DataBase.searchRoomByName("Medieval"));
     }
 
     @Test
-    @Order(13)
+    @Order(12)
     void clearRooms() throws Exception
     {
         assertTrue(DataBase.clearRooms());

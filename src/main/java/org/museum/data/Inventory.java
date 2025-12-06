@@ -23,7 +23,7 @@ public final class Inventory
         {
             if (artefact != null && artefact.getName() != null && artefact.getName().equalsIgnoreCase(name))
             {
-                return artefact.toString();
+                return artefact.getType() + ", " + artefact.getCurrentRoom();
             }
         }
         return "Artefact not found.";
@@ -77,8 +77,48 @@ public final class Inventory
         return this.Artifacts;
     }
 
-    public String SearchArtefactByRoom(String roomName) throws Exception
+    public String SearchArtefactNameByRoom(String roomName) throws Exception
     {
+        UpdateArtefactsFromDB();
 
+            if (this.Artifacts == null || this.Artifacts.isEmpty())
+                return "No artefacts found.";
+
+        StringBuilder result = new StringBuilder();
+        for (Artefact artefact : this.Artifacts)
+        {
+            if (artefact != null && artefact.getCurrentRoom() != null && artefact.getCurrentRoom().equalsIgnoreCase(roomName))
+            {
+                result.append(artefact.getName()).append("\n");
+            }
+        }
+        if (result.isEmpty())
+        {
+            return "No artefacts found in the specified room.";
+        }
+        return result.toString().strip();
+
+    }
+
+    public String SearchArtefactNameByType(String type) throws Exception
+    {
+        UpdateArtefactsFromDB();
+
+        if (this.Artifacts == null || this.Artifacts.isEmpty())
+            return "No artefacts found.";
+
+        StringBuilder result = new StringBuilder();
+        for (Artefact artefact : this.Artifacts)
+        {
+            if (artefact != null && artefact.getType() != null && artefact.getType().equalsIgnoreCase(type))
+            {
+                result.append(artefact.getName()).append("\n");
+            }
+        }
+        if (result.isEmpty())
+        {
+            return "No artefacts found in the specified room.";
+        }
+        return result.toString().strip();
     }
 }

@@ -187,6 +187,4 @@ public abstract class Artefact
             return material.toString();
         return "";
     }
-
-
 }
