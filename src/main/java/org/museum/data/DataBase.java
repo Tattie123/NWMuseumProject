@@ -1,6 +1,12 @@
 package org.museum.data;
 
 import org.museum.artefacts.Artefact;
+import org.museum.artefacts.Material;
+import org.museum.artefacts.Misc;
+import org.museum.artefacts.Painting;
+import org.museum.artefacts.artefacts3d.Furniture;
+import org.museum.artefacts.artefacts3d.Pottery;
+import org.museum.artefacts.artefacts3d.Sculpture;
 import org.museum.other.Loan;
 import org.museum.other.Room;
 
@@ -9,7 +15,9 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
+import java.util.ArrayList;
 
 public class DataBase
 {
@@ -140,60 +148,63 @@ public class DataBase
         }
     }
 
-    /**
-     * Search for the current room of an artefact by name
-     * @param name
-     * @return
-     * @throws Exception
-     */
-    public static String searchArtefactRoom(String name) throws Exception
+    public static List<Artefact> PullArtefacts() throws Exception
     {
         if (connection == null)
             connection = getConnection();
 
         try
         {
-            var ps = connection.prepareStatement("SELECT currentRoom FROM artefacts WHERE name = ?;");
-            ps.setString(1, name);
+            var ps = connection.prepareStatement("SELECT * FROM artefacts;");
             var rs = ps.executeQuery();
-            if (rs.next())
-            {
-                return rs.getString("currentRoom");
-            }
-            return null;
-        } catch (SQLException e)
-        {
-            return null;
-        }
-    }
 
-    /**
-     * Search for all artefacts of one type with a given type
-     * @param type
-     * @return
-     * @throws Exception
-     */
-    public static String searchArtefactsWithType(String type) throws Exception
-    {
-        if (connection == null)
-            connection = getConnection();
+            List<Artefact> artefacts = new ArrayList<>();
 
-        try
-        {
-            var ps = connection.prepareStatement("SELECT name FROM artefacts WHERE type = ?;");
-            ps.setString(1, type);
-            var rs = ps.executeQuery();
-            String names = "";
             while (rs.next())
             {
-                names += rs.getString("name") + ", ";
+                String historicEra = rs.getString("historicEra");
+                String style = rs.getString("style");
+                String originCountry = rs.getString("originCountry");
+                String currentRoom = rs.getString("currentRoom");
+                String author = rs.getString("author");
+                Date dateOfCreation = rs.getDate("dateOfCreation");
+                double width = rs.getDouble("width");
+                double height = rs.getDouble("height");
+                double insurance = rs.getDouble("insurance");
+                double depth = rs.getDouble("depth");
+                String name = rs.getString("name");
+                String type = rs.getString("type");
+                String material = rs.getString("material");
+
+                Material materialEnum = null;
+                if (material != null && !material.isBlank())
+                {
+                    try
+                    {
+                        materialEnum = Material.fromString(material);
+                    } catch (IllegalArgumentException e)
+                    {
+                        materialEnum = null;
+                    }
+                }
+
+                switch (type)
+                {
+                    case "Furniture" -> artefacts.add(new Furniture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum));
+                    case "Pottery" -> artefacts.add(new Pottery(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum));
+                    case "Sculpture" -> artefacts.add(new Sculpture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum));
+                    case "Misc" -> artefacts.add(new Misc(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name));
+                    case "Painting" -> artefacts.add(new Painting(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name));
+                    default -> {
+                    }
+                }
+
             }
-            if (names.isEmpty())
-                return null;
-            names = names.substring(0, names.length() - 2);
-            return names;
+
+            return artefacts;
         } catch (SQLException e)
         {
+            e.printStackTrace();
             return null;
         }
     }

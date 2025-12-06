@@ -12,21 +12,16 @@ public class Loan
     private java.sql.Date startDate;
     private java.sql.Date endDate;
 
-    public boolean createLoanRequest()
-    {
-        //todo implement feat
-        return true;
-    }
-
     public boolean approveLoan()
     {
-        //todo implement feat
+        isApproved = true;
         return true;
     }
 
     public boolean rejectLoan()
     {
-        //todo implement feat
+        //delete loan instance
+
         return true;
     }
 

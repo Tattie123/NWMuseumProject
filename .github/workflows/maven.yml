@@ -1,4 +1,4 @@
-name: Java CI
+name: Run Tests CI
 
 on: [push, pull_request]
 

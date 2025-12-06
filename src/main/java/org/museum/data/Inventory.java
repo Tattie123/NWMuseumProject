@@ -12,6 +12,36 @@ public final class Inventory
     private List <Artefact> Artifacts;
     private List<Room> Rooms;
 
+    public String SearchArtefactByName(String name) throws Exception
+    {
+        UpdateArtefactsFromDB();
+
+        if (this.Artifacts == null || this.Artifacts.isEmpty())
+            return "Artefact not found.";
+
+        for (Artefact artefact : this.Artifacts)
+        {
+            if (artefact != null && artefact.getName() != null && artefact.getName().equalsIgnoreCase(name))
+            {
+                return artefact.toString();
+            }
+        }
+        return "Artefact not found.";
+    }
+
+    private boolean UpdateArtefactsFromDB() throws Exception
+    {
+        List<Artefact> artefactsFromDB = DataBase.PullArtefacts();
+        if (artefactsFromDB != null)
+        {
+            this.Artifacts = artefactsFromDB;
+            return true;
+        }
+        if (this.Artifacts == null)
+            this.Artifacts = new ArrayList<>();
+        return false;
+    }
+
     private Inventory()
     {
         // initialize collections
@@ -45,5 +75,10 @@ public final class Inventory
     public List<Artefact> getArtifacts()
     {
         return this.Artifacts;
+    }
+
+    public String SearchArtefactByRoom(String roomName) throws Exception
+    {
+
     }
 }
