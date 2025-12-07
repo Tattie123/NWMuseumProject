@@ -1,14 +1,23 @@
 package org.museum.data;
 
 import org.museum.artefacts.Artefact;
+import org.museum.artefacts.Material;
+import org.museum.artefacts.Misc;
+import org.museum.artefacts.Painting;
+import org.museum.artefacts.artefacts3d.Furniture;
+import org.museum.artefacts.artefacts3d.Pottery;
+import org.museum.artefacts.artefacts3d.Sculpture;
 import org.museum.other.Loan;
+import org.museum.other.Room;
 
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
+import java.util.ArrayList;
 
 public class DataBase
 {
@@ -139,65 +148,68 @@ public class DataBase
         }
     }
 
-    /**
-     * Search for the current room of an artefact by name
-     * @param name
-     * @return
-     * @throws Exception
-     */
-    public static String searchArtefactRoom(String name) throws Exception
+    public static List<Artefact> PullArtefacts() throws Exception
     {
         if (connection == null)
             connection = getConnection();
 
         try
         {
-            var ps = connection.prepareStatement("SELECT currentRoom FROM artefacts WHERE name = ?;");
-            ps.setString(1, name);
+            var ps = connection.prepareStatement("SELECT * FROM artefacts;");
             var rs = ps.executeQuery();
-            if (rs.next())
-            {
-                return rs.getString("currentRoom");
-            }
-            return null;
-        } catch (SQLException e)
-        {
-            return null;
-        }
-    }
 
-    /**
-     * Search for all artefacts of one type with a given type
-     * @param type
-     * @return
-     * @throws Exception
-     */
-    public static String searchArtefactsWithType(String type) throws Exception
-    {
-        if (connection == null)
-            connection = getConnection();
+            List<Artefact> artefacts = new ArrayList<>();
 
-        try
-        {
-            var ps = connection.prepareStatement("SELECT name FROM artefacts WHERE type = ?;");
-            ps.setString(1, type);
-            var rs = ps.executeQuery();
-            String names = "";
             while (rs.next())
             {
-                names += rs.getString("name") + ", ";
+                String historicEra = rs.getString("historicEra");
+                String style = rs.getString("style");
+                String originCountry = rs.getString("originCountry");
+                String currentRoom = rs.getString("currentRoom");
+                String author = rs.getString("author");
+                Date dateOfCreation = rs.getDate("dateOfCreation");
+                double width = rs.getDouble("width");
+                double height = rs.getDouble("height");
+                double insurance = rs.getDouble("insurance");
+                double depth = rs.getDouble("depth");
+                String name = rs.getString("name");
+                String type = rs.getString("type");
+                String material = rs.getString("material");
+
+                Material materialEnum = null;
+                if (material != null && !material.isBlank())
+                {
+                    try
+                    {
+                        materialEnum = Material.fromString(material);
+                    } catch (IllegalArgumentException e)
+                    {
+                        materialEnum = null;
+                    }
+                }
+
+                switch (type)
+                {
+                    case "Furniture" -> artefacts.add(new Furniture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum));
+                    case "Pottery" -> artefacts.add(new Pottery(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum));
+                    case "Sculpture" -> artefacts.add(new Sculpture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum));
+                    case "Misc" -> artefacts.add(new Misc(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name));
+                    case "Painting" -> artefacts.add(new Painting(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name));
+                    default -> {
+                    }
+                }
+
             }
-            if (names.isEmpty())
-                return null;
-            names = names.substring(0, names.length() - 2);
-            return names;
+
+            return artefacts;
         } catch (SQLException e)
         {
+            e.printStackTrace();
             return null;
         }
     }
 
-    public static boolean addLoan(Loan loan1) throws Exception
+    public static boolean addLoan(Loan loan) throws Exception
     {
         if (connection == null)
             connection = getConnection();
@@ -207,13 +219,13 @@ public class DataBase
             var ps = connection.prepareStatement(
                     "INSERT INTO loans (isApproved, name, contactInfo, telNum, artefactName, startDate, endDate) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?)");
-            ps.setBoolean(1, loan1.isApproved());
-            ps.setString(2, loan1.getName());
-            ps.setString(3, loan1.getContactInfo());
-            ps.setString(4, loan1.getTelNum());
-            ps.setString(5, loan1.getArtefactName());
-            ps.setDate(6, loan1.getStartDate());
-            ps.setDate(7, loan1.getEndDate());
+            ps.setBoolean(1, loan.isApproved());
+            ps.setString(2, loan.getName());
+            ps.setString(3, loan.getContactInfo());
+            ps.setString(4, loan.getTelNum());
+            ps.setString(5, loan.getArtefactName());
+            ps.setDate(6, loan.getStartDate());
+            ps.setDate(7, loan.getEndDate());
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e)
@@ -260,6 +272,68 @@ public class DataBase
         } catch (SQLException e)
         {
             return null;
+        }
+    }
+
+    public static boolean addRoom(Room room) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement(
+                    "INSERT INTO rooms (roomNum, roomName, capacity) " +
+                            "VALUES (?, ?, ?)");
+            ps.setString(1, room.getRoomNum());
+            ps.setString(2, room.getRoomName());
+            ps.setInt(3, room.getCapacity());
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static String searchRoomByName(String roomName) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement("SELECT roomNum FROM rooms WHERE roomName LIKE ?;");
+            ps.setString(1, "%" + roomName + "%");
+            var rs = ps.executeQuery();
+            if (rs.next())
+            {
+                return rs.getString("roomNum");
+            }
+            return null;
+        } catch (SQLException e)
+        {
+            return null;
+        }
+    }
+
+    public static boolean clearRooms() throws Exception
+    {
+        if (connection == null)
+            connection = getConnection();
+
+        try
+        {
+            var ps = connection.prepareStatement("DELETE FROM rooms;");
+            var ps2 = connection.prepareStatement("ALTER TABLE rooms AUTO_INCREMENT = 1;");
+            int rowsAffected = ps.executeUpdate();
+            ps2.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
         }
     }
 }

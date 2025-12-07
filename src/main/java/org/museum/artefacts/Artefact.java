@@ -1,24 +1,24 @@
 package org.museum.artefacts;
 
-import org.museum.data.Inventory;
 import org.museum.artefacts.artefacts3d.Artefact3D;
 
+import javax.xml.crypto.Data;
 import java.awt.image.BufferedImage;
 import java.util.Date;
 
 public abstract class Artefact
 {
-    private String name;
-    private String historicEra;
-    private String style;
-    private String originCountry;
-    private String currentRoom;
-    private String author;
-    private java.sql.Date dateOfCreation;
-    private double width;
-    private double height;
+    private final String name;
+    private final String historicEra;
+    private final String style;
+    private final String originCountry;
+    private final String currentRoom;
+    private final String author;
+    private final java.sql.Date dateOfCreation;
+    private final double width;
+    private final double height;
     private BufferedImage images;
-    private double insurance;
+    private final double insurance;
     private double depth;
     private Material material;
 
@@ -67,11 +67,10 @@ public abstract class Artefact
      * @param dateOfCreation
      * @param width
      * @param height
-     * @param images
      * @param insurance
      * @param name
      */
-    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name)
+    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double insurance, String name)
     {
         this.name = name;
         this.historicEra = historicEra;
@@ -82,10 +81,9 @@ public abstract class Artefact
         this.dateOfCreation = dateOfCreation;
         this.width = width;
         this.height = height;
-        this.images = images;
         this.insurance = insurance;
 
-        Inventory.addArtefact(this);
+
     }
 
 
@@ -99,12 +97,11 @@ public abstract class Artefact
      * @param dateOfCreation
      * @param width
      * @param height
-     * @param images
      * @param insurance
      * @param name
      * @param depth
      */
-    protected Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, BufferedImage images, double insurance, String name, double depth, Material material)
+    protected Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double insurance, String name, double depth, Material material)
     {
         this.name = name;
         this.historicEra = historicEra;
@@ -115,12 +112,11 @@ public abstract class Artefact
         this.dateOfCreation = dateOfCreation;
         this.width = width;
         this.height = height;
-        this.images = images;
         this.insurance = insurance;
         this.depth = depth;
         this.material = material;
 
-        Inventory.addArtefact(this);
+
     }
 
     public String getHistoricEra()
