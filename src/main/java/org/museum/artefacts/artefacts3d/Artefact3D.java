@@ -13,5 +13,10 @@ public abstract class Artefact3D extends Artefact
         super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name, depth, material);
     }
 
+    public Artefact3D(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double depth, String name, Material material)
+    {
+        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name, depth, material);
+    }
+
 
 }

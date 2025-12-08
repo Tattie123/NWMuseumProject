@@ -8,4 +8,9 @@ public class Painting extends Artefact
     {
         super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name);
     }
+
+    public Painting(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, String name)
+    {
+        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name);
+    }
 }

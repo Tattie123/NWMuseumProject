@@ -10,4 +10,8 @@ public class Furniture extends Artefact3D
     {
         super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, material);
     }
+
+    public Furniture(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double depth, String name, Material material){
+        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, depth, name, material);
+    }
 }

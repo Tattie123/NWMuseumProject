@@ -5,7 +5,14 @@ public class Main
 {
     public static void main(String[] args)
     {
-        UI.ResearcherUI();
+        try
+        {
+            UI.ResearcherUI();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 

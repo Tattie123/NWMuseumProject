@@ -17,7 +17,7 @@ class InventoryTest
         if (inv.getArtifacts() != null)
             inv.getArtifacts().clear();
 
-        DataBase.clearArtefacts();
+        DataBase.clearArtefacts(true);
     }
 
     @Test
