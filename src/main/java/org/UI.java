@@ -33,7 +33,7 @@ public class UI
                 case "2" -> SearchArtefactByName();
                 case "3" -> SearchArtefactByRoom();
                 case "4" -> SearchArtefactByType();
-//                case "5" -> ViewArtefactInfo();
+                case "5" -> ViewArtefactInfo();
                 case "6" -> System.out.println("View images of Artefact");
                 case "7" ->
                 {
@@ -43,12 +43,31 @@ public class UI
                     {
                         System.out.println("Changing User");
                         StaffUI();
+                    }else
+                    {
+                        System.out.println("Incorrect Password");
                     }
                 }
                 case "8" -> run = false;
                 default -> System.out.println("Invalid choice, please try again.");
             }
         }while(run);
+    }
+
+    private static void ViewArtefactInfo()
+    {
+        System.out.println("Please enter the name of the artefact you wish to view:");
+        String artefactName = scanner.next();
+        Inventory theInventory = Inventory.getInstance();
+        try
+        {
+            Artefact artefact = theInventory.GetArtefactByName(artefactName);
+            System.out.println("Artefact Information: " + artefact.toString());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error while Retrieving Artefact Information: " + e.getMessage());
+        }
     }
 
     private static void SearchArtefactByType()
@@ -123,6 +142,7 @@ public class UI
         boolean run = true;
         do
         {
+            //todo should be able to view loans
             System.out.println("Welcome");
             System.out.println("1. View information about Artefact");
             System.out.println("2. View Image of Artefact");

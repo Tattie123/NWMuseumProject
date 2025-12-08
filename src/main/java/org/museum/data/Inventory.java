@@ -121,4 +121,18 @@ public final class Inventory
         }
         return result.toString().strip();
     }
+
+    public Artefact GetArtefactByName(String artefactName) throws Exception
+    {
+        UpdateArtefactsFromDB();
+
+        for (Artefact artefact : this.Artifacts)
+        {
+            if (artefact != null && artefact.getName() != null && artefact.getName().equalsIgnoreCase(artefactName))
+            {
+                return artefact;
+            }
+        }
+        return null;
+    }
 }
