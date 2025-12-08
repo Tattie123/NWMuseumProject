@@ -30,13 +30,13 @@ public class DataBase
      * @return
      * @throws Exception
      */
-    public static Connection getConnection() throws Exception {
+    public static Connection getConnection(boolean testmode) throws Exception {
 
         String propertiesFile;
 
         // If running on GitHub CI, use CI properties
-        if (System.getenv("GITHUB_ACTIONS") != null) {
-            propertiesFile = "db-ci.properties";
+        if (System.getenv("GITHUB_ACTIONS") != null || testmode) {
+            propertiesFile = "db-testing.properties";
         } else {
             propertiesFile = "db.properties";
         }
@@ -67,10 +67,10 @@ public class DataBase
      * @return
      * @throws Exception
      */
-    public static boolean addArtefact(Artefact artefact) throws Exception
+    public static boolean addArtefact(Artefact artefact, boolean testMode) throws Exception
     {
         if (connection == null)
-            connection = getConnection();
+            connection = getConnection(testMode);
 
         try
         {
@@ -105,10 +105,10 @@ public class DataBase
      * @return
      * @throws Exception
      */
-    public static boolean clearArtefacts() throws Exception
+    public static boolean clearArtefacts(boolean testMode) throws Exception
     {
         if (connection == null)
-            connection = getConnection();
+            connection = getConnection(testMode);
 
         try
         {
@@ -130,10 +130,10 @@ public class DataBase
      * @return
      * @throws Exception
      */
-    public static boolean deleteArtefact(String name) throws Exception
+    public static boolean deleteArtefact(String name, boolean testMode) throws Exception
     {
         if (connection == null)
-            connection = getConnection();
+            connection = getConnection(testMode);
 
         try
         {
@@ -148,10 +148,10 @@ public class DataBase
         }
     }
 
-    public static List<Artefact> PullArtefacts() throws Exception
+    public static List<Artefact> PullArtefacts(boolean testMode) throws Exception
     {
         if (connection == null)
-            connection = getConnection();
+            connection = getConnection(testMode);
 
         try
         {
@@ -209,10 +209,10 @@ public class DataBase
         }
     }
 
-    public static boolean addLoan(Loan loan) throws Exception
+    public static boolean addLoan(Loan loan, boolean testMode) throws Exception
     {
         if (connection == null)
-            connection = getConnection();
+            connection = getConnection(testMode);
 
         try
         {
@@ -235,10 +235,10 @@ public class DataBase
         }
     }
 
-    public static boolean clearLoans() throws Exception
+    public static boolean clearLoans(boolean testMode) throws Exception
     {
         if (connection == null)
-            connection = getConnection();
+            connection = getConnection(testMode);
 
         try
         {
@@ -254,10 +254,10 @@ public class DataBase
         }
     }
 
-    public static String searchLoans(String name) throws Exception
+    public static String searchLoans(String name, boolean testMode) throws Exception
     {
         if (connection == null)
-            connection = getConnection();
+            connection = getConnection(testMode);
 
         try
         {
@@ -275,10 +275,10 @@ public class DataBase
         }
     }
 
-    public static boolean addRoom(Room room) throws Exception
+    public static boolean addRoom(Room room, boolean testMode) throws Exception
     {
         if (connection == null)
-            connection = getConnection();
+            connection = getConnection(testMode);
 
         try
         {
@@ -297,10 +297,10 @@ public class DataBase
         }
     }
 
-    public static String searchRoomByName(String roomName) throws Exception
+    public static String searchRoomByName(String roomName, boolean testMode) throws Exception
     {
         if (connection == null)
-            connection = getConnection();
+            connection = getConnection(testMode);
 
         try
         {
@@ -318,10 +318,10 @@ public class DataBase
         }
     }
 
-    public static boolean clearRooms() throws Exception
+    public static boolean clearRooms(boolean testMode) throws Exception
     {
         if (connection == null)
-            connection = getConnection();
+            connection = getConnection(testMode);
 
         try
         {

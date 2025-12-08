@@ -198,6 +198,7 @@ public class UI
 
     }
 
+
     private static Artefact addArtefact3D(String type, String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, String name)
     {
         System.out.println("Please enter the depth of the artefact:");
@@ -222,7 +223,7 @@ public class UI
         Inventory theInventory = Inventory.getInstance();
         try
         {
-            Artefact artefact = theInventory.getArtefactByName(artefactName);
+            Artefact artefact = theInventory.getArtefactByName(artefactName, false);
             assert artefact != null;
             System.out.println("Artefact Information: " + artefact);
         }
@@ -239,7 +240,7 @@ public class UI
         Inventory theInventory = Inventory.getInstance();
         try
         {
-            String result = theInventory.SearchArtefactNameByType(type);
+            String result = theInventory.SearchArtefactNameByType(type, false);
             System.out.println("Result: " + result);
         }
         catch (Exception e)
@@ -255,7 +256,7 @@ public class UI
         Inventory theInventory = Inventory.getInstance();
         try
         {
-            String result = theInventory.SearchArtefactNameByRoom(roomName);
+            String result = theInventory.SearchArtefactNameByRoom(roomName, false);
             System.out.println("Result: " + result);
         }
         catch (Exception e)
@@ -271,7 +272,7 @@ public class UI
         Inventory theInventory = Inventory.getInstance();
         try
         {
-            String result = theInventory.SearchArtefactByName(artefactName);
+            String result = theInventory.SearchArtefactByName(artefactName, false);
             System.out.println("Result: " + result);
         }
         catch (Exception e)
@@ -294,7 +295,7 @@ public class UI
         if (!artefactName.isEmpty())
         {
             Inventory theInventory = Inventory.getInstance();
-            Artefact artefact = theInventory.getArtefactByName(artefactName);
+            Artefact artefact = theInventory.getArtefactByName(artefactName, false);
             if (artefact == null)
             {
                 System.out.println("Artefact not found in inventory, Please try again.");
@@ -316,7 +317,7 @@ public class UI
         Inventory theInventory = Inventory.getInstance();
         try
         {
-            theInventory.ViewImagesOfArtefact(artefactName);
+            theInventory.ViewImagesOfArtefact(artefactName, false);
         } catch (Exception e)
         {
             System.out.println("Error while Retrieving Images: " + e.getMessage());

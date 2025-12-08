@@ -16,9 +16,9 @@ public final class Inventory
     private List <Artefact> Artifacts;
     private final List<Room> Rooms;
 
-    public String SearchArtefactByName(String name) throws Exception
+    public String SearchArtefactByName(String name, boolean testMode) throws Exception
     {
-        UpdateArtefactsFromDB();
+        UpdateArtefactsFromDB(testMode);
 
         if (this.Artifacts == null || this.Artifacts.isEmpty())
             return "Artefact not found.";
@@ -33,9 +33,9 @@ public final class Inventory
         return "Artefact not found.";
     }
 
-    private boolean UpdateArtefactsFromDB() throws Exception
+    private boolean UpdateArtefactsFromDB(boolean testMode) throws Exception
     {
-        List<Artefact> artefactsFromDB = DataBase.PullArtefacts();
+        List<Artefact> artefactsFromDB = DataBase.PullArtefacts(testMode);
         if (artefactsFromDB != null)
         {
             this.Artifacts = artefactsFromDB;
@@ -81,9 +81,9 @@ public final class Inventory
         return this.Artifacts;
     }
 
-    public String SearchArtefactNameByRoom(String roomName) throws Exception
+    public String SearchArtefactNameByRoom(String roomName, boolean testMode) throws Exception
     {
-        UpdateArtefactsFromDB();
+        UpdateArtefactsFromDB(testMode);
 
             if (this.Artifacts == null || this.Artifacts.isEmpty())
                 return "No artefacts found.";
@@ -104,9 +104,9 @@ public final class Inventory
 
     }
 
-    public String SearchArtefactNameByType(String type) throws Exception
+    public String SearchArtefactNameByType(String type, boolean testMode) throws Exception
     {
-        UpdateArtefactsFromDB();
+        UpdateArtefactsFromDB(testMode);
 
         if (this.Artifacts == null || this.Artifacts.isEmpty())
             return "No artefacts found.";
@@ -126,9 +126,9 @@ public final class Inventory
         return result.toString().strip();
     }
 
-    public Artefact getArtefactByName(String artefactName) throws Exception
+    public Artefact getArtefactByName(String artefactName, boolean testMode) throws Exception
     {
-        UpdateArtefactsFromDB();
+        UpdateArtefactsFromDB(testMode);
 
         for (Artefact artefact : this.Artifacts)
         {
@@ -140,11 +140,11 @@ public final class Inventory
         return null;
     }
 
-    public void ViewImagesOfArtefact(String artefactName) throws Exception
+    public void ViewImagesOfArtefact(String artefactName, boolean testMode) throws Exception
     {
         final char[] asciiChars = {'@', '#', 'S', '%', '?', '*', '+', ';', ':', ',', '.'};
 
-        Artefact artefact = getArtefactByName(artefactName);
+        Artefact artefact = getArtefactByName(artefactName, testMode);
         assert artefact != null;
         BufferedImage image = artefact.getImages();
 

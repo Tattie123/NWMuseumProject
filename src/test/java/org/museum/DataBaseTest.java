@@ -61,7 +61,7 @@ class DataBaseTest
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        Connection conn = DataBase.getConnection();
+        Connection conn = DataBase.getConnection(true);
 
         // Run schema (required in CI)
         InputStream in = DataBaseTest.class.getClassLoader().getResourceAsStream("schema.sql");
@@ -116,63 +116,63 @@ class DataBaseTest
     @Order(1)
     void getConnection() throws Exception
     {
-        assertNotNull(DataBase.getConnection());
+        assertNotNull(DataBase.getConnection(true));
     }
 
     @Test
     @Order(2)
     void addArtefacts() throws Exception
     {
-        assertTrue(DataBase.addArtefact(Table1));
-        assertTrue(DataBase.addArtefact(Table2));
-        assertTrue(DataBase.addArtefact(Table3));
-        assertTrue(DataBase.addArtefact(Table4));
-        assertTrue(DataBase.addArtefact(Table5));
-        assertTrue(DataBase.addArtefact(Pot1));
-        assertTrue(DataBase.addArtefact(Pot2));
-        assertTrue(DataBase.addArtefact(Pot3));
-        assertTrue(DataBase.addArtefact(Pot4));
-        assertTrue(DataBase.addArtefact(Pot5));
-        assertTrue(DataBase.addArtefact(Sculpture1));
-        assertTrue(DataBase.addArtefact(Sculpture2));
-        assertTrue(DataBase.addArtefact(Sculpture3));
-        assertTrue(DataBase.addArtefact(Sculpture4));
-        assertTrue(DataBase.addArtefact(Sculpture5));
-        assertTrue(DataBase.addArtefact(Painting1));
-        assertTrue(DataBase.addArtefact(Painting2));
-        assertTrue(DataBase.addArtefact(Painting3));
-        assertTrue(DataBase.addArtefact(Painting4));
-        assertTrue(DataBase.addArtefact(Painting5));
+        assertTrue(DataBase.addArtefact(Table1, true));
+        assertTrue(DataBase.addArtefact(Table2, true));
+        assertTrue(DataBase.addArtefact(Table3, true));
+        assertTrue(DataBase.addArtefact(Table4, true));
+        assertTrue(DataBase.addArtefact(Table5, true));
+        assertTrue(DataBase.addArtefact(Pot1, true));
+        assertTrue(DataBase.addArtefact(Pot2, true));
+        assertTrue(DataBase.addArtefact(Pot3, true));
+        assertTrue(DataBase.addArtefact(Pot4, true));
+        assertTrue(DataBase.addArtefact(Pot5, true));
+        assertTrue(DataBase.addArtefact(Sculpture1, true));
+        assertTrue(DataBase.addArtefact(Sculpture2, true));
+        assertTrue(DataBase.addArtefact(Sculpture3, true));
+        assertTrue(DataBase.addArtefact(Sculpture4, true));
+        assertTrue(DataBase.addArtefact(Sculpture5, true));
+        assertTrue(DataBase.addArtefact(Painting1, true));
+        assertTrue(DataBase.addArtefact(Painting2, true));
+        assertTrue(DataBase.addArtefact(Painting3, true));
+        assertTrue(DataBase.addArtefact(Painting4, true));
+        assertTrue(DataBase.addArtefact(Painting5, true));
     }
 
     @Test
     @Order(3)
     void searchArtefacts() throws Exception
     {
-        assertEquals("Furniture, Room E", theInventory.SearchArtefactByName("Console Table"));
-        assertEquals("Pottery, Room H", theInventory.SearchArtefactByName("Porcelain Jar"));
-        assertEquals("Sculpture, Room K", theInventory.SearchArtefactByName("Abstract Sculpture"));
-        assertEquals("Coffee Table", theInventory.SearchArtefactNameByRoom("Room B"));
-        assertEquals("Glass Bowl", theInventory.SearchArtefactNameByRoom("Room I"));
-        assertEquals("Abstract Sculpture", theInventory.SearchArtefactNameByRoom("Room K"));
+        assertEquals("Furniture, Room E", theInventory.SearchArtefactByName("Console Table", true));
+        assertEquals("Pottery, Room H", theInventory.SearchArtefactByName("Porcelain Jar", true));
+        assertEquals("Sculpture, Room K", theInventory.SearchArtefactByName("Abstract Sculpture", true));
+        assertEquals("Coffee Table", theInventory.SearchArtefactNameByRoom("Room B", true));
+        assertEquals("Glass Bowl", theInventory.SearchArtefactNameByRoom("Room I", true));
+        assertEquals("Abstract Sculpture", theInventory.SearchArtefactNameByRoom("Room K", true));
         assertEquals("""
                 Dining Table
                 Coffee Table
                 Side Table
                 Pedestal Table
-                Console Table""", theInventory.SearchArtefactNameByType("Furniture"));
+                Console Table""", theInventory.SearchArtefactNameByType("Furniture", true));
         assertEquals("""
                 Clay Pot
                 Ceramic Vase
                 Porcelain Jar
                 Glass Bowl
-                Metal Canister""", theInventory.SearchArtefactNameByType("Pottery"));
+                Metal Canister""", theInventory.SearchArtefactNameByType("Pottery", true));
         assertEquals("""
                 Abstract Sculpture
                 Baroque Sculpture
                 Classical Sculpture
                 Gothic Sculpture
-                Eclectic Sculpture""", theInventory.SearchArtefactNameByType("Sculpture"));
+                Eclectic Sculpture""", theInventory.SearchArtefactNameByType("Sculpture", true));
     }
 
 
@@ -180,93 +180,93 @@ class DataBaseTest
     @Order(4)
     void deleteArtefact() throws Exception
     {
-        assertTrue(DataBase.deleteArtefact("Dining Table"));
-        assertTrue(DataBase.deleteArtefact("Ceramic Vase"));
-        assertTrue(DataBase.deleteArtefact("Baroque Sculpture"));
-        assertTrue(DataBase.deleteArtefact("Baroque Painting"));
+        assertTrue(DataBase.deleteArtefact("Dining Table", true));
+        assertTrue(DataBase.deleteArtefact("Ceramic Vase", true));
+        assertTrue(DataBase.deleteArtefact("Baroque Sculpture", true));
+        assertTrue(DataBase.deleteArtefact("Baroque Painting", true));
     }
 
     @Test
     @Order(5)
     void searchRoomAfterDeletion() throws Exception
     {
-        assertEquals("Furniture, Room E", theInventory.SearchArtefactByName("Console Table"));
-        assertEquals("Pottery, Room H", theInventory.SearchArtefactByName("Porcelain Jar"));
-        assertEquals("Sculpture, Room K", theInventory.SearchArtefactByName("Abstract Sculpture"));
-        assertEquals("Coffee Table", theInventory.SearchArtefactNameByRoom("Room B"));
-        assertEquals("Glass Bowl", theInventory.SearchArtefactNameByRoom("Room I"));
-        assertEquals("Abstract Sculpture", theInventory.SearchArtefactNameByRoom("Room K"));
+        assertEquals("Furniture, Room E", theInventory.SearchArtefactByName("Console Table", true));
+        assertEquals("Pottery, Room H", theInventory.SearchArtefactByName("Porcelain Jar", true));
+        assertEquals("Sculpture, Room K", theInventory.SearchArtefactByName("Abstract Sculpture", true));
+        assertEquals("Coffee Table", theInventory.SearchArtefactNameByRoom("Room B", true));
+        assertEquals("Glass Bowl", theInventory.SearchArtefactNameByRoom("Room I", true));
+        assertEquals("Abstract Sculpture", theInventory.SearchArtefactNameByRoom("Room K", true));
         assertEquals("""
                 Coffee Table
                 Side Table
                 Pedestal Table
-                Console Table""", theInventory.SearchArtefactNameByType("Furniture"));
+                Console Table""", theInventory.SearchArtefactNameByType("Furniture", true));
         assertEquals("""
                 Clay Pot
                 Porcelain Jar
                 Glass Bowl
-                Metal Canister""", theInventory.SearchArtefactNameByType("Pottery"));
+                Metal Canister""", theInventory.SearchArtefactNameByType("Pottery", true));
         assertEquals("""
                 Abstract Sculpture
                 Classical Sculpture
                 Gothic Sculpture
-                Eclectic Sculpture""", theInventory.SearchArtefactNameByType("Sculpture"));
+                Eclectic Sculpture""", theInventory.SearchArtefactNameByType("Sculpture", true));
     }
 
     @Test
     @Order(6)
     void clearArtefacts() throws Exception
     {
-        assertTrue(DataBase.clearArtefacts());
+        assertTrue(DataBase.clearArtefacts(true));
     }
 
     @Test
     @Order(7)
     void addLoans() throws Exception
     {
-        assertTrue(DataBase.addLoan(Loan1));
-        assertTrue(DataBase.addLoan(Loan2));
-        assertTrue(DataBase.addLoan(Loan3));
-        assertTrue(DataBase.addLoan(Loan4));
-        assertTrue(DataBase.addLoan(Loan5));
+        assertTrue(DataBase.addLoan(Loan1, true));
+        assertTrue(DataBase.addLoan(Loan2, true));
+        assertTrue(DataBase.addLoan(Loan3, true));
+        assertTrue(DataBase.addLoan(Loan4, true));
+        assertTrue(DataBase.addLoan(Loan5, true));
     }
 
     @Test
     @Order(8)
     void searchLoans() throws Exception
     {
-        assertEquals("john@example.com", DataBase.searchLoans("John Doe"));
+        assertEquals("john@example.com", DataBase.searchLoans("John Doe", true));
     }
 
     @Test
     @Order(9)
     void clearLoans() throws Exception
     {
-        assertTrue(DataBase.clearLoans());
+        assertTrue(DataBase.clearLoans(true));
     }
 
     @Test
     @Order(10)
     void addRooms() throws Exception
     {
-        assertTrue(DataBase.addRoom(Room1));
-        assertTrue(DataBase.addRoom(Room2));
-        assertTrue(DataBase.addRoom(Room3));
-        assertTrue(DataBase.addRoom(Room4));
-        assertTrue(DataBase.addRoom(Room5));
+        assertTrue(DataBase.addRoom(Room1, true));
+        assertTrue(DataBase.addRoom(Room2, true));
+        assertTrue(DataBase.addRoom(Room3, true));
+        assertTrue(DataBase.addRoom(Room4, true));
+        assertTrue(DataBase.addRoom(Room5, true));
     }
 
     @Test
     @Order(11)
     void searchRooms() throws Exception
     {
-        assertEquals("Room B", DataBase.searchRoomByName("Medieval"));
+        assertEquals("Room B", DataBase.searchRoomByName("Medieval", true));
     }
 
     @Test
     @Order(12)
     void clearRooms() throws Exception
     {
-        assertTrue(DataBase.clearRooms());
+        assertTrue(DataBase.clearRooms(true));
     }
 }
