@@ -2,7 +2,6 @@ package org.museum.artefacts;
 
 import org.museum.artefacts.artefacts3d.Artefact3D;
 
-import javax.xml.crypto.Data;
 import java.awt.image.BufferedImage;
 import java.util.Date;
 
@@ -18,7 +17,7 @@ public abstract class Artefact
     private final double width;
     private final double height;
     private BufferedImage images;
-    private final double insurance;
+    private double insurance;
     private double depth;
     private Material material;
 
@@ -57,19 +56,6 @@ public abstract class Artefact
         return true;
     }
 
-    /**
-     * Constructor for Artefact without depth
-     * @param historicEra
-     * @param style
-     * @param originCountry
-     * @param currentRoom
-     * @param author
-     * @param dateOfCreation
-     * @param width
-     * @param height
-     * @param insurance
-     * @param name
-     */
     public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double insurance, String name)
     {
         this.name = name;
@@ -82,25 +68,21 @@ public abstract class Artefact
         this.width = width;
         this.height = height;
         this.insurance = insurance;
-
-
     }
 
+    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, String name)
+    {
+        this.name = name;
+        this.historicEra = historicEra;
+        this.style = style;
+        this.originCountry = originCountry;
+        this.currentRoom = currentRoom;
+        this.author = author;
+        this.dateOfCreation = dateOfCreation;
+        this.width = width;
+        this.height = height;
+    }
 
-    /**
-     * Constructor for Artefact with depth and material
-     * @param historicEra
-     * @param style
-     * @param originCountry
-     * @param currentRoom
-     * @param author
-     * @param dateOfCreation
-     * @param width
-     * @param height
-     * @param insurance
-     * @param name
-     * @param depth
-     */
     protected Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double insurance, String name, double depth, Material material)
     {
         this.name = name;
@@ -115,8 +97,21 @@ public abstract class Artefact
         this.insurance = insurance;
         this.depth = depth;
         this.material = material;
+    }
 
-
+    protected Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, String name, double depth, Material material)
+    {
+        this.name = name;
+        this.historicEra = historicEra;
+        this.style = style;
+        this.originCountry = originCountry;
+        this.currentRoom = currentRoom;
+        this.author = author;
+        this.dateOfCreation = dateOfCreation;
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+        this.material = material;
     }
 
     public String getHistoricEra()
@@ -186,5 +181,10 @@ public abstract class Artefact
         if (material != null)
             return material.toString();
         return "";
+    }
+
+    public void setImages(BufferedImage images)
+    {
+        this.images = images;
     }
 }

@@ -2,9 +2,9 @@ package org.museum.artefacts;
 
 public enum Material
 {
-    Stone,
-    Metal,
-    Wood;
+    STONE,
+    METAL,
+    WOOD;
 
     public static Material fromString(String material)
     {

@@ -33,4 +33,3 @@ create table IF NOT EXISTS rooms
     roomName TEXT null,
     capacity int  null
 );
-
