@@ -35,9 +35,13 @@ public class DataBase
         String propertiesFile;
 
         // If running on GitHub CI, use CI properties
-        if (System.getenv("GITHUB_ACTIONS") != null || testmode) {
+        if (System.getenv("GITHUB_ACTIONS") != null) {
+            propertiesFile = "db-ci.properties";
+        } else if (testmode)
+        {
             propertiesFile = "db-testing.properties";
-        } else {
+        } else
+        {
             propertiesFile = "db.properties";
         }
 
