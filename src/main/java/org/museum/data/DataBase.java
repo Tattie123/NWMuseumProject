@@ -11,10 +11,7 @@ import org.museum.other.Loan;
 import org.museum.other.Room;
 
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Properties;
 import java.util.ArrayList;
@@ -59,7 +56,7 @@ public class DataBase
         String password = p.getProperty("db.password");
 
         if (url == null || user == null)
-            throw new Exception("Invalid DB configuration");
+            throw new SQLClientInfoException("Error loading database properties from " + propertiesFile, null);
 
         return DriverManager.getConnection(url, user, password);
     }
@@ -98,9 +95,7 @@ public class DataBase
             return rowsAffected > 0;
         } catch (SQLException e)
         {
-            // Surface the SQL exception so tests and logs can show the real cause
-            e.printStackTrace();
-            return false;
+            throw new IllegalArgumentException("Error while Adding Artefact: " + e.getMessage());
         }
     }
 
@@ -123,8 +118,7 @@ public class DataBase
             return rowsAffected > 0;
         } catch (SQLException e)
         {
-            e.printStackTrace();
-            return false;
+            throw new IllegalArgumentException("Error clearing artefacts: " + e);
         }
     }
 
@@ -147,12 +141,11 @@ public class DataBase
             return rowsAffected > 0;
         } catch (SQLException e)
         {
-            e.printStackTrace();
-            return false;
+            throw new IllegalArgumentException("Error deleting artefact: " + e.getMessage());
         }
     }
 
-    public static List<Artefact> PullArtefacts(boolean testMode) throws Exception
+    public static List<Artefact>    PullArtefacts(boolean testMode) throws Exception
     {
         if (connection == null)
             connection = getConnection(testMode);
@@ -186,9 +179,9 @@ public class DataBase
                     try
                     {
                         materialEnum = Material.fromString(material);
-                    } catch (IllegalArgumentException e)
+                    } catch (Exception e)
                     {
-                        materialEnum = null;
+                        throw new IllegalArgumentException("Unknown material type: " + e);
                     }
                 }
 
@@ -200,6 +193,7 @@ public class DataBase
                     case "Misc" -> artefacts.add(new Misc(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name));
                     case "Painting" -> artefacts.add(new Painting(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name));
                     default -> {
+                        throw new IllegalArgumentException("Unknown artefact type: " + type);
                     }
                 }
 
@@ -234,8 +228,7 @@ public class DataBase
             return rowsAffected > 0;
         } catch (SQLException e)
         {
-            e.printStackTrace();
-            return false;
+            throw new IllegalArgumentException("Error Adding Loan: " + e.getMessage());
         }
     }
 

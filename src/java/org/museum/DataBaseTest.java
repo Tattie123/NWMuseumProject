@@ -12,7 +12,6 @@ import org.museum.data.Inventory;
 import org.museum.other.Loan;
 import org.museum.other.Room;
 
-import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.sql.Connection;
 
@@ -175,6 +174,12 @@ class DataBaseTest
                 Eclectic Sculpture""", theInventory.SearchArtefactNameByType("Sculpture", true));
     }
 
+    @Test
+    @Order(3)
+    void listArtefacts() throws Exception
+    {
+        assertEquals("Dining Table\nCoffee Table\nSide Table\nPedestal Table\nConsole Table\nClay Pot\nCeramic Vase\nPorcelain Jar\nGlass Bowl\nMetal Canister\nAbstract Sculpture\nBaroque Sculpture\nClassical Sculpture\nGothic Sculpture\nEclectic Sculpture\nAbstract Painting\nBaroque Painting\nClassical Painting\nGothic Painting\nEclectic Painting", theInventory.ListAllArtefacts(true));
+    }
 
     @Test
     @Order(4)
@@ -184,6 +189,13 @@ class DataBaseTest
         assertTrue(DataBase.deleteArtefact("Ceramic Vase", true));
         assertTrue(DataBase.deleteArtefact("Baroque Sculpture", true));
         assertTrue(DataBase.deleteArtefact("Baroque Painting", true));
+    }
+
+    @Test
+    @Order(5)
+    void listArtefactsafterDeletion() throws Exception
+    {
+        assertEquals("Coffee Table\nSide Table\nPedestal Table\nConsole Table\nClay Pot\nPorcelain Jar\nGlass Bowl\nMetal Canister\nAbstract Sculpture\nClassical Sculpture\nGothic Sculpture\nEclectic Sculpture\nAbstract Painting\nClassical Painting\nGothic Painting\nEclectic Painting", theInventory.ListAllArtefacts(true));
     }
 
     @Test
@@ -269,4 +281,13 @@ class DataBaseTest
     {
         assertTrue(DataBase.clearRooms(true));
     }
+
+    @Test
+    @Order(13)
+    void listArtefactsafterClear() throws Exception
+    {
+        assertEquals("", theInventory.ListAllArtefacts(true));
+    }
+
+
 }

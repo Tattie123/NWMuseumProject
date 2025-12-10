@@ -3,10 +3,8 @@ package org.museum.data;
 import org.museum.other.Room;
 import org.museum.artefacts.Artefact;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +19,7 @@ public final class Inventory
         UpdateArtefactsFromDB(testMode);
 
         if (this.Artifacts == null || this.Artifacts.isEmpty())
-            return "Artefact not found.";
+            throw new Exception("No Artefacts found.");
 
         for (Artefact artefact : this.Artifacts)
         {
@@ -30,20 +28,19 @@ public final class Inventory
                 return artefact.getType() + ", " + artefact.getCurrentRoom();
             }
         }
-        return "Artefact not found.";
+        throw new Exception("No Artefacts found.");
     }
 
-    private boolean UpdateArtefactsFromDB(boolean testMode) throws Exception
+    private void UpdateArtefactsFromDB(boolean testMode) throws Exception
     {
         List<Artefact> artefactsFromDB = DataBase.PullArtefacts(testMode);
         if (artefactsFromDB != null)
         {
             this.Artifacts = artefactsFromDB;
-            return true;
+            return;
         }
         if (this.Artifacts == null)
             this.Artifacts = new ArrayList<>();
-        return false;
     }
 
     private Inventory()
@@ -85,8 +82,8 @@ public final class Inventory
     {
         UpdateArtefactsFromDB(testMode);
 
-            if (this.Artifacts == null || this.Artifacts.isEmpty())
-                return "No artefacts found.";
+        if (this.Artifacts == null || this.Artifacts.isEmpty())
+            throw new Exception("No Artefacts found.");
 
         StringBuilder result = new StringBuilder();
         for (Artefact artefact : this.Artifacts)
@@ -98,7 +95,7 @@ public final class Inventory
         }
         if (result.isEmpty())
         {
-            return "No artefacts found in the specified room.";
+            throw new Exception("No Artefacts found.");
         }
         return result.toString().strip();
 
@@ -109,7 +106,7 @@ public final class Inventory
         UpdateArtefactsFromDB(testMode);
 
         if (this.Artifacts == null || this.Artifacts.isEmpty())
-            return "No artefacts found.";
+            throw new Exception("No Artefacts found.");
 
         StringBuilder result = new StringBuilder();
         for (Artefact artefact : this.Artifacts)
@@ -121,7 +118,7 @@ public final class Inventory
         }
         if (result.isEmpty())
         {
-            return "No artefacts found in the specified room.";
+            throw new Exception("No Artefacts found in specified room.");
         }
         return result.toString().strip();
     }
@@ -132,7 +129,7 @@ public final class Inventory
 
         for (Artefact artefact : this.Artifacts)
         {
-            if (artefact != null && artefact.getName() != null && artefact.getName().equalsIgnoreCase(artefactName))
+            if (artefact != null && artefact.getName() != null && artefact.getName().equalsIgnoreCase(artefactName) || artefact.getName().contains(artefactName))
             {
                 return artefact;
             }
@@ -163,5 +160,19 @@ public final class Inventory
             }
             System.out.println(sb);
         }
+    }
+
+    public String ListAllArtefacts(boolean b) throws Exception
+    {
+        StringBuilder result = new StringBuilder();
+        UpdateArtefactsFromDB(b);
+        for (Artefact artefact : this.Artifacts)
+        {
+            if (artefact.getName() != null)
+            {
+                result.append(artefact.getName() + "\n");
+            }
+        }
+        return result.toString().strip();
     }
 }

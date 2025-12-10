@@ -187,4 +187,9 @@ public abstract class Artefact
     {
         this.images = images;
     }
+
+    public void setInsuranceValue(double insuranceValue)
+    {
+        this.insurance = insuranceValue;
+    }
 }
