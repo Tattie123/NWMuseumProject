@@ -7,7 +7,7 @@ public class Main
     {
         try
         {
-            UI.ResearcherUI();
+            UI.tempgotoStaff();
         }
         catch (Exception e)
         {

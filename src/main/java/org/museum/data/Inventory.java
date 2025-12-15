@@ -3,6 +3,7 @@ package org.museum.data;
 import org.museum.other.Room;
 import org.museum.artefacts.Artefact;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -13,6 +14,25 @@ public final class Inventory
     private static Inventory instance;
     private List <Artefact> Artifacts;
     private final List<Room> Rooms;
+
+    public void DeleteArtefactByName(String name, boolean testMode) throws Exception
+    {
+        UpdateArtefactsFromDB(testMode);
+
+        if (this.Artifacts == null || this.Artifacts.isEmpty())
+            throw new Exception("No Artefact found with that name.");
+
+        for (Artefact artefact : this.Artifacts)
+        {
+            if (artefact != null && artefact.getName() != null && artefact.getName().equalsIgnoreCase(name))
+            {
+                this.Artifacts.remove(artefact);
+                DataBase.deleteArtefact(name, testMode);
+                return;
+            }
+        }
+        throw new Exception("No Artefact found with that name.");
+    }
 
     public String SearchArtefactByName(String name, boolean testMode) throws Exception
     {
@@ -69,8 +89,15 @@ public final class Inventory
         {
             inv.Artifacts = new ArrayList<>();
         }
-        boolean added = inv.Artifacts.add(artefact);
-        return added;
+        try
+        {
+            inv.Artifacts.add(artefact);
+            DataBase.addArtefact(artefact, false);
+        } catch (Exception e)
+        {
+            return false;
+        }
+        return true;
     }
 
     public List<Artefact> getArtifacts()
@@ -137,29 +164,26 @@ public final class Inventory
         return null;
     }
 
-    public void ViewImagesOfArtefact(String artefactName, boolean testMode) throws Exception
+    public void ViewImagesOfArtefact(String artefactName) throws Exception
     {
-        final char[] asciiChars = {'@', '#', 'S', '%', '?', '*', '+', ';', ':', ',', '.'};
 
-        Artefact artefact = getArtefactByName(artefactName, testMode);
-        assert artefact != null;
-        BufferedImage image = artefact.getImages();
+        JFrame frame = new JFrame("frame");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
 
-        int newWidth = 100;
-        int newHeight = (image.getHeight() * newWidth) / image.getWidth();
-        BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, image.getType());
-        for (int y = 0; y < newHeight; y++)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (int x = 0; x < newWidth; x++)
-            {
-                Color pixel = new Color(resizedImage.getRGB(x, y));
-                double gray = (pixel.getRed() * 0.3 + pixel.getGreen() * 0.59 + pixel.getBlue() * 0.11);
-                int index = (int)((gray / 255) * (asciiChars.length - 1));
-                sb.append(asciiChars[index]);
-            }
-            System.out.println(sb);
-        }
+        JPanel panel1 = new JPanel();
+        panel1.setBackground(Color.BLACK);
+
+        CardLayout cardLayout = new CardLayout();
+        JPanel cardPanel = new JPanel(cardLayout);
+        cardPanel.add(panel1, "Panel1");
+
+        frame.add(cardPanel);
+        frame.setVisible(true);
+        frame.setAlwaysOnTop(true);
+        frame.toFront();
+
+        System.out.println("Displaying image for artefact: " + artefactName);
     }
 
     public String ListAllArtefacts(boolean b) throws Exception
@@ -170,9 +194,34 @@ public final class Inventory
         {
             if (artefact.getName() != null)
             {
-                result.append(artefact.getName() + "\n");
+                result.append(artefact.getName()).append("\n");
             }
         }
         return result.toString().strip();
+    }
+
+    public String ListAllRooms(boolean testMode)
+    {
+        try
+        {
+            List<Room> rooms = DataBase.PullRooms(testMode);
+            StringBuilder roomNames = new StringBuilder("Rooms:\n");
+            assert rooms != null;
+            for (Room room : rooms)
+            {
+                roomNames.append(room.getName()).append("\n");
+            }
+            if (roomNames.toString().equals("Rooms:\n"))
+            {
+                return "No rooms found.";
+            }
+            else
+            {
+                return roomNames.toString();
+            }
+        } catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }

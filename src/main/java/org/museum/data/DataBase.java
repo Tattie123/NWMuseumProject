@@ -10,6 +10,9 @@ import org.museum.artefacts.artefacts3d.Sculpture;
 import org.museum.other.Loan;
 import org.museum.other.Room;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.List;
@@ -19,8 +22,6 @@ import java.util.ArrayList;
 public class DataBase
 {
     static Connection connection;
-
-    private static final String PROP_FILE = "db.properties";
 
     /**
      * Get a connection to the database
@@ -145,7 +146,7 @@ public class DataBase
         }
     }
 
-    public static List<Artefact>    PullArtefacts(boolean testMode) throws Exception
+    public static List<Artefact> PullArtefacts(boolean testMode) throws Exception
     {
         if (connection == null)
             connection = getConnection(testMode);
@@ -198,11 +199,10 @@ public class DataBase
                 }
 
             }
-
             return artefacts;
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            System.out.println("Error Pulling Artefacts: " + e.getMessage());
             return null;
         }
     }
@@ -246,7 +246,7 @@ public class DataBase
             return rowsAffected > 0;
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            System.out.println("Error Clearing Loans: " + e.getMessage());
             return false;
         }
     }
@@ -289,7 +289,7 @@ public class DataBase
             return rowsAffected > 0;
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            System.out.println("Error Adding Room: " + e.getMessage());
             return false;
         }
     }
@@ -329,8 +329,101 @@ public class DataBase
             return rowsAffected > 0;
         } catch (SQLException e)
         {
-            e.printStackTrace();
+            System.out.println("Error clearing Rooms: " + e.getMessage());
             return false;
+        }
+    }
+
+    public static void setInsuranceValue(String name, double insuranceValue)
+    {
+        try
+        {
+            if (connection == null)
+                connection = getConnection(false);
+
+            var ps = connection.prepareStatement("UPDATE artefacts SET insurance = ? WHERE name = ?;");
+            ps.setDouble(1, insuranceValue);
+            ps.setString(2, name);
+            ps.executeUpdate();
+        } catch (Exception e)
+        {
+            System.out.println("Error Setting Insurance: " + e.getMessage());
+        }
+    }
+
+    public static List<Room> getRooms()
+    {
+        List<Room> rooms = new ArrayList<>();
+        try
+        {
+            if (connection == null)
+                connection = getConnection(false);
+
+            var ps = connection.prepareStatement("SELECT * FROM rooms;");
+            var rs = ps.executeQuery();
+
+            while (rs.next())
+            {
+                String roomNum = rs.getString("roomNum");
+                String roomName = rs.getString("roomName");
+                int capacity = rs.getInt("capacity");
+
+                rooms.add(new Room(roomNum, roomName, capacity));
+            }
+        } catch (Exception e)
+        {
+            System.out.println("Error retrieving rooms: " + e.getMessage());
+        }
+        return rooms;
+    }
+
+    public static List<Room> PullRooms(boolean testMode) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection(testMode);
+
+        try
+        {
+            var ps = connection.prepareStatement("SELECT * FROM rooms;");
+            var rs = ps.executeQuery();
+
+            List<Room> rooms = new ArrayList<>();
+
+            while (rs.next())
+            {
+                Room room = new Room(rs.getString("roomNum"), rs.getString("roomName"), rs.getInt("capacity"));
+                rooms.add(room);
+            }
+            return rooms;
+        } catch (SQLException e)
+        {
+            System.out.println("Error Pulling Artefacts: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static void addImageToArtefact(String name, BufferedImage image, boolean testMode, String fileType) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection(testMode);
+
+        try
+        {
+            var ps = connection.prepareStatement("INSERT INTO images(name, data) VALUES (?, ?)");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            // Convert BufferedImage to byte[]
+            ImageIO.write(image, fileType, baos);
+            byte[] imageBytes = baos.toByteArray();
+
+            ps.setString(1, name);
+            ps.setBytes(2, imageBytes);
+            ps.executeUpdate();
+            var rs = ps.executeQuery();
+
+        } catch (SQLException e)
+        {
+            System.out.println("Error Pulling Artefacts: " + e.getMessage());
         }
     }
 }
