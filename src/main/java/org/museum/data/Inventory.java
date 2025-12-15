@@ -79,7 +79,7 @@ public final class Inventory
         return instance;
     }
 
-    public static Boolean addArtefact(Artefact artefact)
+    public static Boolean addArtefact(Artefact artefact, boolean testMode) throws Exception
     {
         if (artefact == null) return false;
 
@@ -92,10 +92,10 @@ public final class Inventory
         try
         {
             inv.Artifacts.add(artefact);
-            DataBase.addArtefact(artefact, false);
+            DataBase.addArtefact(artefact, testMode);
         } catch (Exception e)
         {
-            return false;
+            throw new Exception("Failed to add artefact to database: " + e.getMessage());
         }
         return true;
     }

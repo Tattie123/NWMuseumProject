@@ -303,7 +303,13 @@ public class UI
             default -> {
             }
         }
-        Inventory.addArtefact(artefact);
+        try
+        {
+            Inventory.addArtefact(artefact, false);
+        } catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
         System.out.println("Artefact added successfully.");
 
     }

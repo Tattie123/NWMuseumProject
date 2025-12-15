@@ -1,4 +1,4 @@
-package org.museum;
+package museum;
 
 import org.junit.jupiter.api.*;
 import org.museum.artefacts.Material;
