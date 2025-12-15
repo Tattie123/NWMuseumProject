@@ -11,6 +11,7 @@ import org.museum.data.DataBase;
 import org.museum.data.Inventory;
 import org.museum.other.Loan;
 
+import java.awt.image.BufferedImage;
 import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -143,11 +144,11 @@ public class UI
                 try
                 {
                     artefact.addImage(filePath, false, fileType);
+                    System.out.println("Image added successfully to artefact: " + artefact.getName());
                 } catch (Exception e)
                 {
-                    throw new RuntimeException(e);
+                    System.out.println("Error while Adding Image to Artefact: " + e.getMessage());
                 }
-                System.out.println("Image added successfully to artefact: " + artefact.getName());
             } else
             {
                 System.out.println("Artefact not found.");
@@ -424,16 +425,15 @@ public class UI
 
     private static void ViewImagesOfArtefact()
     {
-        System.out.println("Please enter the name of the artefact you wish to view images of:");
-        String artefactName = scanner.next();
-        Inventory theInventory = Inventory.getInstance();
         try
         {
-            theInventory.ViewImagesOfArtefact(artefactName);
+            List<BufferedImage> images = DataBase.getImageFromArtefact(false);
+            Inventory theInventory = Inventory.getInstance();
+            assert images != null;
+            theInventory.ViewImagesOfArtefact(images);
         } catch (Exception e)
         {
-            System.out.println("Error while Retrieving Images: " + e.getMessage());
+            System.out.println("Error while Viewing Images of Artefact: " + e.getMessage());
         }
     }
-
 }

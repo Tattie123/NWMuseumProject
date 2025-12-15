@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.ArrayList;
@@ -397,12 +398,12 @@ public class DataBase
             return rooms;
         } catch (SQLException e)
         {
-            System.out.println("Error Pulling Artefacts: " + e.getMessage());
+            System.out.println("Error Pulling Rooms: " + e.getMessage());
             return null;
         }
     }
 
-    public static void addImageToArtefact(String name, BufferedImage image, boolean testMode, String fileType) throws Exception
+    public static void addImageToArtefact(String name, BufferedImage image, boolean testMode, String fileType, String filePath) throws Exception
     {
         if (connection == null)
             connection = getConnection(testMode);
@@ -412,18 +413,44 @@ public class DataBase
             var ps = connection.prepareStatement("INSERT INTO images(name, data) VALUES (?, ?)");
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            // Convert BufferedImage to byte[]
             ImageIO.write(image, fileType, baos);
             byte[] imageBytes = baos.toByteArray();
 
-            ps.setString(1, name);
+            ps.setString(1, name + " " + filePath);
             ps.setBytes(2, imageBytes);
             ps.executeUpdate();
-            var rs = ps.executeQuery();
 
         } catch (SQLException e)
         {
-            System.out.println("Error Pulling Artefacts: " + e.getMessage());
+            System.out.println("Error Adding Image to Artefact: " + e.getMessage());
         }
+    }
+
+    public static List<BufferedImage> getImageFromArtefact(boolean testMode) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection(testMode);
+
+        try
+        {
+            var ps = connection.prepareStatement("SELECT data FROM images");
+            var rs = ps.executeQuery();
+
+            List<BufferedImage> images = new ArrayList<>();
+            while (rs.next())
+            {
+                byte[] imageBytes = rs.getBytes("data");
+                System.out.println(imageBytes.length);
+                System.out.println(Arrays.toString(imageBytes));
+                InputStream in = new java.io.ByteArrayInputStream(imageBytes);
+                BufferedImage image = ImageIO.read(in);
+                images.add(image);
+            }
+            return images;
+        } catch (SQLException e)
+        {
+            System.out.println("Error getting Images: " + e.getMessage());
+        }
+        return null;
     }
 }

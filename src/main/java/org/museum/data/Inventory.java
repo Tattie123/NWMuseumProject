@@ -164,26 +164,45 @@ public final class Inventory
         return null;
     }
 
-    public void ViewImagesOfArtefact(String artefactName) throws Exception
+    public void ViewImagesOfArtefact(List<BufferedImage> images) throws Exception
     {
 
-        JFrame frame = new JFrame("frame");
+        JFrame frame = new JFrame("Image Viewer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
-
-        JPanel panel1 = new JPanel();
-        panel1.setBackground(Color.BLACK);
+        frame.setSize(500, 300);
 
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel(cardLayout);
-        cardPanel.add(panel1, "Panel1");
+
+        System.out.println("size " + images.size());
+
+            for (int i = 0; i < images.size(); i++)
+            {
+                BufferedImage img = images.get(i);
+                ImageIcon icon = new ImageIcon(img);
+                JLabel label = new JLabel(icon);
+                JPanel panel = new JPanel();
+                panel.setBackground(Color.LIGHT_GRAY);
+                panel.add(label);
+                cardPanel.add(panel, "Panel" + (i + 1));
+            }
+
+            JButton nextButton = new JButton("Next");
+            nextButton.addActionListener(e -> cardLayout.next(cardPanel));
+
+            JButton prevButton = new JButton("Previous");
+            prevButton.addActionListener(e -> cardLayout.previous(cardPanel));
+
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.add(prevButton);
+            buttonPanel.add(nextButton);
+
+            frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
         frame.add(cardPanel);
         frame.setVisible(true);
         frame.setAlwaysOnTop(true);
         frame.toFront();
-
-        System.out.println("Displaying image for artefact: " + artefactName);
     }
 
     public String ListAllArtefacts(boolean b) throws Exception

@@ -198,9 +198,7 @@ public abstract class Artefact
 
     public void addImage(String filePath, boolean testMode, String fileType) throws Exception
     {
-        BufferedImage image = ImageIO.read(new File("filePath"));
-
-        DataBase.addImageToArtefact(this.name, image, testMode, fileType);
-
+        BufferedImage image = ImageIO.read(new File("src/main/resources/Images/" + filePath));
+        DataBase.addImageToArtefact(this.name, image, testMode, fileType, filePath);
     }
 }
