@@ -1,8 +1,11 @@
 package org.museum.artefacts;
 
 import org.museum.artefacts.artefacts3d.Artefact3D;
+import org.museum.data.DataBase;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Date;
 
 public abstract class Artefact
@@ -186,5 +189,16 @@ public abstract class Artefact
     public void setImages(BufferedImage images)
     {
         this.images = images;
+    }
+
+    public void setInsuranceValue(double insuranceValue)
+    {
+        this.insurance = insuranceValue;
+    }
+
+    public void addImage(String filePath, boolean testMode, String fileType) throws Exception
+    {
+        BufferedImage image = ImageIO.read(new File("src/main/resources/Images/" + filePath));
+        DataBase.addImageToArtefact(this.name, image, testMode, fileType, filePath);
     }
 }

@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Loan
 {
-    private boolean isApproved;
+    private static boolean isApproved;
     private final String name;
     private final String contactInfo;
     private final String telNum; // Must be String since numbers are too large / start with 0 or +
@@ -12,7 +12,7 @@ public class Loan
     private final java.sql.Date startDate;
     private final java.sql.Date endDate;
 
-    public boolean approveLoan()
+    public static boolean approveLoan()
     {
         isApproved = true;
         return true;
