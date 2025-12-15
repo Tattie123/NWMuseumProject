@@ -440,8 +440,6 @@ public class DataBase
             while (rs.next())
             {
                 byte[] imageBytes = rs.getBytes("data");
-                System.out.println(imageBytes.length);
-                System.out.println(Arrays.toString(imageBytes));
                 InputStream in = new java.io.ByteArrayInputStream(imageBytes);
                 BufferedImage image = ImageIO.read(in);
                 images.add(image);

@@ -18,6 +18,8 @@ import java.util.Scanner;
 
 public class UI
 {
+    //todo move all SOUT to throw here from other classes with error handing
+
     static Scanner scanner = new Scanner(System.in);
 
     protected static void ResearcherUI() throws Exception
@@ -64,11 +66,6 @@ public class UI
                 default -> System.out.println("Invalid choice, please try again.");
             }
         }while(run);
-    }
-
-    public static void tempgotoStaff() throws Exception
-    {
-        StaffUI();
     }
 
     private static void StaffUI() throws Exception

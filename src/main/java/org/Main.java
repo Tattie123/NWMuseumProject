@@ -1,5 +1,4 @@
 package org;
-import java.util.Scanner;
 
 public class Main
 {
@@ -7,13 +6,10 @@ public class Main
     {
         try
         {
-            UI.tempgotoStaff();
-        }
-        catch (Exception e)
+            UI.ResearcherUI();
+        } catch (Exception e)
         {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
-
-
 }

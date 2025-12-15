@@ -174,8 +174,6 @@ public final class Inventory
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel(cardLayout);
 
-        System.out.println("size " + images.size());
-
             for (int i = 0; i < images.size(); i++)
             {
                 BufferedImage img = images.get(i);
