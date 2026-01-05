@@ -3,7 +3,6 @@ package org.museum.data;
 import org.museum.other.Room;
 import org.museum.artefacts.Artefact;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -13,41 +12,27 @@ public final class Inventory
 {
     private static Inventory instance;
     private List <Artefact> Artifacts;
-    private final List<Room> Rooms;
-
-    public void DeleteArtefactByName(String name, boolean testMode) throws Exception
-    {
-        UpdateArtefactsFromDB(testMode);
-
-        if (this.Artifacts == null || this.Artifacts.isEmpty())
-            throw new Exception("No Artefact found with that name.");
-
-        for (Artefact artefact : this.Artifacts)
-        {
-            if (artefact != null && artefact.getName() != null && artefact.getName().equalsIgnoreCase(name))
-            {
-                this.Artifacts.remove(artefact);
-                DataBase.deleteArtefact(name, testMode);
-                return;
-            }
-        }
-        throw new Exception("No Artefact found with that name.");
-    }
 
     public String SearchArtefactByName(String name, boolean testMode) throws Exception
     {
         UpdateArtefactsFromDB(testMode);
 
         if (this.Artifacts == null || this.Artifacts.isEmpty())
-            throw new Exception("No Artefacts found.");
+            throw new Exception("No Artefacts found. Possible Database connection issue.");
+
+        StringBuilder result = new StringBuilder();
 
         for (Artefact artefact : this.Artifacts)
         {
-            if (artefact != null && artefact.getName() != null && artefact.getName().equalsIgnoreCase(name))
+            if (artefact != null && artefact.getName() != null && artefact.getName().toLowerCase().contains(name.toLowerCase()))
             {
-                return artefact.getType() + ", " + artefact.getCurrentRoom();
+                result.append("Artefact Name: ").append(artefact.getName()).append(", Artefact Type:  ").append(artefact.getType()).append(", Current Location: ").append(artefact.getCurrentRoom()).append("\n");
             }
         }
+
+        if (!result.isEmpty())
+            return result.toString().strip();
+
         throw new Exception("No Artefacts found.");
     }
 
@@ -67,7 +52,7 @@ public final class Inventory
     {
         // initialize collections
         this.Artifacts = new ArrayList<>();
-        this.Rooms = new ArrayList<>();
+        List<Room> rooms = new ArrayList<>();
     }
 
     public static Inventory getInstance()
@@ -79,7 +64,7 @@ public final class Inventory
         return instance;
     }
 
-    public static Boolean addArtefact(Artefact artefact, boolean testMode) throws Exception
+    public static Boolean addArtefact(Artefact artefact)
     {
         if (artefact == null) return false;
 
@@ -89,15 +74,8 @@ public final class Inventory
         {
             inv.Artifacts = new ArrayList<>();
         }
-        try
-        {
-            inv.Artifacts.add(artefact);
-            DataBase.addArtefact(artefact, testMode);
-        } catch (Exception e)
-        {
-            throw new Exception("Failed to add artefact to database: " + e.getMessage());
-        }
-        return true;
+        boolean added = inv.Artifacts.add(artefact);
+        return added;
     }
 
     public List<Artefact> getArtifacts()
@@ -105,49 +83,50 @@ public final class Inventory
         return this.Artifacts;
     }
 
-    public String SearchArtefactNameByRoom(String roomName, boolean testMode) throws Exception
+    public String SearchArtefactRoom(String roomName, boolean testMode) throws Exception
     {
         UpdateArtefactsFromDB(testMode);
 
         if (this.Artifacts == null || this.Artifacts.isEmpty())
-            throw new Exception("No Artefacts found.");
+            throw new Exception("No Artefacts found. Possible Database connection issue.");
 
         StringBuilder result = new StringBuilder();
+
         for (Artefact artefact : this.Artifacts)
         {
-            if (artefact != null && artefact.getCurrentRoom() != null && artefact.getCurrentRoom().equalsIgnoreCase(roomName))
+            if (artefact != null && artefact.getCurrentRoom() != null && artefact.getCurrentRoom().toLowerCase().contains(roomName.toLowerCase()))
             {
-                result.append(artefact.getName()).append("\n");
+                result.append("Artefact Name: ").append(artefact.getName()).append(", Artefact Type:  ").append(artefact.getType()).append(", Current Location: ").append(artefact.getCurrentRoom()).append("\n");
             }
         }
-        if (result.isEmpty())
-        {
-            throw new Exception("No Artefacts found.");
-        }
-        return result.toString().strip();
 
+        if (!result.isEmpty())
+            return result.toString().strip();
+
+        throw new Exception("No Artefacts found.");
     }
 
-    public String SearchArtefactNameByType(String type, boolean testMode) throws Exception
+    public String SearchArtefactType(String type, boolean testMode) throws Exception
     {
         UpdateArtefactsFromDB(testMode);
 
         if (this.Artifacts == null || this.Artifacts.isEmpty())
-            throw new Exception("No Artefacts found.");
+            throw new Exception("No Artefacts found. Possible Database connection issue.");
 
         StringBuilder result = new StringBuilder();
+
         for (Artefact artefact : this.Artifacts)
         {
-            if (artefact != null && artefact.getType() != null && artefact.getType().equalsIgnoreCase(type))
+            if (artefact != null && artefact.getType() != null && artefact.getType().toLowerCase().contains(type.toLowerCase()))
             {
-                result.append(artefact.getName()).append("\n");
+                result.append("Artefact Name: ").append(artefact.getName()).append(", Artefact Type:  ").append(artefact.getType()).append(", Current Location: ").append(artefact.getCurrentRoom()).append("\n");
             }
         }
-        if (result.isEmpty())
-        {
-            throw new Exception("No Artefacts found in specified room.");
-        }
-        return result.toString().strip();
+
+        if (!result.isEmpty())
+            return result.toString().strip();
+
+        throw new Exception("No Artefacts found.");
     }
 
     public Artefact getArtefactByName(String artefactName, boolean testMode) throws Exception
@@ -164,43 +143,29 @@ public final class Inventory
         return null;
     }
 
-    public void ViewImagesOfArtefact(List<BufferedImage> images) throws Exception
+    public void ViewImagesOfArtefact(String artefactName, boolean testMode) throws Exception
     {
+        final char[] asciiChars = {'@', '#', 'S', '%', '?', '*', '+', ';', ':', ',', '.'};
 
-        JFrame frame = new JFrame("Image Viewer");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 300);
+        Artefact artefact = getArtefactByName(artefactName, testMode);
+        assert artefact != null;
+        BufferedImage image = artefact.getImages();
 
-        CardLayout cardLayout = new CardLayout();
-        JPanel cardPanel = new JPanel(cardLayout);
-
-            for (int i = 0; i < images.size(); i++)
+        int newWidth = 100;
+        int newHeight = (image.getHeight() * newWidth) / image.getWidth();
+        BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, image.getType());
+        for (int y = 0; y < newHeight; y++)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int x = 0; x < newWidth; x++)
             {
-                BufferedImage img = images.get(i);
-                ImageIcon icon = new ImageIcon(img);
-                JLabel label = new JLabel(icon);
-                JPanel panel = new JPanel();
-                panel.setBackground(Color.LIGHT_GRAY);
-                panel.add(label);
-                cardPanel.add(panel, "Panel" + (i + 1));
+                Color pixel = new Color(resizedImage.getRGB(x, y));
+                double gray = (pixel.getRed() * 0.3 + pixel.getGreen() * 0.59 + pixel.getBlue() * 0.11);
+                int index = (int)((gray / 255) * (asciiChars.length - 1));
+                sb.append(asciiChars[index]);
             }
-
-            JButton nextButton = new JButton("Next");
-            nextButton.addActionListener(e -> cardLayout.next(cardPanel));
-
-            JButton prevButton = new JButton("Previous");
-            prevButton.addActionListener(e -> cardLayout.previous(cardPanel));
-
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.add(prevButton);
-            buttonPanel.add(nextButton);
-
-            frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-
-        frame.add(cardPanel);
-        frame.setVisible(true);
-        frame.setAlwaysOnTop(true);
-        frame.toFront();
+            System.out.println(sb);
+        }
     }
 
     public String ListAllArtefacts(boolean b) throws Exception
@@ -211,34 +176,9 @@ public final class Inventory
         {
             if (artefact.getName() != null)
             {
-                result.append(artefact.getName()).append("\n");
+                result.append(artefact.getName() + "\n");
             }
         }
         return result.toString().strip();
-    }
-
-    public String ListAllRooms(boolean testMode)
-    {
-        try
-        {
-            List<Room> rooms = DataBase.PullRooms(testMode);
-            StringBuilder roomNames = new StringBuilder("Rooms:\n");
-            assert rooms != null;
-            for (Room room : rooms)
-            {
-                roomNames.append(room.getName()).append("\n");
-            }
-            if (roomNames.toString().equals("Rooms:\n"))
-            {
-                return "No rooms found.";
-            }
-            else
-            {
-                return roomNames.toString();
-            }
-        } catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 }
