@@ -1,4 +1,4 @@
-package museum;
+package org.museum;
 
 import org.junit.jupiter.api.*;
 import org.museum.artefacts.Material;
@@ -148,30 +148,30 @@ class DataBaseTest
     @Order(3)
     void searchArtefacts() throws Exception
     {
-        assertEquals("Furniture, Room E", theInventory.SearchArtefactByName("Console Table", true));
-        assertEquals("Pottery, Room H", theInventory.SearchArtefactByName("Porcelain Jar", true));
-        assertEquals("Sculpture, Room K", theInventory.SearchArtefactByName("Abstract Sculpture", true));
-        assertEquals("Coffee Table", theInventory.SearchArtefactNameByRoom("Room B", true));
-        assertEquals("Glass Bowl", theInventory.SearchArtefactNameByRoom("Room I", true));
-        assertEquals("Abstract Sculpture", theInventory.SearchArtefactNameByRoom("Room K", true));
+        assertEquals("Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room E", theInventory.SearchArtefactByName("Console Table", true));
+        assertEquals("Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room H", theInventory.SearchArtefactByName("Porcelain Jar", true));
+        assertEquals("Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K", theInventory.SearchArtefactByName("Abstract Sculpture", true));
+        assertEquals("Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room B", theInventory.SearchArtefactRoom("Room B", true));
+        assertEquals("Artefact Name: Glass Bowl, Artefact Type:  Pottery, Current Location: Room I", theInventory.SearchArtefactRoom("Room I", true));
+        assertEquals("Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K", theInventory.SearchArtefactRoom("Room K", true));
         assertEquals("""
-                Dining Table
-                Coffee Table
-                Side Table
-                Pedestal Table
-                Console Table""", theInventory.SearchArtefactNameByType("Furniture", true));
+                Artefact Name: Dining Table, Artefact Type:  Furniture, Current Location: Room A
+                Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room B
+                Artefact Name: Side Table, Artefact Type:  Furniture, Current Location: Room C
+                Artefact Name: Pedestal Table, Artefact Type:  Furniture, Current Location: Room D
+                Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room E""", theInventory.SearchArtefactType("Furniture", true));
         assertEquals("""
-                Clay Pot
-                Ceramic Vase
-                Porcelain Jar
-                Glass Bowl
-                Metal Canister""", theInventory.SearchArtefactNameByType("Pottery", true));
+                Artefact Name: Clay Pot, Artefact Type:  Pottery, Current Location: Room F
+                Artefact Name: Ceramic Vase, Artefact Type:  Pottery, Current Location: Room G
+                Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room H
+                Artefact Name: Glass Bowl, Artefact Type:  Pottery, Current Location: Room I
+                Artefact Name: Metal Canister, Artefact Type:  Pottery, Current Location: Room J""", theInventory.SearchArtefactType("Pottery", true));
         assertEquals("""
-                Abstract Sculpture
-                Baroque Sculpture
-                Classical Sculpture
-                Gothic Sculpture
-                Eclectic Sculpture""", theInventory.SearchArtefactNameByType("Sculpture", true));
+                Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K
+                Artefact Name: Baroque Sculpture, Artefact Type:  Sculpture, Current Location: Room L
+                Artefact Name: Classical Sculpture, Artefact Type:  Sculpture, Current Location: Room M
+                Artefact Name: Gothic Sculpture, Artefact Type:  Sculpture, Current Location: Room N
+                Artefact Name: Eclectic Sculpture, Artefact Type:  Sculpture, Current Location: Room A""", theInventory.SearchArtefactType("Sculpture", true));
     }
 
     @Test
@@ -202,27 +202,27 @@ class DataBaseTest
     @Order(5)
     void searchRoomAfterDeletion() throws Exception
     {
-        assertEquals("Furniture, Room E", theInventory.SearchArtefactByName("Console Table", true));
-        assertEquals("Pottery, Room H", theInventory.SearchArtefactByName("Porcelain Jar", true));
-        assertEquals("Sculpture, Room K", theInventory.SearchArtefactByName("Abstract Sculpture", true));
-        assertEquals("Coffee Table", theInventory.SearchArtefactNameByRoom("Room B", true));
-        assertEquals("Glass Bowl", theInventory.SearchArtefactNameByRoom("Room I", true));
-        assertEquals("Abstract Sculpture", theInventory.SearchArtefactNameByRoom("Room K", true));
+        assertEquals("Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room E", theInventory.SearchArtefactByName("Console Table", true));
+        assertEquals("Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room H", theInventory.SearchArtefactByName("Porcelain Jar", true));
+        assertEquals("Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K", theInventory.SearchArtefactByName("Abstract Sculpture", true));
+        assertEquals("Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room B", theInventory.SearchArtefactRoom("Room B", true));
+        assertEquals("Artefact Name: Glass Bowl, Artefact Type:  Pottery, Current Location: Room I", theInventory.SearchArtefactRoom("Room I", true));
+        assertEquals("Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K", theInventory.SearchArtefactRoom("Room K", true));
         assertEquals("""
-                Coffee Table
-                Side Table
-                Pedestal Table
-                Console Table""", theInventory.SearchArtefactNameByType("Furniture", true));
+                Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room B
+                Artefact Name: Side Table, Artefact Type:  Furniture, Current Location: Room C
+                Artefact Name: Pedestal Table, Artefact Type:  Furniture, Current Location: Room D
+                Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room E""", theInventory.SearchArtefactType("Furniture", true));
         assertEquals("""
-                Clay Pot
-                Porcelain Jar
-                Glass Bowl
-                Metal Canister""", theInventory.SearchArtefactNameByType("Pottery", true));
+                Artefact Name: Clay Pot, Artefact Type:  Pottery, Current Location: Room F
+                Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room H
+                Artefact Name: Glass Bowl, Artefact Type:  Pottery, Current Location: Room I
+                Artefact Name: Metal Canister, Artefact Type:  Pottery, Current Location: Room J""", theInventory.SearchArtefactType("Pottery", true));
         assertEquals("""
-                Abstract Sculpture
-                Classical Sculpture
-                Gothic Sculpture
-                Eclectic Sculpture""", theInventory.SearchArtefactNameByType("Sculpture", true));
+                Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K
+                Artefact Name: Classical Sculpture, Artefact Type:  Sculpture, Current Location: Room M
+                Artefact Name: Gothic Sculpture, Artefact Type:  Sculpture, Current Location: Room N
+                Artefact Name: Eclectic Sculpture, Artefact Type:  Sculpture, Current Location: Room A""", theInventory.SearchArtefactType("Sculpture", true));
     }
 
     @Test
