@@ -25,9 +25,11 @@ public class DataBase
     static Connection connection;
 
     /**
-     * Get a connection to the database
-     * @return
-     * @throws Exception
+     * Get a connection to the database based on environment and test mode.
+     *
+     * @param testmode true to use test DB properties
+     * @return JDBC Connection
+     * @throws Exception if properties file is missing or connection fails
      */
     public static Connection getConnection(boolean testmode) throws Exception {
 
@@ -65,10 +67,12 @@ public class DataBase
 
 
     /**
-     * Add an artefact to the database
-     * @param artefact
-     * @return
-     * @throws Exception
+     * Add an artefact to the database.
+     *
+     * @param artefact artefact to persist
+     * @param testMode when true use test DB properties
+     * @return true if insert affected rows
+     * @throws Exception on DB or input errors
      */
     public static boolean addArtefact(Artefact artefact, boolean testMode) throws Exception
     {
@@ -102,9 +106,11 @@ public class DataBase
     }
 
     /**
-     * Clear all 3D artefacts from the database
-     * @return
-     * @throws Exception
+     * Clear all artefacts from the database (used in tests).
+     *
+     * @param testMode when true use test DB properties
+     * @return true if rows were deleted
+     * @throws Exception on DB errors
      */
     public static boolean clearArtefacts(boolean testMode) throws Exception
     {
@@ -125,10 +131,12 @@ public class DataBase
     }
 
     /**
-     * Delete an artefact from the database by name
-     * @param name
-     * @return
-     * @throws Exception
+     * Delete an artefact from the database by name.
+     *
+     * @param name artefact name
+     * @param testMode use test DB if true
+     * @return true if deletion affected rows
+     * @throws Exception on DB errors
      */
     public static boolean deleteArtefact(String name, boolean testMode) throws Exception
     {
@@ -147,6 +155,13 @@ public class DataBase
         }
     }
 
+    /**
+     * Pull all artefacts from the database and construct domain objects.
+     *
+     * @param testMode test DB flag
+     * @return list of Artefact instances or null on failure
+     * @throws Exception on DB errors
+     */
     public static List<Artefact> PullArtefacts(boolean testMode) throws Exception
     {
         if (connection == null)
@@ -208,6 +223,14 @@ public class DataBase
         }
     }
 
+    /**
+     * Persist a loan request in the database.
+     *
+     * @param loan loan request
+     * @param testMode use test DB if true
+     * @return true if insert affected rows
+     * @throws Exception on DB errors
+     */
     public static boolean addLoan(Loan loan, boolean testMode) throws Exception
     {
         if (connection == null)
@@ -233,6 +256,13 @@ public class DataBase
         }
     }
 
+    /**
+     * Clear loans table (test helper).
+     *
+     * @param testMode use test DB if true
+     * @return true if rows deleted
+     * @throws Exception on DB errors
+     */
     public static boolean clearLoans(boolean testMode) throws Exception
     {
         if (connection == null)
@@ -252,6 +282,14 @@ public class DataBase
         }
     }
 
+    /**
+     * Search loans by requester name and return contact info if found.
+     *
+     * @param name requester name
+     * @param testMode use test DB if true
+     * @return contactInfo string or null
+     * @throws Exception on DB errors
+     */
     public static String searchLoans(String name, boolean testMode) throws Exception
     {
         if (connection == null)
@@ -273,6 +311,14 @@ public class DataBase
         }
     }
 
+    /**
+     * Add a room to the rooms table.
+     *
+     * @param room Room instance
+     * @param testMode test DB flag
+     * @return true if insert affected rows
+     * @throws Exception on DB errors
+     */
     public static boolean addRoom(Room room, boolean testMode) throws Exception
     {
         if (connection == null)
@@ -295,6 +341,14 @@ public class DataBase
         }
     }
 
+    /**
+     * Search room by name and return its room number if found.
+     *
+     * @param roomName partial or full room name
+     * @param testMode test DB flag
+     * @return room number or null
+     * @throws Exception on DB errors
+     */
     public static String searchRoomByName(String roomName, boolean testMode) throws Exception
     {
         if (connection == null)
@@ -316,6 +370,13 @@ public class DataBase
         }
     }
 
+    /**
+     * Clear rooms table (test helper).
+     *
+     * @param testMode use test DB if true
+     * @return true if rows deleted
+     * @throws Exception on DB errors
+     */
     public static boolean clearRooms(boolean testMode) throws Exception
     {
         if (connection == null)
@@ -335,6 +396,12 @@ public class DataBase
         }
     }
 
+    /**
+     * Set an artefact's insurance value by name.
+     *
+     * @param name artefact name
+     * @param insuranceValue numeric insurance value
+     */
     public static void setInsuranceValue(String name, double insuranceValue)
     {
         try
@@ -352,6 +419,11 @@ public class DataBase
         }
     }
 
+    /**
+     * Retrieve all rooms from the database.
+     *
+     * @return list of Room instances (may be empty)
+     */
     public static List<Room> getRooms()
     {
         List<Room> rooms = new ArrayList<>();
@@ -378,6 +450,13 @@ public class DataBase
         return rooms;
     }
 
+    /**
+     * Pull rooms helper used by Inventory to refresh cache.
+     *
+     * @param testMode test DB flag
+     * @return list of Room instances or null on failure
+     * @throws Exception on DB errors
+     */
     public static List<Room> PullRooms(boolean testMode) throws Exception
     {
         if (connection == null)
@@ -403,6 +482,16 @@ public class DataBase
         }
     }
 
+    /**
+     * Persist an image for an artefact into the images table.
+     *
+     * @param name artefact name
+     * @param image BufferedImage to persist
+     * @param testMode test DB flag
+     * @param fileType image file type (e.g. png)
+     * @param filePath original file path or identifier
+     * @throws Exception on I/O or DB errors
+     */
     public static void addImageToArtefact(String name, BufferedImage image, boolean testMode, String fileType, String filePath) throws Exception
     {
         if (connection == null)
@@ -426,6 +515,13 @@ public class DataBase
         }
     }
 
+    /**
+     * Retrieve all images stored in the images table.
+     *
+     * @param testMode test DB flag
+     * @return list of BufferedImage instances or null on failure
+     * @throws Exception on I/O or DB errors
+     */
     public static List<BufferedImage> getImageFromArtefact(boolean testMode) throws Exception
     {
         if (connection == null)

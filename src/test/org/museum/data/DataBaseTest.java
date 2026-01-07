@@ -1,4 +1,4 @@
-package org.museum;
+package org.museum.data;
 
 import org.junit.jupiter.api.*;
 import org.museum.artefacts.Material;
@@ -7,8 +7,6 @@ import org.museum.artefacts.artefacts3d.Artefact3D;
 import org.museum.artefacts.artefacts3d.Furniture;
 import org.museum.artefacts.artefacts3d.Pottery;
 import org.museum.artefacts.artefacts3d.Sculpture;
-import org.museum.data.DataBase;
-import org.museum.data.Inventory;
 import org.museum.other.Loan;
 import org.museum.other.Room;
 

@@ -13,6 +13,14 @@ public final class Inventory
     private static Inventory instance;
     private List <Artefact> Artifacts;
 
+    /**
+     * Search artefacts by name (case-insensitive substring match) and return a textual result.
+     *
+     * @param name artefact name or substring
+     * @param testMode use test DB if true
+     * @return formatted search results
+     * @throws Exception if no artefacts found or DB issues occur
+     */
     public String SearchArtefactByName(String name, boolean testMode) throws Exception
     {
         UpdateArtefactsFromDB(testMode);
@@ -36,6 +44,12 @@ public final class Inventory
         throw new Exception("No Artefacts found.");
     }
 
+    /**
+     * Refresh the in-memory artefact list from the database.
+     *
+     * @param testMode use test DB if true
+     * @throws Exception on DB errors
+     */
     private void UpdateArtefactsFromDB(boolean testMode) throws Exception
     {
         List<Artefact> artefactsFromDB = DataBase.PullArtefacts(testMode);
@@ -48,6 +62,9 @@ public final class Inventory
             this.Artifacts = new ArrayList<>();
     }
 
+    /**
+     * Private constructor for singleton Inventory.
+     */
     private Inventory()
     {
         // initialize collections
@@ -55,6 +72,11 @@ public final class Inventory
         List<Room> rooms = new ArrayList<>();
     }
 
+    /**
+     * Get the singleton Inventory instance.
+     *
+     * @return Inventory singleton
+     */
     public static Inventory getInstance()
     {
         if (instance == null)
@@ -64,6 +86,12 @@ public final class Inventory
         return instance;
     }
 
+    /**
+     * Add an artefact to the in-memory list (does not persist to DB).
+     *
+     * @param artefact artefact instance
+     * @return true if added
+     */
     public static Boolean addArtefact(Artefact artefact)
     {
         if (artefact == null) return false;
@@ -74,15 +102,27 @@ public final class Inventory
         {
             inv.Artifacts = new ArrayList<>();
         }
-        boolean added = inv.Artifacts.add(artefact);
-        return added;
+        return inv.Artifacts.add(artefact);
     }
 
+    /**
+     * Return current in-memory artefacts list (may be empty).
+     *
+     * @return list of Artefact instances
+     */
     public List<Artefact> getArtifacts()
     {
         return this.Artifacts;
     }
 
+    /**
+     * Search artefacts by current room (case-insensitive substring match).
+     *
+     * @param roomName room name or substring
+     * @param testMode use test DB if true
+     * @return formatted search results
+     * @throws Exception if none found or DB issues occur
+     */
     public String SearchArtefactRoom(String roomName, boolean testMode) throws Exception
     {
         UpdateArtefactsFromDB(testMode);
@@ -106,6 +146,14 @@ public final class Inventory
         throw new Exception("No Artefacts found.");
     }
 
+    /**
+     * Search artefacts by artefact type/class name (case-insensitive substring match).
+     *
+     * @param type artefact type name or substring
+     * @param testMode use test DB if true
+     * @return formatted search results
+     * @throws Exception if none found or DB issues occur
+     */
     public String SearchArtefactType(String type, boolean testMode) throws Exception
     {
         UpdateArtefactsFromDB(testMode);
@@ -129,13 +177,21 @@ public final class Inventory
         throw new Exception("No Artefacts found.");
     }
 
+    /**
+     * Find a single artefact by name (substring match) and return the first match.
+     *
+     * @param artefactName artefact name or substring
+     * @param testMode use test DB if true
+     * @return Artefact instance or null if none
+     * @throws Exception on DB errors
+     */
     public Artefact getArtefactByName(String artefactName, boolean testMode) throws Exception
     {
         UpdateArtefactsFromDB(testMode);
 
         for (Artefact artefact : this.Artifacts)
         {
-            if (artefact != null && artefact.getName() != null && artefact.getName().equalsIgnoreCase(artefactName) || artefact.getName().contains(artefactName))
+            if (artefact != null && artefact.getName() != null && artefact.getName().toLowerCase().contains(artefactName.toLowerCase()))
             {
                 return artefact;
             }
@@ -143,6 +199,13 @@ public final class Inventory
         return null;
     }
 
+    /**
+     * Display an artefact's stored image as ASCII art in the console.
+     *
+     * @param artefactName artefact name or substring
+     * @param testMode use test DB if true
+     * @throws Exception on DB or image processing errors
+     */
     public void ViewImagesOfArtefact(String artefactName, boolean testMode) throws Exception
     {
         final char[] asciiChars = {'@', '#', 'S', '%', '?', '*', '+', ';', ':', ',', '.'};
@@ -168,6 +231,13 @@ public final class Inventory
         }
     }
 
+    /**
+     * List names of all artefacts in the inventory.
+     *
+     * @param b testMode flag passed to UpdateArtefactsFromDB
+     * @return newline-separated artefact names
+     * @throws Exception on DB errors
+     */
     public String ListAllArtefacts(boolean b) throws Exception
     {
         StringBuilder result = new StringBuilder();
@@ -176,7 +246,7 @@ public final class Inventory
         {
             if (artefact.getName() != null)
             {
-                result.append(artefact.getName() + "\n");
+                result.append(artefact.getName()).append("\n");
             }
         }
         return result.toString().strip();

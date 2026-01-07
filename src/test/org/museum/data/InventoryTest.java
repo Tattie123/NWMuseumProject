@@ -1,10 +1,9 @@
-package org.museum;
+package org.museum.data;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.museum.artefacts.Painting;
-import org.museum.data.DataBase;
-import org.museum.data.Inventory;
 
 import static org.junit.jupiter.api.Assertions.*;
 

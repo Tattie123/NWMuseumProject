@@ -17,6 +17,12 @@ public class UI
 {
     static Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Entry point for the Researcher user interface.
+     * Presents a menu to the researcher and dispatches to helper methods based on user input.
+     *
+     * @throws Exception if any called operation (e.g. database access) throws an exception
+     */
     protected static void ResearcherUI() throws Exception
     {
         boolean run = true;
@@ -43,7 +49,7 @@ public class UI
                 case "4" -> SearchArtefactByRoom();
                 case "5" -> SearchArtefactByType();
                 case "6" -> ViewArtefactInfo();
-                case "7" -> System.out.println("View images of Artefact");
+                case "7" -> ViewImagesOfArtefact();
                 case "8" ->
                 {
                     System.out.println("Enter Password");
@@ -63,12 +69,17 @@ public class UI
         }while(run);
     }
 
+    /**
+     * Entry point for the Staff user interface.
+     * Presents a menu to staff members and dispatches to helper methods based on user input.
+     *
+     * @throws Exception if any called operation (e.g. database access) throws an exception
+     */
     private static void StaffUI() throws Exception
     {
         boolean run = true;
         do
         {
-
             System.out.println("""
                                 
                                 Welcome
@@ -113,6 +124,12 @@ public class UI
     }
 
 
+    /**
+     * Entry point for the Manager user interface.
+     * Presents a manager-specific menu and dispatches operations.
+     *
+     * @throws Exception if any called operation (e.g. database access) throws an exception
+     */
     private static void ManagerUI() throws Exception
     {
         boolean run = true;
@@ -161,6 +178,10 @@ public class UI
         }while(run);
     }
 
+    /**
+     * Lists all artefacts by querying the Inventory and printing the result to stdout.
+     * Errors during listing are caught and printed.
+     */
     private static void ListArtefacts()
     {
         Inventory theInventory = Inventory.getInstance();
@@ -175,6 +196,11 @@ public class UI
         }
     }
 
+    /**
+     * Prompts the user for an artefact name and insurance value and updates the artefact's
+     * insurance value in the inventory if found.
+     * Errors are caught and printed.
+     */
     private static void SetInsurance()
     {
         System.out.println("Please enter the name of the artefact you wish to set the insurance value for:");
@@ -200,10 +226,23 @@ public class UI
         }
     }
 
+    /**
+     * Move artefact placeholder.
+     *todo: this
+     * <p>Currently unimplemented. Expected to prompt for an artefact and a destination room,
+     * then update the inventory/room assignment.</p>
+     */
     private static void MoveArtefact()
     {
     }
 
+    /**
+     * Prompts for artefact details and creates a new artefact entry using user input.
+     * The created artefact is added to the Inventory.
+     *
+     * <p>Input is read from the shared Scanner and some parsing (dates, numbers) is performed.
+     * Invalid user input may throw runtime exceptions (e.g. IllegalArgumentException from Date.valueOf).</p>
+     */
     private static void AddArtefact()
     {
         System.out.println("Please enter the name of the artefact:");
@@ -238,12 +277,32 @@ public class UI
             default -> {
             }
         }
-        Inventory.addArtefact(artefact);
+        if (!Inventory.addArtefact(artefact))
+        {
+            System.out.println("Failed to add artefact.");
+            return;
+        }
         System.out.println("Artefact added successfully.");
 
     }
 
 
+    /**
+     * Helper for creating 3D artefact instances (Furniture, Pottery, Sculpture).
+     * Prompts for depth and material and returns a constructed Artefact subtype.
+     *
+     * @param type the subtype to construct ("Furniture", "Pottery", "Sculpture")
+     * @param historicEra historic era string
+     * @param style style string
+     * @param originCountry country of origin
+     * @param currentRoom current room name
+     * @param author author/creator name
+     * @param dateOfCreation creation date as java.sql.Date
+     * @param width artefact width
+     * @param height artefact height
+     * @param name artefact name
+     * @return constructed Artefact instance or null if the type was unknown
+     */
     private static Artefact addArtefact3D(String type, String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, String name)
     {
         System.out.println("Please enter the depth of the artefact:");
@@ -261,6 +320,10 @@ public class UI
             return artefact;
     }
 
+    /**
+     * Prompts for an artefact name and prints its detailed information.
+     * Errors are caught and printed.
+     */
     private static void ViewArtefactInfo()
     {
         System.out.println("Please enter the name of the artefact you wish to view:");
@@ -278,6 +341,10 @@ public class UI
         }
     }
 
+    /**
+     * Prompts for an artefact type and prints search results returned by Inventory.
+     * Errors are caught and printed.
+     */
     private static void SearchArtefactByType()
     {
         System.out.println("Please enter the Type of the artefact you wish to search for:");
@@ -294,6 +361,10 @@ public class UI
         }
     }
 
+    /**
+     * Prompts for a room name and prints search results returned by Inventory.
+     * Errors are caught and printed.
+     */
     private static void SearchArtefactByRoom()
     {
         System.out.println("Please enter the room of the artefact you wish to search for:");
@@ -310,6 +381,10 @@ public class UI
         }
     }
 
+    /**
+     * Prompts for an artefact name and prints search results returned by Inventory.
+     * Errors are caught and printed.
+     */
     private static void SearchArtefactByName()
     {
         System.out.println("Please enter the name of the artefact you wish to search for:");
@@ -327,6 +402,11 @@ public class UI
 
     }
 
+    /**
+     * Prompts the user for loan request information and constructs a Loan object.
+     *
+     * @throws Exception if validation or database operations fail while looking up artefacts
+     */
     private static void RequestLoan() throws Exception
     {
         System.out.println("Please enter your name:");
@@ -355,6 +435,10 @@ public class UI
         Loan loan = new Loan(false, name, contactInfo, telNum, artefactName, Date.valueOf(startDate), Date.valueOf(endDate));
     }
 
+    /**
+     * Prompts for an artefact name and asks the Inventory to display its images.
+     * Errors are caught and printed.
+     */
     private static void ViewImagesOfArtefact()
     {
         System.out.println("Please enter the name of the artefact you wish to view images of:");
