@@ -9,15 +9,16 @@ public class Furniture extends Artefact3D
     /**
      * Constructor with insurance value for furniture.
      */
-    public Furniture(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double insurance, double depth, String name, Material material)
+    public Furniture(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double insurance, double depth, String name, Material material, Boolean TestMode) throws Exception
     {
-        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, material);
+        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, material, TestMode);
     }
 
     /**
      * Constructor without insurance value for furniture.
      */
-    public Furniture(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double depth, String name, Material material){
-        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, depth, name, material);
+    public Furniture(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double depth, String name, Material material, Boolean TestMode) throws Exception
+    {
+        super(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, depth, name, material, TestMode);
     }
 }

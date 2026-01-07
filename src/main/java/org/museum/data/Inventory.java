@@ -3,6 +3,7 @@ package org.museum.data;
 import org.museum.other.Room;
 import org.museum.artefacts.Artefact;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -199,36 +200,43 @@ public final class Inventory
         return null;
     }
 
-    /**
-     * Display an artefact's stored image as ASCII art in the console.
-     *
-     * @param artefactName artefact name or substring
-     * @param testMode use test DB if true
-     * @throws Exception on DB or image processing errors
-     */
-    public void ViewImagesOfArtefact(String artefactName, boolean testMode) throws Exception
+    public void ViewImagesOfArtefact(List<BufferedImage> images) throws Exception
     {
-        final char[] asciiChars = {'@', '#', 'S', '%', '?', '*', '+', ';', ':', ',', '.'};
 
-        Artefact artefact = getArtefactByName(artefactName, testMode);
-        assert artefact != null;
-        BufferedImage image = artefact.getImages();
+        JFrame frame = new JFrame("Image Viewer");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 300);
 
-        int newWidth = 100;
-        int newHeight = (image.getHeight() * newWidth) / image.getWidth();
-        BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, image.getType());
-        for (int y = 0; y < newHeight; y++)
+        CardLayout cardLayout = new CardLayout();
+        JPanel cardPanel = new JPanel(cardLayout);
+
+        for (int i = 0; i < images.size(); i++)
         {
-            StringBuilder sb = new StringBuilder();
-            for (int x = 0; x < newWidth; x++)
-            {
-                Color pixel = new Color(resizedImage.getRGB(x, y));
-                double gray = (pixel.getRed() * 0.3 + pixel.getGreen() * 0.59 + pixel.getBlue() * 0.11);
-                int index = (int)((gray / 255) * (asciiChars.length - 1));
-                sb.append(asciiChars[index]);
-            }
-            System.out.println(sb);
+            BufferedImage img = images.get(i);
+            ImageIcon icon = new ImageIcon(img);
+            JLabel label = new JLabel(icon);
+            JPanel panel = new JPanel();
+            panel.setBackground(Color.LIGHT_GRAY);
+            panel.add(label);
+            cardPanel.add(panel, "Panel" + (i + 1));
         }
+
+        JButton nextButton = new JButton("Next");
+        nextButton.addActionListener(e -> cardLayout.next(cardPanel));
+
+        JButton prevButton = new JButton("Previous");
+        prevButton.addActionListener(e -> cardLayout.previous(cardPanel));
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(prevButton);
+        buttonPanel.add(nextButton);
+
+        frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+
+        frame.add(cardPanel);
+        frame.setVisible(true);
+        frame.setAlwaysOnTop(true);
+        frame.toFront();
     }
 
     /**

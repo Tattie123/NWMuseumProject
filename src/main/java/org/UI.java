@@ -7,10 +7,12 @@ import org.museum.artefacts.Painting;
 import org.museum.artefacts.artefacts3d.Furniture;
 import org.museum.artefacts.artefacts3d.Pottery;
 import org.museum.artefacts.artefacts3d.Sculpture;
+import org.museum.data.DataBase;
 import org.museum.data.Inventory;
 import org.museum.other.Loan;
 
 import java.sql.Date;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class UI
@@ -32,25 +34,27 @@ public class UI
                             
                             Welcome
                             1. Request a loan of an Artefact
-                            2. List all Artefact
-                            3. Search for Artefact by Name
-                            4. Search for Artefact by Room
-                            5. Search for Artefact by Type
-                            6. View information about Artefact
-                            7. View images of Artefact
-                            8. Change to Staff
-                            9. Exit""");
+                            2. View Image of Artefact
+                            3. List all Artefact
+                            4. Search for Artefact by Name
+                            5. Search for Artefact by Room
+                            6. Search for Artefact by Type
+                            7. View information about Artefact
+                            8. View All Images
+                            9. Change to Staff
+                            10. Exit""");
             String choice = scanner.next();
             switch (choice)
             {
                 case "1" -> RequestLoan();
-                case "2" -> ListArtefacts();
-                case "3" -> SearchArtefactByName();
-                case "4" -> SearchArtefactByRoom();
-                case "5" -> SearchArtefactByType();
-                case "6" -> ViewArtefactInfo();
-                case "7" -> ViewImagesOfArtefact();
-                case "8" ->
+                case "2" -> ViewImagesOfArtefact();
+                case "3" -> ListArtefacts();
+                case "4" -> SearchArtefactByName();
+                case "5" -> SearchArtefactByRoom();
+                case "6" -> SearchArtefactByType();
+                case "7" -> ViewArtefactInfo();
+                case "8" -> ViewAllImages();
+                case "9" ->
                 {
                     System.out.println("Enter Password");
                     String password = scanner.next();
@@ -63,10 +67,22 @@ public class UI
                         System.out.println("Incorrect Password");
                     }
                 }
-                case "9" -> run = false;
+                case "10" -> run = false;
                 default -> System.out.println("Invalid choice, please try again.");
             }
         }while(run);
+    }
+
+    private static void ViewAllImages()
+    {
+        Inventory theInventory = Inventory.getInstance();
+        try
+        {
+            theInventory.ViewImagesOfArtefact(Objects.requireNonNull(DataBase.getAllImages(false)));
+        } catch (Exception e)
+        {
+            System.out.println("Error while Retrieving Images: " + e.getMessage());
+        }
     }
 
     /**
@@ -84,27 +100,29 @@ public class UI
                                 
                                 Welcome
                                 1. Add a new Artefact
-                                2. List all Artefact
-                                3. Move Artefact to another Room
-                                4. Search for Artefact by Name
-                                5. Search for Artefact by org.museum.other.Room
-                                6. Search for Artefact by Type
-                                7. View information about Artefact
-                                8. View images of Artefact
-                                9. Change to Managing Director
-                                10. Exit to Researcher""");
+                                2. Add Image to Artefact
+                                3. List all Artefact
+                                4. Move Artefact to another Room
+                                5. Search for Artefact by Name
+                                6. Search for Artefact by org.museum.other.Room
+                                7. Search for Artefact by Type
+                                8. View information about Artefact
+                                9. View images of Artefact
+                                10. Change to Managing Director
+                                11. Exit to Researcher""");
             String choice = scanner.next();
             switch (choice)
             {
-                case "1" -> AddArtefact();
-                case "2" -> ListArtefacts();
-                case "3" -> MoveArtefact();
-                case "4" -> SearchArtefactByName();
-                case "5" -> SearchArtefactByRoom();
-                case "6" -> SearchArtefactByType();
-                case "7" -> ViewArtefactInfo();
-                case "8" -> ViewImagesOfArtefact();
-                case "9" ->
+                case "1" -> AddArtefact(false);
+                case "2" -> AddImage();
+                case "3" -> ListArtefacts();
+                case "4" -> MoveArtefact();
+                case "5" -> SearchArtefactByName();
+                case "6" -> SearchArtefactByRoom();
+                case "7" -> SearchArtefactByType();
+                case "8" -> ViewArtefactInfo();
+                case "9" -> ViewImagesOfArtefact();
+                case "10" ->
                 {
                     System.out.println("Enter Password");
                     String password = scanner.next();
@@ -117,7 +135,7 @@ public class UI
                         System.out.println("Incorrect Password");
                     }
                 }
-                case "10" -> run = false;
+                case "11" -> run = false;
                 default -> System.out.println("Invalid choice, please try again.");
             }
         }while(run);
@@ -178,10 +196,45 @@ public class UI
         }while(run);
     }
 
-    /**
-     * Lists all artefacts by querying the Inventory and printing the result to stdout.
-     * Errors during listing are caught and printed.
-     */
+    private static void AddImage()
+    {
+        System.out.println("Please enter the name of the artefact you wish to add an image to:");
+        String artefactName = scanner.next();
+        System.out.println("Please enter the full name of the image including extension (in Images Folder):");
+        String filePath = scanner.next();
+
+        int lastDotIndex = filePath.lastIndexOf('.');
+
+        String fileType = filePath.substring(lastDotIndex + 1);
+        Inventory theInventory = Inventory.getInstance();
+
+        try
+        {
+            Artefact artefact = theInventory.getArtefactByName(artefactName, false);
+            if (artefact != null)
+            {
+                try
+                {
+                    artefact.addImage(filePath, false, fileType);
+                    System.out.println("Image added successfully to artefact: " + artefact.getName());
+                } catch (Exception e)
+                {
+                    System.out.println("Error while Adding Image to Artefact: " + e.getMessage());
+                }
+            } else
+            {
+                System.out.println("Artefact not found.");
+            }
+        } catch (Exception e)
+        {
+            System.out.println("Error while Adding Image: " + e.getMessage());
+        }
+    }
+
+        /**
+         * Lists all artefacts by querying the Inventory and printing the result to stdout.
+         * Errors during listing are caught and printed.
+         */
     private static void ListArtefacts()
     {
         Inventory theInventory = Inventory.getInstance();
@@ -243,7 +296,7 @@ public class UI
      * <p>Input is read from the shared Scanner and some parsing (dates, numbers) is performed.
      * Invalid user input may throw runtime exceptions (e.g. IllegalArgumentException from Date.valueOf).</p>
      */
-    private static void AddArtefact()
+    private static void AddArtefact(boolean TestMode)
     {
         System.out.println("Please enter the name of the artefact:");
         String name = scanner.next();
@@ -267,15 +320,21 @@ public class UI
         System.out.println("Please enter the current room the artefact is in:");
         String currentRoom = scanner.next();
         Artefact artefact = null;
-        switch (type)
+        try
         {
-            case "Furniture" -> artefact = addArtefact3D("Furniture", historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name);
-            case "Pottery" -> artefact = addArtefact3D("Pottery", historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name);
-            case "Sculpture" -> artefact = addArtefact3D("Sculpture", historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name);
-            case "Misc" -> artefact = new Misc(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name);
-            case "Painting" -> artefact = new Painting(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name);
-            default -> {
+            switch (type)
+            {
+                case "Furniture" -> artefact = addArtefact3D("Furniture", historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name, TestMode);
+                case "Pottery" -> artefact = addArtefact3D("Pottery", historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name, TestMode);
+                case "Sculpture" -> artefact = addArtefact3D("Sculpture", historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name, TestMode);
+                case "Misc" -> artefact = new Misc(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name, TestMode);
+                case "Painting" -> artefact = new Painting(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name, TestMode);
+                default -> {
+                }
             }
+        } catch (Exception e)
+        {
+            throw new RuntimeException(e);
         }
         if (!Inventory.addArtefact(artefact))
         {
@@ -303,7 +362,7 @@ public class UI
      * @param name artefact name
      * @return constructed Artefact instance or null if the type was unknown
      */
-    private static Artefact addArtefact3D(String type, String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, String name)
+    private static Artefact addArtefact3D(String type, String historicEra, String style, String originCountry, String currentRoom, String author, Date dateOfCreation, double width, double height, String name, boolean TestMode)
     {
         System.out.println("Please enter the depth of the artefact:");
         double depth = scanner.nextDouble();
@@ -311,13 +370,20 @@ public class UI
         String materialStr = scanner.next();
         Material materialEnum = Material.valueOf(materialStr.toUpperCase());
         Artefact artefact = null;
-        switch (type)
-            {
-                case "Furniture" -> artefact = new Furniture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, depth, name, materialEnum);
-                case "Pottery" -> artefact = new Pottery(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, depth, name, materialEnum);
-                case "Sculpture" -> artefact = new Sculpture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, depth, name, materialEnum);
-            }
+
+        try
+        {
+            switch (type)
+                {
+                    case "Furniture" -> artefact = new Furniture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, depth, name, materialEnum, TestMode);
+                    case "Pottery" -> artefact = new Pottery(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, depth, name, materialEnum, TestMode);
+                    case "Sculpture" -> artefact = new Sculpture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, depth, name, materialEnum, TestMode);
+                }
             return artefact;
+        } catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -446,7 +512,7 @@ public class UI
         Inventory theInventory = Inventory.getInstance();
         try
         {
-            theInventory.ViewImagesOfArtefact(artefactName, false);
+            theInventory.ViewImagesOfArtefact(Objects.requireNonNull(DataBase.getImageFromArtefact(artefactName, false)));
         } catch (Exception e)
         {
             System.out.println("Error while Retrieving Images: " + e.getMessage());

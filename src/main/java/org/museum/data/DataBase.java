@@ -13,6 +13,7 @@ import org.museum.other.Room;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.Arrays;
@@ -204,11 +205,11 @@ public class DataBase
 
                 switch (type)
                 {
-                    case "Furniture" -> artefacts.add(new Furniture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum));
-                    case "Pottery" -> artefacts.add(new Pottery(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum));
-                    case "Sculpture" -> artefacts.add(new Sculpture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum));
-                    case "Misc" -> artefacts.add(new Misc(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name));
-                    case "Painting" -> artefacts.add(new Painting(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name));
+                    case "Furniture" -> artefacts.add(new Furniture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum, false));
+                    case "Pottery" -> artefacts.add(new Pottery(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum, false));
+                    case "Sculpture" -> artefacts.add(new Sculpture(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, depth, name, materialEnum, false));
+                    case "Misc" -> artefacts.add(new Misc(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name, false));
+                    case "Painting" -> artefacts.add(new Painting(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, insurance, name, false));
                     default -> {
                         throw new IllegalArgumentException("Unknown artefact type: " + type);
                     }
@@ -522,14 +523,15 @@ public class DataBase
      * @return list of BufferedImage instances or null on failure
      * @throws Exception on I/O or DB errors
      */
-    public static List<BufferedImage> getImageFromArtefact(boolean testMode) throws Exception
+    public static List<BufferedImage> getImageFromArtefact(String artefactName, boolean testMode) throws Exception
     {
         if (connection == null)
             connection = getConnection(testMode);
 
         try
         {
-            var ps = connection.prepareStatement("SELECT data FROM images");
+            var ps = connection.prepareStatement("SELECT data FROM images WHERE name LIKE ?;");
+            ps.setString(1, artefactName + "%");
             var rs = ps.executeQuery();
 
             List<BufferedImage> images = new ArrayList<>();
@@ -546,5 +548,58 @@ public class DataBase
             System.out.println("Error getting Images: " + e.getMessage());
         }
         return null;
+    }
+
+    public static List<BufferedImage> getAllImages(boolean b) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection(b);
+
+        try
+        {
+            var ps = connection.prepareStatement("SELECT data FROM images;");
+            var rs = ps.executeQuery();
+
+            List<BufferedImage> images = new ArrayList<>();
+            while (rs.next())
+            {
+                byte[] imageBytes = rs.getBytes("data");
+                InputStream in = new java.io.ByteArrayInputStream(imageBytes);
+                BufferedImage image = ImageIO.read(in);
+                images.add(image);
+            }
+            return images;
+        } catch (SQLException e)
+        {
+            throw new SQLException(e);
+        } catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<String> getAllRooms(boolean b) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection(b);
+
+        try
+        {
+            var ps = connection.prepareStatement("SELECT roomNum FROM rooms;");
+            var rs = ps.executeQuery();
+
+            List<String> rooms = new ArrayList<>();
+            while (rs.next())
+            {
+                byte[] imageBytes = rs.getBytes("roomNum");
+                InputStream in = new java.io.ByteArrayInputStream(imageBytes);
+                String room = in.toString();
+                rooms.add(room);
+            }
+            return rooms;
+        } catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
     }
 }

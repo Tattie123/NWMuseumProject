@@ -70,31 +70,31 @@ class DataBaseTest
 
 
     @BeforeEach
-    void setUp()
+    void setUp() throws Exception
     {
-        Table1 = new Furniture("Medieval", "Gothic", "England", "Room A", "Jim", java.sql.Date.valueOf("2000-01-01"), 0.75, 0.5, 3.75, 1.3, "Dining Table", Material.WOOD);
-        Table2 = new Furniture("Renaissance", "Baroque", "Italy", "Room B", "Bob", java.sql.Date.valueOf("2000-05-15"), 1.0, 0.8, 4.0, 1.5, "Coffee Table", Material.STONE);
-        Table3 = new Furniture("Modern", "Contemporary", "USA", "Room C", "Alice", java.sql.Date.valueOf("2001-08-10"), 1.2, 0.6, 3.5, 1.2, "Side Table", Material.METAL);
-        Table4 = new Furniture("Ancient", "Classical", "Greece", "Room D", "Dave", java.sql.Date.valueOf("2002-11-05"), 1.8, 0.9, 4.5, 1.8, "Pedestal Table", Material.WOOD);
-        Table5 = new Furniture("Victorian", "Eclectic", "England", "Room E", "Jerry", java.sql.Date.valueOf("2003-01-20"), 1.4, 0.7, 3.0, 1.0, "Console Table", Material.STONE);
+        Table1 = new Furniture("Medieval", "Gothic", "England", "Room a", "Jim", java.sql.Date.valueOf("2000-01-01"), 0.75, 0.5, 3.75, 1.3, "Dining Table", Material.WOOD, true);
+        Table2 = new Furniture("Renaissance", "Baroque", "Italy", "Room b", "Bob", java.sql.Date.valueOf("2000-05-15"), 1.0, 0.8, 4.0, 1.5, "Coffee Table", Material.STONE, true);
+        Table3 = new Furniture("Modern", "Contemporary", "USA", "Room c", "Alice", java.sql.Date.valueOf("2001-08-10"), 1.2, 0.6, 3.5, 1.2, "Side Table", Material.METAL, true);
+        Table4 = new Furniture("Ancient", "Classical", "Greece", "Room d", "Dave", java.sql.Date.valueOf("2002-11-05"), 1.8, 0.9, 4.5, 1.8, "Pedestal Table", Material.WOOD, true);
+        Table5 = new Furniture("Victorian", "Eclectic", "England", "Room a", "Jerry", java.sql.Date.valueOf("2003-01-20"), 1.4, 0.7, 3.0, 1.0, "Console Table", Material.STONE, true);
 
-        Pot1 = new Pottery("Ancient", "Classical", "Egypt", "Room F", "Sara", java.sql.Date.valueOf("1999-03-12"), 0.3, 0.5, 2.0, 0.4, "Clay Pot", Material.STONE);
-        Pot2 = new Pottery("Medieval", "Gothic", "France", "Room G", "Tom", java.sql.Date.valueOf("2000-06-18"), 0.4, 0.6, 2.5, 0.5, "Ceramic Vase", Material.STONE);
-        Pot3 = new Pottery("Renaissance", "Baroque", "Italy", "Room H", "Lily", java.sql.Date.valueOf("2001-09-22"), 0.5, 0.7, 3.0, 0.6, "Porcelain Jar", Material.STONE);
-        Pot4 = new Pottery("Modern", "Contemporary", "USA", "Room I", "Mark", java.sql.Date.valueOf("2002-12-30"), 0.6, 0.8, 3.5, 0.7, "Glass Bowl", Material.METAL);
-        Pot5 = new Pottery("Victorian", "Eclectic", "England", "Room J", "Nina", java.sql.Date.valueOf("2003-04-14"), 0.7, 0.9, 4.0, 0.8, "Metal Canister", Material.METAL);
+        Pot1 = new Pottery("Ancient", "Classical", "Egypt", "Room b", "Sara", java.sql.Date.valueOf("1999-03-12"), 0.3, 0.5, 2.0, 0.4, "Clay Pot", Material.STONE, true);
+        Pot2 = new Pottery("Medieval", "Gothic", "France", "Room c", "Tom", java.sql.Date.valueOf("2000-06-18"), 0.4, 0.6, 2.5, 0.5, "Ceramic Vase", Material.STONE, true);
+        Pot3 = new Pottery("Renaissance", "Baroque", "Italy", "Room d", "Lily", java.sql.Date.valueOf("2001-09-22"), 0.5, 0.7, 3.0, 0.6, "Porcelain Jar", Material.STONE, true);
+        Pot4 = new Pottery("Modern", "Contemporary", "USA", "Room a", "Mark", java.sql.Date.valueOf("2002-12-30"), 0.6, 0.8, 3.5, 0.7, "Glass Bowl", Material.METAL, true);
+        Pot5 = new Pottery("Victorian", "Eclectic", "England", "Room b", "Nina", java.sql.Date.valueOf("2003-04-14"), 0.7, 0.9, 4.0, 0.8, "Metal Canister", Material.METAL, true);
 
-        Sculpture1 = new Sculpture("Modern", "Abstract", "USA", "Room K", "Alice", java.sql.Date.valueOf("2004-01-01"), 1.0, 1.5, 5.0, 2.0, "Abstract Sculpture", Material.METAL);
-        Sculpture2 = new Sculpture("Renaissance", "Baroque", "Italy", "Room L", "Bob", java.sql.Date.valueOf("2004-05-15"), 1.2, 1.7, 6.0, 2.5, "Baroque Sculpture", Material.STONE);
-        Sculpture3 = new Sculpture("Ancient", "Classical", "Greece", "Room M", "Charlie", java.sql.Date.valueOf("2004-08-10"), 1.5, 2.0, 7.0, 3.0, "Classical Sculpture", Material.WOOD);
-        Sculpture4 = new Sculpture("Medieval", "Gothic", "England", "Room N", "Diana", java.sql.Date.valueOf("2004-11-05"), 1.3, 1.8, 5.5, 2.5, "Gothic Sculpture", Material.STONE);
-        Sculpture5 = new Sculpture("Victorian", "Eclectic", "England", "Room A", "Ethan", java.sql.Date.valueOf("2005-01-20"), 1.4, 1.9, 6.5, 2.8, "Eclectic Sculpture", Material.METAL);
+        Sculpture1 = new Sculpture("Modern", "Abstract", "USA", "Room c", "Alice", java.sql.Date.valueOf("2004-01-01"), 1.0, 1.5, 5.0, 2.0, "Abstract Sculpture", Material.METAL, true);
+        Sculpture2 = new Sculpture("Renaissance", "Baroque", "Italy", "Room d", "Bob", java.sql.Date.valueOf("2004-05-15"), 1.2, 1.7, 6.0, 2.5, "Baroque Sculpture", Material.STONE, true);
+        Sculpture3 = new Sculpture("Ancient", "Classical", "Greece", "Room a", "Charlie", java.sql.Date.valueOf("2004-08-10"), 1.5, 2.0, 7.0, 3.0, "Classical Sculpture", Material.WOOD, true);
+        Sculpture4 = new Sculpture("Medieval", "Gothic", "England", "Room b", "Diana", java.sql.Date.valueOf("2004-11-05"), 1.3, 1.8, 5.5, 2.5, "Gothic Sculpture", Material.STONE, true);
+        Sculpture5 = new Sculpture("Victorian", "Eclectic", "England", "Room c", "Ethan", java.sql.Date.valueOf("2005-01-20"), 1.4, 1.9, 6.5, 2.8, "Eclectic Sculpture", Material.METAL, true);
 
-        Painting1 = new Painting("Modern", "Abstract", "USA", "Room O", "Alice", java.sql.Date.valueOf("2005-02-01"), 1.0, 1.5, 5.0, "Abstract Painting");
-        Painting2 = new Painting("Renaissance", "Baroque", "Italy", "Room P", "Bob", java.sql.Date.valueOf("2005-03-15"), 1.2, 1.7, 6.0,"Baroque Painting");
-        Painting3 = new Painting("Ancient", "Classical", "Greece", "Room Q", "Charlie", java.sql.Date.valueOf("2005-04-10"), 1.5, 2.0, 7.0,"Classical Painting");
-        Painting4 = new Painting("Medieval", "Gothic", "England", "Room R", "Diana", java.sql.Date.valueOf("2005-05-05"), 1.3, 1.8, 5.5, "Gothic Painting");
-        Painting5 = new Painting("Victorian", "Eclectic", "England", "Room S", "Ethan", java.sql.Date.valueOf("2005-06-20"), 1.4, 1.9, 6.5, "Eclectic Painting");
+        Painting1 = new Painting("Modern", "Abstract", "USA", "Room d", "Alice", java.sql.Date.valueOf("2005-02-01"), 1.0, 1.5, 5.0, "Abstract Painting", true);
+        Painting2 = new Painting("Renaissance", "Baroque", "Italy", "Room a", "Bob", java.sql.Date.valueOf("2005-03-15"), 1.2, 1.7, 6.0,"Baroque Painting", true);
+        Painting3 = new Painting("Ancient", "Classical", "Greece", "Room b", "Charlie", java.sql.Date.valueOf("2005-04-10"), 1.5, 2.0, 7.0,"Classical Painting", true);
+        Painting4 = new Painting("Medieval", "Gothic", "England", "Room c", "Diana", java.sql.Date.valueOf("2005-05-05"), 1.3, 1.8, 5.5, "Gothic Painting", true);
+        Painting5 = new Painting("Victorian", "Eclectic", "England", "Room d", "Ethan", java.sql.Date.valueOf("2005-06-20"), 1.4, 1.9, 6.5, "Eclectic Painting", true);
 
         Loan1 = new Loan(false, "John Doe", "john@example.com", "1234567890", "Abstract Sculpture", java.sql.Date.valueOf("2023-01-01"), java.sql.Date.valueOf("2023-01-15"));
         Loan2 = new Loan(false, "Jane Smith", "jane@example.com", "9876543210", "Baroque Painting", java.sql.Date.valueOf("2023-02-01"), java.sql.Date.valueOf("2023-02-15"));
@@ -102,11 +102,15 @@ class DataBaseTest
         Loan4 = new Loan(false, "Bob Brown", "bob@example.com", "4444444444", "Gothic Painting", java.sql.Date.valueOf("2023-04-01"), java.sql.Date.valueOf("2023-04-15"));
         Loan5 = new Loan(false, "Charlie Davis", "charlie@example.com", "3333333333", "Eclectic Sculpture", java.sql.Date.valueOf("2023-05-01"), java.sql.Date.valueOf("2023-05-15"));
 
-        Room1 = new Room("Room A", "Ancient Artifacts", 50);
-        Room2 = new Room("Room B", "Medieval Wonders", 40);
-        Room3 = new Room("Room C", "Renaissance Gallery", 60);
-        Room4 = new Room("Room D", "Modern Art", 70);
-        Room5 = new Room("Room E", "Contemporary Creations", 80);
+        Room1 = new Room("Room a", "Ancient Artifacts", 50);
+        Room2 = new Room("Room b", "Medieval Wonders", 40);
+        Room3 = new Room("Room c", "Renaissance Gallery", 60);
+        Room4 = new Room("Room d", "Modern Art", 70);
+
+        DataBase.addRoom(Room1, true);
+        DataBase.addRoom(Room2, true);
+        DataBase.addRoom(Room3, true);
+        DataBase.addRoom(Room4, true);
     }
 
     @Test
@@ -118,6 +122,17 @@ class DataBaseTest
 
     @Test
     @Order(2)
+    void addRooms() throws Exception
+    {
+        assertTrue(DataBase.addRoom(Room1, true));
+        assertTrue(DataBase.addRoom(Room2, true));
+        assertTrue(DataBase.addRoom(Room3, true));
+        assertTrue(DataBase.addRoom(Room4, true));
+        assertTrue(DataBase.addRoom(Room5, true));
+    }
+
+    @Test
+    @Order(3)
     void addArtefacts() throws Exception
     {
         assertTrue(DataBase.addArtefact(Table1, true));
@@ -143,7 +158,7 @@ class DataBaseTest
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     void searchArtefacts() throws Exception
     {
         assertEquals("Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room E", theInventory.SearchArtefactByName("Console Table", true));
@@ -173,14 +188,14 @@ class DataBaseTest
     }
 
     @Test
-    @Order(3)
+    @Order(5)
     void listArtefacts() throws Exception
     {
         assertEquals("Dining Table\nCoffee Table\nSide Table\nPedestal Table\nConsole Table\nClay Pot\nCeramic Vase\nPorcelain Jar\nGlass Bowl\nMetal Canister\nAbstract Sculpture\nBaroque Sculpture\nClassical Sculpture\nGothic Sculpture\nEclectic Sculpture\nAbstract Painting\nBaroque Painting\nClassical Painting\nGothic Painting\nEclectic Painting", theInventory.ListAllArtefacts(true));
     }
 
     @Test
-    @Order(4)
+    @Order(6)
     void deleteArtefact() throws Exception
     {
         assertTrue(DataBase.deleteArtefact("Dining Table", true));
@@ -190,14 +205,14 @@ class DataBaseTest
     }
 
     @Test
-    @Order(5)
+    @Order(7)
     void listArtefactsafterDeletion() throws Exception
     {
         assertEquals("Coffee Table\nSide Table\nPedestal Table\nConsole Table\nClay Pot\nPorcelain Jar\nGlass Bowl\nMetal Canister\nAbstract Sculpture\nClassical Sculpture\nGothic Sculpture\nEclectic Sculpture\nAbstract Painting\nClassical Painting\nGothic Painting\nEclectic Painting", theInventory.ListAllArtefacts(true));
     }
 
     @Test
-    @Order(5)
+    @Order(8)
     void searchRoomAfterDeletion() throws Exception
     {
         assertEquals("Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room E", theInventory.SearchArtefactByName("Console Table", true));
@@ -224,14 +239,14 @@ class DataBaseTest
     }
 
     @Test
-    @Order(6)
+    @Order(9)
     void clearArtefacts() throws Exception
     {
         assertTrue(DataBase.clearArtefacts(true));
     }
 
     @Test
-    @Order(7)
+    @Order(10)
     void addLoans() throws Exception
     {
         assertTrue(DataBase.addLoan(Loan1, true));
@@ -242,46 +257,35 @@ class DataBaseTest
     }
 
     @Test
-    @Order(8)
+    @Order(11)
     void searchLoans() throws Exception
     {
         assertEquals("john@example.com", DataBase.searchLoans("John Doe", true));
     }
 
     @Test
-    @Order(9)
+    @Order(12)
     void clearLoans() throws Exception
     {
         assertTrue(DataBase.clearLoans(true));
     }
 
     @Test
-    @Order(10)
-    void addRooms() throws Exception
-    {
-        assertTrue(DataBase.addRoom(Room1, true));
-        assertTrue(DataBase.addRoom(Room2, true));
-        assertTrue(DataBase.addRoom(Room3, true));
-        assertTrue(DataBase.addRoom(Room4, true));
-        assertTrue(DataBase.addRoom(Room5, true));
-    }
-
-    @Test
-    @Order(11)
+    @Order(13)
     void searchRooms() throws Exception
     {
         assertEquals("Room B", DataBase.searchRoomByName("Medieval", true));
     }
 
     @Test
-    @Order(12)
+    @Order(14)
     void clearRooms() throws Exception
     {
         assertTrue(DataBase.clearRooms(true));
     }
 
     @Test
-    @Order(13)
+    @Order(15)
     void listArtefactsafterClear() throws Exception
     {
         assertEquals("", theInventory.ListAllArtefacts(true));

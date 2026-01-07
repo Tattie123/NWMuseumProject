@@ -30,7 +30,7 @@ class InventoryTest
     @Test
     void addArtefact() throws Exception
     {
-        Painting painting = new Painting("Historic Era", "Style", "Origin Country", "Current Room", "Author", java.sql.Date.valueOf("2000-01-01"), 10.0, 20.0, 1000.0, "name");
+        Painting painting = new Painting("Historic Era", "Style", "Origin Country", "Current Room", "Author", java.sql.Date.valueOf("2000-01-01"), 10.0, 20.0, 1000.0, "",  true);
         assertNotNull(painting, "painting is not null");
         assertTrue(Inventory.addArtefact(painting), "addArtefact should return true");
         assertTrue(Inventory.getInstance().getArtifacts().contains(painting), "Inventory should have the correct painting");

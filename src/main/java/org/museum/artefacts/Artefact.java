@@ -93,7 +93,7 @@ public abstract class Artefact
      * @param insurance insurance value
      * @param name artefact name
      */
-    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double insurance, String name)
+    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double insurance, String name, Boolean Testmode)
     {
         this.name = name;
         this.historicEra = historicEra;
@@ -120,13 +120,26 @@ public abstract class Artefact
      * @param height height in appropriate units
      * @param name artefact name
      */
-    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, String name)
+    public Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, String name, Boolean Testmode) throws Exception
     {
+        try
+        {
+            if (DataBase.getAllRooms(Testmode).toString().toLowerCase().contains(currentRoom.toLowerCase()))
+            {
+                this.currentRoom = currentRoom;
+            }
+            else
+            {
+                throw new Exception("Room " + currentRoom + " does not exist in the database.");
+            }
+        }catch (Exception e)
+        {
+            throw new Exception("Room validation failed: " + e.getMessage());
+        }
         this.name = name;
         this.historicEra = historicEra;
         this.style = style;
         this.originCountry = originCountry;
-        this.currentRoom = currentRoom;
         this.author = author;
         this.dateOfCreation = dateOfCreation;
         this.width = width;
@@ -136,13 +149,26 @@ public abstract class Artefact
     /**
      * Protected constructor for 3D artefacts including insurance, depth and material.
      */
-    protected Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double insurance, String name, double depth, Material material)
+    protected Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, double insurance, String name, double depth, Material material, Boolean Testmode) throws Exception
     {
+        try
+        {
+            if (DataBase.getAllRooms(Testmode).toString().toLowerCase().contains(currentRoom.toLowerCase()))
+            {
+                this.currentRoom = currentRoom;
+            }
+            else
+            {
+                throw new Exception("Room " + currentRoom + " does not exist in the database.");
+            }
+        }catch (Exception e)
+        {
+            throw new Exception("Room validation failed: " + e.getMessage());
+        }
         this.name = name;
         this.historicEra = historicEra;
         this.style = style;
         this.originCountry = originCountry;
-        this.currentRoom = currentRoom;
         this.author = author;
         this.dateOfCreation = dateOfCreation;
         this.width = width;
@@ -155,13 +181,26 @@ public abstract class Artefact
     /**
      * Protected constructor for 3D artefacts without insurance value.
      */
-    protected Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, String name, double depth, Material material)
+    protected Artefact(String historicEra, String style, String originCountry, String currentRoom, String author, java.sql.Date dateOfCreation, double width, double height, String name, double depth, Material material, Boolean Testmode) throws Exception
     {
+        try
+        {
+            if (DataBase.getAllRooms(Testmode).toString().toLowerCase().contains(currentRoom.toLowerCase()))
+            {
+                this.currentRoom = currentRoom;
+            }
+            else
+            {
+                throw new Exception("Room " + currentRoom + " does not exist in the database.");
+            }
+        }catch (Exception e)
+        {
+            throw new Exception("Room validation failed: " + e.getMessage());
+        }
         this.name = name;
         this.historicEra = historicEra;
         this.style = style;
         this.originCountry = originCountry;
-        this.currentRoom = currentRoom;
         this.author = author;
         this.dateOfCreation = dateOfCreation;
         this.width = width;
@@ -240,14 +279,6 @@ public abstract class Artefact
     public double getHeight()
     {
         return height;
-    }
-
-    /**
-     * @return stored BufferedImage or null if none
-     */
-    public BufferedImage getImages()
-    {
-        return images;
     }
 
     /**
