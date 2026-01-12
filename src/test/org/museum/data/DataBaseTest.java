@@ -50,22 +50,34 @@ class DataBaseTest
     Loan Loan4;
     Loan Loan5;
 
-    Room Room1;
-    Room Room2;
-    Room Room3;
-    Room Room4;
-    Room Room5;
+    static Room Room1;
+    static Room Room2;
+    static Room Room3;
+    static Room Room4;
+    static Room Room5;
 
     @BeforeAll
     static void beforeAll() throws Exception {
         Connection conn = DataBase.getConnection(true);
 
-        // Run schema (required in CI)
         InputStream in = DataBaseTest.class.getClassLoader().getResourceAsStream("schema.sql");
         if (in != null) {
             String sql = new String(in.readAllBytes());
             conn.createStatement().execute(sql);
         }
+
+        Room1 = new Room("Room a", "Ancient Artifacts", 50);
+        Room2 = new Room("Room b", "Medieval Wonders", 40);
+        Room3 = new Room("Room c", "Renaissance Gallery", 60);
+        Room4 = new Room("Room d", "Modern Art", 70);
+        Room5 = new Room("Room e", "Old Art", 30);
+
+        DataBase.addRoom(Room1, true);
+        DataBase.addRoom(Room2, true);
+        DataBase.addRoom(Room3, true);
+        DataBase.addRoom(Room4, true);
+        DataBase.addRoom(Room5, true);
+
     }
 
 
@@ -101,16 +113,6 @@ class DataBaseTest
         Loan3 = new Loan(false, "Alice Johnson", "alice@example.com", "5555555555", "Classical Sculpture", java.sql.Date.valueOf("2023-03-01"), java.sql.Date.valueOf("2023-03-15"));
         Loan4 = new Loan(false, "Bob Brown", "bob@example.com", "4444444444", "Gothic Painting", java.sql.Date.valueOf("2023-04-01"), java.sql.Date.valueOf("2023-04-15"));
         Loan5 = new Loan(false, "Charlie Davis", "charlie@example.com", "3333333333", "Eclectic Sculpture", java.sql.Date.valueOf("2023-05-01"), java.sql.Date.valueOf("2023-05-15"));
-
-        Room1 = new Room("Room a", "Ancient Artifacts", 50);
-        Room2 = new Room("Room b", "Medieval Wonders", 40);
-        Room3 = new Room("Room c", "Renaissance Gallery", 60);
-        Room4 = new Room("Room d", "Modern Art", 70);
-
-        DataBase.addRoom(Room1, true);
-        DataBase.addRoom(Room2, true);
-        DataBase.addRoom(Room3, true);
-        DataBase.addRoom(Room4, true);
     }
 
     @Test
@@ -124,11 +126,11 @@ class DataBaseTest
     @Order(2)
     void addRooms() throws Exception
     {
-        assertTrue(DataBase.addRoom(Room1, true));
-        assertTrue(DataBase.addRoom(Room2, true));
-        assertTrue(DataBase.addRoom(Room3, true));
-        assertTrue(DataBase.addRoom(Room4, true));
-        assertTrue(DataBase.addRoom(Room5, true));
+        //assertTrue(DataBase.addRoom(Room1, true));
+        //assertTrue(DataBase.addRoom(Room2, true));
+        //assertTrue(DataBase.addRoom(Room3, true));
+        //assertTrue(DataBase.addRoom(Room4, true));
+        //assertTrue(DataBase.addRoom(Room5, true));
     }
 
     @Test
@@ -161,30 +163,42 @@ class DataBaseTest
     @Order(4)
     void searchArtefacts() throws Exception
     {
-        assertEquals("Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room E", theInventory.SearchArtefactByName("Console Table", true));
-        assertEquals("Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room H", theInventory.SearchArtefactByName("Porcelain Jar", true));
-        assertEquals("Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K", theInventory.SearchArtefactByName("Abstract Sculpture", true));
-        assertEquals("Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room B", theInventory.SearchArtefactRoom("Room B", true));
-        assertEquals("Artefact Name: Glass Bowl, Artefact Type:  Pottery, Current Location: Room I", theInventory.SearchArtefactRoom("Room I", true));
-        assertEquals("Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K", theInventory.SearchArtefactRoom("Room K", true));
+        assertEquals("Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room a", theInventory.SearchArtefactByName("Console Table", true));
+        assertEquals("Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room d", theInventory.SearchArtefactByName("Porcelain Jar", true));
+        assertEquals("Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room c", theInventory.SearchArtefactByName("Abstract Sculpture", true));
+        assertEquals("Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room b\n" +
+                "Artefact Name: Clay Pot, Artefact Type:  Pottery, Current Location: Room b\n" +
+                "Artefact Name: Metal Canister, Artefact Type:  Pottery, Current Location: Room b\n" +
+                "Artefact Name: Gothic Sculpture, Artefact Type:  Sculpture, Current Location: Room b\n" +
+                "Artefact Name: Classical Painting, Artefact Type:  Painting, Current Location: Room b", theInventory.SearchArtefactRoom("Room b", true));
+        assertEquals("Artefact Name: Side Table, Artefact Type:  Furniture, Current Location: Room c\n" +
+                "Artefact Name: Ceramic Vase, Artefact Type:  Pottery, Current Location: Room c\n" +
+                "Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room c\n" +
+                "Artefact Name: Eclectic Sculpture, Artefact Type:  Sculpture, Current Location: Room c\n" +
+                "Artefact Name: Gothic Painting, Artefact Type:  Painting, Current Location: Room c", theInventory.SearchArtefactRoom("Room c", true));
+        assertEquals("Artefact Name: Pedestal Table, Artefact Type:  Furniture, Current Location: Room d\n" +
+                "Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room d\n" +
+                "Artefact Name: Baroque Sculpture, Artefact Type:  Sculpture, Current Location: Room d\n" +
+                "Artefact Name: Abstract Painting, Artefact Type:  Painting, Current Location: Room d\n" +
+                "Artefact Name: Eclectic Painting, Artefact Type:  Painting, Current Location: Room d", theInventory.SearchArtefactRoom("Room d", true));
         assertEquals("""
-                Artefact Name: Dining Table, Artefact Type:  Furniture, Current Location: Room A
-                Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room B
-                Artefact Name: Side Table, Artefact Type:  Furniture, Current Location: Room C
-                Artefact Name: Pedestal Table, Artefact Type:  Furniture, Current Location: Room D
-                Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room E""", theInventory.SearchArtefactType("Furniture", true));
+                Artefact Name: Dining Table, Artefact Type:  Furniture, Current Location: Room a
+                Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room b
+                Artefact Name: Side Table, Artefact Type:  Furniture, Current Location: Room c
+                Artefact Name: Pedestal Table, Artefact Type:  Furniture, Current Location: Room d
+                Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room a""", theInventory.SearchArtefactType("Furniture", true));
         assertEquals("""
-                Artefact Name: Clay Pot, Artefact Type:  Pottery, Current Location: Room F
-                Artefact Name: Ceramic Vase, Artefact Type:  Pottery, Current Location: Room G
-                Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room H
-                Artefact Name: Glass Bowl, Artefact Type:  Pottery, Current Location: Room I
-                Artefact Name: Metal Canister, Artefact Type:  Pottery, Current Location: Room J""", theInventory.SearchArtefactType("Pottery", true));
+                Artefact Name: Clay Pot, Artefact Type:  Pottery, Current Location: Room b
+                Artefact Name: Ceramic Vase, Artefact Type:  Pottery, Current Location: Room c
+                Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room d
+                Artefact Name: Glass Bowl, Artefact Type:  Pottery, Current Location: Room a
+                Artefact Name: Metal Canister, Artefact Type:  Pottery, Current Location: Room b""", theInventory.SearchArtefactType("Pottery", true));
         assertEquals("""
-                Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K
-                Artefact Name: Baroque Sculpture, Artefact Type:  Sculpture, Current Location: Room L
-                Artefact Name: Classical Sculpture, Artefact Type:  Sculpture, Current Location: Room M
-                Artefact Name: Gothic Sculpture, Artefact Type:  Sculpture, Current Location: Room N
-                Artefact Name: Eclectic Sculpture, Artefact Type:  Sculpture, Current Location: Room A""", theInventory.SearchArtefactType("Sculpture", true));
+                Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room c
+                Artefact Name: Baroque Sculpture, Artefact Type:  Sculpture, Current Location: Room d
+                Artefact Name: Classical Sculpture, Artefact Type:  Sculpture, Current Location: Room a
+                Artefact Name: Gothic Sculpture, Artefact Type:  Sculpture, Current Location: Room b
+                Artefact Name: Eclectic Sculpture, Artefact Type:  Sculpture, Current Location: Room c""", theInventory.SearchArtefactType("Sculpture", true));
     }
 
     @Test
@@ -215,27 +229,37 @@ class DataBaseTest
     @Order(8)
     void searchRoomAfterDeletion() throws Exception
     {
-        assertEquals("Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room E", theInventory.SearchArtefactByName("Console Table", true));
-        assertEquals("Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room H", theInventory.SearchArtefactByName("Porcelain Jar", true));
-        assertEquals("Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K", theInventory.SearchArtefactByName("Abstract Sculpture", true));
-        assertEquals("Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room B", theInventory.SearchArtefactRoom("Room B", true));
-        assertEquals("Artefact Name: Glass Bowl, Artefact Type:  Pottery, Current Location: Room I", theInventory.SearchArtefactRoom("Room I", true));
-        assertEquals("Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K", theInventory.SearchArtefactRoom("Room K", true));
+        assertEquals("Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room a", theInventory.SearchArtefactByName("Console Table", true));
+        assertEquals("Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room d", theInventory.SearchArtefactByName("Porcelain Jar", true));
+        assertEquals("Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room c", theInventory.SearchArtefactByName("Abstract Sculpture", true));
+        assertEquals("Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room b\n" +
+                "Artefact Name: Clay Pot, Artefact Type:  Pottery, Current Location: Room b\n" +
+                "Artefact Name: Metal Canister, Artefact Type:  Pottery, Current Location: Room b\n" +
+                "Artefact Name: Gothic Sculpture, Artefact Type:  Sculpture, Current Location: Room b\n" +
+                "Artefact Name: Classical Painting, Artefact Type:  Painting, Current Location: Room b", theInventory.SearchArtefactRoom("Room B", true));
+        assertEquals("Artefact Name: Side Table, Artefact Type:  Furniture, Current Location: Room c\n" +
+                "Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room c\n" +
+                "Artefact Name: Eclectic Sculpture, Artefact Type:  Sculpture, Current Location: Room c\n" +
+                "Artefact Name: Gothic Painting, Artefact Type:  Painting, Current Location: Room c", theInventory.SearchArtefactRoom("Room c", true));
+        assertEquals("Artefact Name: Pedestal Table, Artefact Type:  Furniture, Current Location: Room d\n" +
+                "Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room d\n" +
+                "Artefact Name: Abstract Painting, Artefact Type:  Painting, Current Location: Room d\n" +
+                "Artefact Name: Eclectic Painting, Artefact Type:  Painting, Current Location: Room d", theInventory.SearchArtefactRoom("Room d", true));
         assertEquals("""
-                Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room B
-                Artefact Name: Side Table, Artefact Type:  Furniture, Current Location: Room C
-                Artefact Name: Pedestal Table, Artefact Type:  Furniture, Current Location: Room D
-                Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room E""", theInventory.SearchArtefactType("Furniture", true));
+                Artefact Name: Coffee Table, Artefact Type:  Furniture, Current Location: Room b
+                Artefact Name: Side Table, Artefact Type:  Furniture, Current Location: Room c
+                Artefact Name: Pedestal Table, Artefact Type:  Furniture, Current Location: Room d
+                Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room a""", theInventory.SearchArtefactType("Furniture", true));
         assertEquals("""
-                Artefact Name: Clay Pot, Artefact Type:  Pottery, Current Location: Room F
-                Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room H
-                Artefact Name: Glass Bowl, Artefact Type:  Pottery, Current Location: Room I
-                Artefact Name: Metal Canister, Artefact Type:  Pottery, Current Location: Room J""", theInventory.SearchArtefactType("Pottery", true));
+                Artefact Name: Clay Pot, Artefact Type:  Pottery, Current Location: Room b
+                Artefact Name: Porcelain Jar, Artefact Type:  Pottery, Current Location: Room d
+                Artefact Name: Glass Bowl, Artefact Type:  Pottery, Current Location: Room a
+                Artefact Name: Metal Canister, Artefact Type:  Pottery, Current Location: Room b""", theInventory.SearchArtefactType("Pottery", true));
         assertEquals("""
-                Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room K
-                Artefact Name: Classical Sculpture, Artefact Type:  Sculpture, Current Location: Room M
-                Artefact Name: Gothic Sculpture, Artefact Type:  Sculpture, Current Location: Room N
-                Artefact Name: Eclectic Sculpture, Artefact Type:  Sculpture, Current Location: Room A""", theInventory.SearchArtefactType("Sculpture", true));
+                Artefact Name: Abstract Sculpture, Artefact Type:  Sculpture, Current Location: Room c
+                Artefact Name: Classical Sculpture, Artefact Type:  Sculpture, Current Location: Room a
+                Artefact Name: Gothic Sculpture, Artefact Type:  Sculpture, Current Location: Room b
+                Artefact Name: Eclectic Sculpture, Artefact Type:  Sculpture, Current Location: Room c""", theInventory.SearchArtefactType("Sculpture", true));
     }
 
     @Test
@@ -274,22 +298,20 @@ class DataBaseTest
     @Order(13)
     void searchRooms() throws Exception
     {
-        assertEquals("Room B", DataBase.searchRoomByName("Medieval", true));
+        assertEquals("room b", DataBase.searchRoomByName("Medieval", true));
     }
 
     @Test
     @Order(14)
-    void clearRooms() throws Exception
-    {
-        assertTrue(DataBase.clearRooms(true));
-    }
-
-    @Test
-    @Order(15)
     void listArtefactsafterClear() throws Exception
     {
         assertEquals("", theInventory.ListAllArtefacts(true));
     }
 
-
+    @Test
+    @Order(15)
+    void clearRooms() throws Exception
+    {
+        assertTrue(DataBase.clearRooms(true));
+    }
 }

@@ -163,7 +163,7 @@ public abstract class Artefact
             }
         }catch (Exception e)
         {
-            throw new Exception("Room validation failed: " + e.getMessage());
+            throw new Exception("Room validation failed: Message: " + e.getMessage() + " All DataBase Rooms: " + DataBase.getAllRooms(Testmode).toString().toLowerCase() + Testmode);
         }
         this.name = name;
         this.historicEra = historicEra;

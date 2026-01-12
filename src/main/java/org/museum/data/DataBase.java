@@ -362,7 +362,7 @@ public class DataBase
             var rs = ps.executeQuery();
             if (rs.next())
             {
-                return rs.getString("roomNum");
+                return rs.getString("roomNum").toLowerCase();
             }
             return null;
         } catch (SQLException e)
@@ -591,9 +591,7 @@ public class DataBase
             List<String> rooms = new ArrayList<>();
             while (rs.next())
             {
-                byte[] imageBytes = rs.getBytes("roomNum");
-                InputStream in = new java.io.ByteArrayInputStream(imageBytes);
-                String room = in.toString();
+                String room = rs.getString("roomNum");
                 rooms.add(room);
             }
             return rooms;
