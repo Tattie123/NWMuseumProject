@@ -13,29 +13,6 @@ public class Loan
     private final java.sql.Date endDate;
 
     /**
-     * Approve the current loan (static shared flag in this implementation).
-     *
-     * @return true when approved
-     */
-    public static boolean approveLoan()
-    {
-        isApproved = true;
-        return true;
-    }
-
-    /**
-     * Reject a loan. Current implementation is a placeholder.
-     *
-     * @return true when rejection performed
-     */
-    public boolean rejectLoan()
-    {
-        //delete loan instance
-
-        return true;
-    }
-
-    /**
      * Construct a new loan request.
      *
      * @param isApproved initial approval state
@@ -111,5 +88,10 @@ public class Loan
     public Date getEndDate()
     {
         return endDate;
+    }
+
+    public void authorizeLoan()
+    {
+        isApproved = true;
     }
 }

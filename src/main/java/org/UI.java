@@ -11,6 +11,7 @@ import org.museum.data.DataBase;
 import org.museum.data.Inventory;
 import org.museum.other.Loan;
 
+import javax.xml.crypto.Data;
 import java.sql.Date;
 import java.util.Objects;
 import java.util.Scanner;
@@ -190,10 +191,44 @@ public class UI
                         System.out.println("Incorrect Password");
                     }
                 }
-                case "9" -> run = false;
+                case "9" -> AuthorizeLoan();
+                case "10" -> run = false;
                 default -> System.out.println("Invalid choice, please try again.");
             }
         }while(run);
+    }
+
+    private static void AuthorizeLoan() throws Exception
+    {
+        //todo: fix this so approved isnt always true
+        System.out.println(Inventory.getLoans(false));
+        for (Loan loan : Inventory.getLoans(false))
+        {
+            System.out.println("Loan approved: " + loan.isApproved());
+            if (!loan.isApproved())
+            {
+                System.out.println("Pending Loan for Artefact: " + loan.getArtefactName() + " requested by " + loan.getName() + " from " + loan.getStartDate() + " to " + loan.getEndDate());
+            }
+        }
+        System.out.println("Please enter the name of the artefact loan you wish to authorise:");
+        String artefactName = scanner.next();
+        Inventory theInventory = Inventory.getInstance();
+        try
+        {
+            Loan loan = theInventory.getLoanByArtefactName(artefactName, false);
+            if (loan != null)
+            {
+                loan.authorizeLoan();
+                System.out.println("Loan authorised successfully for artefact: " + artefactName);
+            } else
+            {
+                System.out.println("Loan not found.");
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error while Authorising Loan: " + e.getMessage());
+        }
     }
 
     private static void AddImage()
@@ -496,8 +531,20 @@ public class UI
         }
         System.out.println("Please enter the start date of the loan (YYYY-MM-DD):");
         String startDate = scanner.next();
+        if (Date.valueOf(startDate).before(new Date(System.currentTimeMillis())))
+        {
+            System.out.println("Start date cannot be in the past, Please try again.");
+            RequestLoan();
+            return;
+        }
         System.out.println("Please enter the end date of the loan (YYYY-MM-DD):");
         String endDate = scanner.next();
+        if (Date.valueOf(endDate).before(Date.valueOf(startDate)))
+        {
+            System.out.println("End date cannot be before start date, Please try again.");
+            RequestLoan();
+            return;
+        }
         Loan loan = new Loan(false, name, contactInfo, telNum, artefactName, Date.valueOf(startDate), Date.valueOf(endDate));
     }
 

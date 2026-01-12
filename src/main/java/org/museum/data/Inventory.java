@@ -1,5 +1,6 @@
 package org.museum.data;
 
+import org.museum.other.Loan;
 import org.museum.other.Room;
 import org.museum.artefacts.Artefact;
 
@@ -13,6 +14,18 @@ public final class Inventory
 {
     private static Inventory instance;
     private List <Artefact> Artifacts;
+    private List <Loan> Loans;
+
+    public static List<Loan> getLoans(boolean b)
+    {
+        DataBase.PullLoans(b);
+        Inventory inv = getInstance();
+        if (inv.Loans == null || inv.Loans.isEmpty())
+        {
+            inv.Loans = new ArrayList<>();
+        }
+        return inv.Loans;
+    }
 
     /**
      * Search artefacts by name (case-insensitive substring match) and return a textual result.
@@ -258,5 +271,31 @@ public final class Inventory
             }
         }
         return result.toString().strip();
+    }
+
+    public Loan getLoanByArtefactName(String artefactName, boolean b) throws Exception
+    {
+        DataBase.PullLoans(b);
+        for (Loan loan : this.Loans)
+        {
+            if (loan != null && loan.getName() != null && loan.getArtefactName().toLowerCase().contains(artefactName.toLowerCase()))
+            {
+                return loan;
+            }
+        }
+        return null;
+    }
+
+    public void addLoan(Loan loan)
+    {
+        if (loan == null) return;
+
+        Inventory inv = getInstance();
+
+        if (inv.Loans == null)
+        {
+            inv.Loans = new ArrayList<>();
+        }
+        inv.Loans.add(loan);
     }
 }

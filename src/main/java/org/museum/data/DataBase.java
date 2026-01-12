@@ -600,4 +600,38 @@ public class DataBase
             throw new SQLException(e);
         }
     }
+
+    public static void PullLoans(boolean b)
+    {
+        if (connection == null)
+            try
+            {
+                connection = getConnection(b);
+            } catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+
+        try
+        {
+            var ps = connection.prepareStatement("SELECT * FROM loans;");
+            var rs = ps.executeQuery();
+
+            while (rs.next())
+            {
+                boolean isApproved = rs.getBoolean("isApproved");
+                String name = rs.getString("name");
+                String contactInfo = rs.getString("contactInfo");
+                String telNum = rs.getString("telNum");
+                String artefactName = rs.getString("artefactName");
+                Date startDate = rs.getDate("startDate");
+                Date endDate = rs.getDate("endDate");
+                Loan loan = new Loan(isApproved, name, contactInfo, telNum, artefactName, startDate, endDate);
+                Inventory.getInstance().addLoan(loan);
+            }
+        } catch (SQLException e)
+        {
+            System.out.println("Error Pulling Loans: " + e.getMessage());
+        }
+    }
 }
