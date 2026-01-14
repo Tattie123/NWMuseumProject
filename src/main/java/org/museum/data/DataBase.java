@@ -16,7 +16,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.ArrayList;
@@ -633,5 +632,32 @@ public class DataBase
         {
             System.out.println("Error Pulling Loans: " + e.getMessage());
         }
+    }
+
+    public static Room getRoomFromName(String roomName, boolean testMode)
+    {
+        if (connection == null)
+            try
+            {
+                connection = getConnection(testMode);
+            } catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+
+        try
+        {
+            var ps = connection.prepareStatement("SELECT * FROM rooms WHERE roomNum LIKE ?;");
+            ps.setString(1, roomName);
+            var rs = ps.executeQuery();
+            rs.next();
+            Room room = new Room(rs.getString("roomNum"), rs.getString("roomName"), rs.getInt("capacity"));
+            Inventory.getInstance().addRoom(room);
+            return room;
+        } catch (SQLException e)
+        {
+            System.out.println("Error Pulling Rooms: " + e.getMessage());
+        }
+        return null;
     }
 }

@@ -1,6 +1,7 @@
 package org.museum.data;
 
 import org.junit.jupiter.api.*;
+import org.museum.artefacts.Artefact;
 import org.museum.artefacts.Material;
 import org.museum.artefacts.Painting;
 import org.museum.artefacts.artefacts3d.Artefact3D;
@@ -124,17 +125,6 @@ class DataBaseTest
 
     @Test
     @Order(2)
-    void addRooms() throws Exception
-    {
-        //assertTrue(DataBase.addRoom(Room1, true));
-        //assertTrue(DataBase.addRoom(Room2, true));
-        //assertTrue(DataBase.addRoom(Room3, true));
-        //assertTrue(DataBase.addRoom(Room4, true));
-        //assertTrue(DataBase.addRoom(Room5, true));
-    }
-
-    @Test
-    @Order(3)
     void addArtefacts() throws Exception
     {
         assertTrue(DataBase.addArtefact(Table1, true));
@@ -160,7 +150,7 @@ class DataBaseTest
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     void searchArtefacts() throws Exception
     {
         assertEquals("Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room a", theInventory.SearchArtefactByName("Console Table", true));
@@ -202,6 +192,16 @@ class DataBaseTest
     }
 
     @Test
+    @Order(4)
+    void moveArtefacts() throws Exception
+    {
+        assertTrue(Inventory.moveArtefactToRoom("Dining Table", "Room b", true));
+        assertTrue(Inventory.moveArtefactToRoom("Ceramic Vase", "Room d", true));
+        assertTrue(Inventory.moveArtefactToRoom("Baroque Sculpture", "Room a", true));
+        assertTrue(Inventory.moveArtefactToRoom("Baroque Painting", "Room b", true));
+    }
+
+    @Test
     @Order(5)
     void listArtefacts() throws Exception
     {
@@ -210,6 +210,13 @@ class DataBaseTest
 
     @Test
     @Order(6)
+    void viewInfoAboutArtefact() throws Exception
+    {
+        assertEquals(new Furniture(), theInventory.getArtefactByName("Dining Table", true));
+    }
+
+    @Test
+    @Order(7)
     void deleteArtefact() throws Exception
     {
         assertTrue(DataBase.deleteArtefact("Dining Table", true));
@@ -219,14 +226,14 @@ class DataBaseTest
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     void listArtefactsafterDeletion() throws Exception
     {
         assertEquals("Coffee Table\nSide Table\nPedestal Table\nConsole Table\nClay Pot\nPorcelain Jar\nGlass Bowl\nMetal Canister\nAbstract Sculpture\nClassical Sculpture\nGothic Sculpture\nEclectic Sculpture\nAbstract Painting\nClassical Painting\nGothic Painting\nEclectic Painting", theInventory.ListAllArtefacts(true));
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     void searchRoomAfterDeletion() throws Exception
     {
         assertEquals("Artefact Name: Console Table, Artefact Type:  Furniture, Current Location: Room a", theInventory.SearchArtefactByName("Console Table", true));
@@ -263,14 +270,14 @@ class DataBaseTest
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     void clearArtefacts() throws Exception
     {
         assertTrue(DataBase.clearArtefacts(true));
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     void addLoans() throws Exception
     {
         assertTrue(DataBase.addLoan(Loan1, true));
@@ -281,35 +288,35 @@ class DataBaseTest
     }
 
     @Test
-    @Order(11)
+    @Order(12)
     void searchLoans() throws Exception
     {
         assertEquals("john@example.com", DataBase.searchLoans("John Doe", true));
     }
 
     @Test
-    @Order(12)
+    @Order(13)
     void clearLoans() throws Exception
     {
         assertTrue(DataBase.clearLoans(true));
     }
 
     @Test
-    @Order(13)
+    @Order(14)
     void searchRooms() throws Exception
     {
         assertEquals("room b", DataBase.searchRoomByName("Medieval", true));
     }
 
     @Test
-    @Order(14)
+    @Order(15)
     void listArtefactsafterClear() throws Exception
     {
         assertEquals("", theInventory.ListAllArtefacts(true));
     }
 
     @Test
-    @Order(15)
+    @Order(16)
     void clearRooms() throws Exception
     {
         assertTrue(DataBase.clearRooms(true));

@@ -10,6 +10,7 @@ import org.museum.artefacts.artefacts3d.Sculpture;
 import org.museum.data.DataBase;
 import org.museum.data.Inventory;
 import org.museum.other.Loan;
+import org.museum.other.Room;
 
 import javax.xml.crypto.Data;
 import java.sql.Date;
@@ -320,8 +321,25 @@ public class UI
      * <p>Currently unimplemented. Expected to prompt for an artefact and a destination room,
      * then update the inventory/room assignment.</p>
      */
-    private static void MoveArtefact()
+    private static void MoveArtefact() throws Exception
     {
+        System.out.println("Please enter the name of the artefact you wish to move:");
+        String artefactName = scanner.next();
+        System.out.println("Please enter the name of the room you wish to move the artefact to:");
+        String roomName = scanner.next();
+
+        if (roomName.isEmpty() || artefactName.isEmpty())
+        {
+            System.out.println("Room name or Artefact name cannot be empty.");
+            return;
+        }
+        if (Inventory.moveArtefactToRoom(artefactName, roomName, false))
+        {
+            System.out.println("Artefact moved successfully.");
+        } else
+        {
+            System.out.println("Failed to move artefact.");
+        }
     }
 
     /**

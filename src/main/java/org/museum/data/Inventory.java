@@ -5,6 +5,7 @@ import org.museum.other.Room;
 import org.museum.artefacts.Artefact;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public final class Inventory
     private static Inventory instance;
     private List <Artefact> Artifacts;
     private List <Loan> Loans;
+    private List <Room> Rooms;
 
     public static List<Loan> getLoans(boolean b)
     {
@@ -25,6 +27,18 @@ public final class Inventory
             inv.Loans = new ArrayList<>();
         }
         return inv.Loans;
+    }
+
+    public static boolean moveArtefactToRoom(String artefactName, String roomName, boolean testMode) throws Exception
+    {
+        DataBase.PullArtefacts(testMode);
+        Inventory.getInstance();
+        Room room = DataBase.getRoomFromName(roomName, testMode);
+        assert room != null;
+        if (room.getCurrentSpace(testMode) <= 0)
+            throw new Exception("Room is at full capacity.");
+        else
+            return true;
     }
 
     /**
@@ -297,5 +311,19 @@ public final class Inventory
             inv.Loans = new ArrayList<>();
         }
         inv.Loans.add(loan);
+    }
+
+    public void addRoom(Room room)
+    {
+        if (room == null) return;
+
+        Inventory inv = getInstance();
+
+        if (inv.Rooms == null)
+        {
+            inv.Rooms = new ArrayList<>();
+        }
+
+        Rooms.add(room);
     }
 }

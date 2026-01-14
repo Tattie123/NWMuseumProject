@@ -1,5 +1,10 @@
 package org.museum.other;
 
+import org.museum.artefacts.Artefact;
+import org.museum.data.DataBase;
+
+import java.util.List;
+
 /**
  * Represents a physical room in the museum with capacity metadata.
  */
@@ -8,17 +13,6 @@ public class Room
     private final String roomNum;
     private final String roomName;
     private final int capacity;
-
-    /**
-     * Placeholder to check whether an artefact fits in this room.
-     *
-     * @return true if fits (default true until implemented)
-     */
-    public boolean checkFits()
-    {
-        //todo implement feat
-        return true;
-    }
 
     /**
      * Construct a Room instance.
@@ -53,8 +47,18 @@ public class Room
     /**
      * @return room capacity
      */
-    public int getCapacity()
+    public int getCurrentSpace(boolean testMode) throws Exception
     {
+        List<Artefact> artefacts = DataBase.PullArtefacts(testMode);
+        int capacity = this.capacity;
+        assert artefacts != null;
+        for (Artefact artefact : artefacts)
+        {
+            if (artefact.getCurrentRoom().equals(this.roomNum))
+            {
+                capacity -= 1;
+            }
+        }
         return capacity;
     }
 
@@ -66,5 +70,10 @@ public class Room
     public String getName()
     {
         return roomName;
+    }
+
+    public int getCapacity()
+    {
+        return capacity;
     }
 }
