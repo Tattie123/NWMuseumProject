@@ -10,9 +10,7 @@ import org.museum.artefacts.artefacts3d.Sculpture;
 import org.museum.data.DataBase;
 import org.museum.data.Inventory;
 import org.museum.other.Loan;
-import org.museum.other.Room;
 
-import javax.xml.crypto.Data;
 import java.sql.Date;
 import java.util.Objects;
 import java.util.Scanner;
@@ -201,7 +199,6 @@ public class UI
 
     private static void AuthorizeLoan() throws Exception
     {
-        //todo: fix this so approved isnt always true
         System.out.println(Inventory.getLoans(false));
         for (Loan loan : Inventory.getLoans(false))
         {
@@ -316,11 +313,8 @@ public class UI
     }
 
     /**
-     * Move artefact placeholder.
-     *todo: this
-     * <p>Currently unimplemented. Expected to prompt for an artefact and a destination room,
-     * then update the inventory/room assignment.</p>
-     */
+     * Move artefact
+     ***/
     private static void MoveArtefact() throws Exception
     {
         System.out.println("Please enter the name of the artefact you wish to move:");

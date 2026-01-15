@@ -1,7 +1,6 @@
 package org.museum.data;
 
 import org.junit.jupiter.api.*;
-import org.museum.artefacts.Artefact;
 import org.museum.artefacts.Material;
 import org.museum.artefacts.Painting;
 import org.museum.artefacts.artefacts3d.Artefact3D;
@@ -212,7 +211,7 @@ class DataBaseTest
     @Order(6)
     void viewInfoAboutArtefact() throws Exception
     {
-        assertEquals(new Furniture(), theInventory.getArtefactByName("Dining Table", true));
+        assertEquals(new Furniture("Medieval", "Gothic", "England", "Room a", "Jim", java.sql.Date.valueOf("2000-01-01"), 0.75, 0.5, 3.75, 1.3, "Dining Table", Material.WOOD, true), theInventory.getArtefactByName("Dining Table", true));
     }
 
     @Test
