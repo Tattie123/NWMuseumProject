@@ -14,7 +14,7 @@ import org.museum.other.Loan;
 import java.sql.Date;
 import java.util.Objects;
 import java.util.Scanner;
-
+//todo: move all of the methods that dont include UI to other classes
 public class UI
 {
     static Scanner scanner = new Scanner(System.in);
@@ -58,7 +58,7 @@ public class UI
                 {
                     System.out.println("Enter Password");
                     String password = scanner.next();
-                    if (password.equals("Password"))
+                    if (password.equals("StaffPassword"))
                     {
                         System.out.println("Changing User");
                         StaffUI();
@@ -126,7 +126,7 @@ public class UI
                 {
                     System.out.println("Enter Password");
                     String password = scanner.next();
-                    if (password.equals("Password"))
+                    if (password.equals("DirectorPassword"))
                     {
                         System.out.println("Changing User");
                         ManagerUI();
@@ -197,7 +197,7 @@ public class UI
         }while(run);
     }
 
-    private static void AuthorizeLoan() throws Exception
+    private static void AuthorizeLoan()
     {
         System.out.println(Inventory.getLoans(false));
         for (Loan loan : Inventory.getLoans(false))
@@ -233,7 +233,7 @@ public class UI
     {
         System.out.println("Please enter the name of the artefact you wish to add an image to:");
         String artefactName = scanner.next();
-        System.out.println("Please enter the full name of the image including extension (in Images Folder):");
+        System.out.println("Please enter the full name of the image including file extension (place image in same Folder as the program):");
         String filePath = scanner.next();
 
         int lastDotIndex = filePath.lastIndexOf('.');

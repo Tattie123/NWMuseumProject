@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Date;
+import java.util.Objects;
 
 public abstract class Artefact
 {
@@ -23,6 +24,32 @@ public abstract class Artefact
     private double insurance;
     private double depth;
     private Material material;
+
+    /**
+     * Equality check based on string representation of artefact properties.
+     * Used For testing purposes to compare artefact instances.
+     *
+     * @param o other object to compare
+     * @return true if equal based on toString comparison
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        // compare textual content which reflects the artefact's properties used by tests
+        return Objects.equals(this.toString(), o.toString());
+    }
+
+    /**
+     * Hash code based on string representation of artefact properties.
+     * Used For testing purposes to generate hash codes consistent with equals().
+     *
+     * @return hash code integer
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(Objects.toString(this));
+    }
 
     /**
      * Returns the runtime type/name of the artefact subclass.
@@ -339,7 +366,7 @@ public abstract class Artefact
      */
     public void addImage(String filePath, boolean testMode, String fileType) throws Exception
     {
-        BufferedImage image = ImageIO.read(new File("src/main/resources/Images/" + filePath));
+        BufferedImage image = ImageIO.read(new File(filePath));
         DataBase.addImageToArtefact(this.name, image, testMode, fileType, filePath);
     }
 }

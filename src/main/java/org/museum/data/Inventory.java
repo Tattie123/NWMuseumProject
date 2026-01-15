@@ -7,6 +7,7 @@ import org.museum.artefacts.Artefact;
 import javax.swing.*;
 import javax.xml.crypto.Data;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -227,43 +228,158 @@ public final class Inventory
         return null;
     }
 
+
     public void ViewImagesOfArtefact(List<BufferedImage> images) throws Exception
     {
+        if (images == null || images.isEmpty())
+            throw new Exception("No images to display.");
+
+        final int[] index = {0};
+        final BufferedImage[] current = {images.get(0)};
+        final double[] scale = {1.0};
+        final double[] tx = {0.0}, ty = {0.0};
+        final boolean[] fitted = {false};
+        final java.awt.Point[] lastDrag = {null};
 
         JFrame frame = new JFrame("Image Viewer");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 300);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setLayout(new BorderLayout());
 
-        CardLayout cardLayout = new CardLayout();
-        JPanel cardPanel = new JPanel(cardLayout);
+        JComponent imagePanel = new JComponent() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (current[0] == null) return;
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                java.awt.geom.AffineTransform at = new java.awt.geom.AffineTransform();
+                at.translate(tx[0], ty[0]);
+                at.scale(scale[0], scale[0]);
+                g2.drawRenderedImage(current[0], at);
+                g2.dispose();
+            }
+        };
 
-        for (int i = 0; i < images.size(); i++)
-        {
-            BufferedImage img = images.get(i);
-            ImageIcon icon = new ImageIcon(img);
-            JLabel label = new JLabel(icon);
-            JPanel panel = new JPanel();
-            panel.setBackground(Color.LIGHT_GRAY);
-            panel.add(label);
-            cardPanel.add(panel, "Panel" + (i + 1));
-        }
+        Runnable fitToPanel = () -> {
+            if (current[0] == null) return;
+            int pw = Math.max(1, imagePanel.getWidth());
+            int ph = Math.max(1, imagePanel.getHeight());
+            double sx = (double) pw / current[0].getWidth();
+            double sy = (double) ph / current[0].getHeight();
+            scale[0] = Math.max(0.01, Math.min(10.0, Math.min(sx, sy) * 0.95));
+            tx[0] = (pw - current[0].getWidth() * scale[0]) / 2.0;
+            ty[0] = (ph - current[0].getHeight() * scale[0]) / 2.0;
+            fitted[0] = true;
+            imagePanel.revalidate();
+            imagePanel.repaint();
+        };
 
-        JButton nextButton = new JButton("Next");
-        nextButton.addActionListener(e -> cardLayout.next(cardPanel));
+        MouseAdapter ma = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    fitToPanel.run();
+                    return;
+                }
+                lastDrag[0] = e.getPoint();
+                imagePanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+            }
 
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                lastDrag[0] = null;
+                imagePanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (lastDrag[0] != null) {
+                    int dx = e.getX() - lastDrag[0].x;
+                    int dy = e.getY() - lastDrag[0].y;
+                    tx[0] += dx;
+                    ty[0] += dy;
+                    lastDrag[0] = e.getPoint();
+                    fitted[0] = false;
+                    imagePanel.repaint();
+                }
+            }
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                if (current[0] == null) return;
+                double delta = -0.1 * e.getPreciseWheelRotation();
+                double oldScale = scale[0];
+                double newScale = Math.max(0.01, Math.min(10.0, oldScale + delta));
+                if (newScale == oldScale) return;
+
+                // zoom around mouse position
+                double mx = e.getX();
+                double my = e.getY();
+                double imgX = (mx - tx[0]) / oldScale;
+                double imgY = (my - ty[0]) / oldScale;
+                tx[0] = mx - imgX * newScale;
+                ty[0] = my - imgY * newScale;
+                scale[0] = newScale;
+                fitted[0] = false;
+                imagePanel.repaint();
+            }
+        };
+
+        imagePanel.addMouseListener(ma);
+        imagePanel.addMouseMotionListener(ma);
+        imagePanel.addMouseWheelListener(ma);
+
+        // keep fit on resize if previously fitted
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                if (fitted[0]) {
+                    SwingUtilities.invokeLater(fitToPanel);
+                }
+            }
+        });
+
+        JPanel controls = new JPanel();
         JButton prevButton = new JButton("Previous");
-        prevButton.addActionListener(e -> cardLayout.previous(cardPanel));
+        JButton nextButton = new JButton("Next");
+        JButton fitButton = new JButton("Fit");
+        JButton resetButton = new JButton("Reset Zoom");
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(prevButton);
-        buttonPanel.add(nextButton);
+        prevButton.addActionListener(e -> {
+            index[0] = (index[0] - 1 + images.size()) % images.size();
+            current[0] = images.get(index[0]);
+            fitted[0] = false;
+            // fit after layout settled
+            SwingUtilities.invokeLater(fitToPanel);
+        });
+        nextButton.addActionListener(e -> {
+            index[0] = (index[0] + 1) % images.size();
+            current[0] = images.get(index[0]);
+            fitted[0] = false;
+            SwingUtilities.invokeLater(fitToPanel);
+        });
+        fitButton.addActionListener(e -> fitToPanel.run());
+        resetButton.addActionListener(e -> {
+            scale[0] = 1.0;
+            tx[0] = 0.0;
+            ty[0] = 0.0;
+            fitted[0] = false;
+            imagePanel.repaint();
+        });
 
-        frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+        controls.add(prevButton);
+        controls.add(nextButton);
+        controls.add(fitButton);
+        controls.add(resetButton);
 
-        frame.add(cardPanel);
+        frame.add(imagePanel, BorderLayout.CENTER);
+        frame.add(controls, BorderLayout.SOUTH);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setAlwaysOnTop(true);
-        frame.toFront();
+
+        // ensure initial fit runs after visible
+        SwingUtilities.invokeLater(fitToPanel);
     }
 
     /**

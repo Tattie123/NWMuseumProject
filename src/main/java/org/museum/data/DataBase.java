@@ -218,7 +218,6 @@ public class DataBase
             return artefacts;
         } catch (SQLException e)
         {
-            System.out.println("Error Pulling Artefacts: " + e.getMessage());
             return null;
         }
     }
@@ -277,7 +276,6 @@ public class DataBase
             return rowsAffected > 0;
         } catch (SQLException e)
         {
-            System.out.println("Error Clearing Loans: " + e.getMessage());
             return false;
         }
     }
@@ -336,7 +334,6 @@ public class DataBase
             return rowsAffected > 0;
         } catch (SQLException e)
         {
-            System.out.println("Error Adding Room: " + e.getMessage());
             return false;
         }
     }
@@ -391,7 +388,6 @@ public class DataBase
             return rowsAffected > 0;
         } catch (SQLException e)
         {
-            System.out.println("Error clearing Rooms: " + e.getMessage());
             return false;
         }
     }
@@ -415,7 +411,7 @@ public class DataBase
             ps.executeUpdate();
         } catch (Exception e)
         {
-            System.out.println("Error Setting Insurance: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -445,7 +441,7 @@ public class DataBase
             }
         } catch (Exception e)
         {
-            System.out.println("Error retrieving rooms: " + e.getMessage());
+            throw new RuntimeException(e);
         }
         return rooms;
     }
@@ -477,7 +473,6 @@ public class DataBase
             return rooms;
         } catch (SQLException e)
         {
-            System.out.println("Error Pulling Rooms: " + e.getMessage());
             return null;
         }
     }
@@ -511,7 +506,7 @@ public class DataBase
 
         } catch (SQLException e)
         {
-            System.out.println("Error Adding Image to Artefact: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -542,11 +537,10 @@ public class DataBase
                 images.add(image);
             }
             return images;
-        } catch (SQLException e)
+        } catch (SQLException | IOException e)
         {
-            System.out.println("Error getting Images: " + e.getMessage());
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     public static List<BufferedImage> getAllImages(boolean b) throws Exception
@@ -630,7 +624,7 @@ public class DataBase
             }
         } catch (SQLException e)
         {
-            System.out.println("Error Pulling Loans: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -656,8 +650,7 @@ public class DataBase
             return room;
         } catch (SQLException e)
         {
-            System.out.println("Error Pulling Rooms: " + e.getMessage());
+            throw new RuntimeException(e);
         }
-        return null;
     }
 }
