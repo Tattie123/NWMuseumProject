@@ -163,10 +163,11 @@ public class UI
                                 4. Search for Artefact by Room
                                 5. Search for Artefact by Type
                                 6. View information about Artefact
-                                7. View images of Artefact
-                                8. Set Insurance Value of Artefact
-                                9. Authorise external Loan
-                                10. Exit To Staff""");
+                                7. View All Loans
+                                8. View images of Artefact
+                                9. Set Insurance Value of Artefact
+                                10. Authorise external Loan
+                                11. Exit To Staff""");
             String choice = scanner.next();
             switch (choice)
             {
@@ -176,8 +177,9 @@ public class UI
                 case "4" -> SearchArtefactByRoom();
                 case "5" -> SearchArtefactByType();
                 case "6" -> ViewArtefactInfo();
-                case "7" -> ViewImagesOfArtefact();
-                case "8" ->
+                case "7" -> System.out.println("Not implemented yet..."); //todo: implement View All Loans
+                case "8" -> ViewImagesOfArtefact();
+                case "9" ->
                 {
                     System.out.println("Enter Password");
                     String password = scanner.next();
@@ -190,8 +192,8 @@ public class UI
                         System.out.println("Incorrect Password");
                     }
                 }
-                case "9" -> AuthorizeLoan();
-                case "10" -> run = false;
+                case "10" -> AuthorizeLoan();
+                case "11" -> run = false;
                 default -> System.out.println("Invalid choice, please try again.");
             }
         }while(run);
