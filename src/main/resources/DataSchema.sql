@@ -20,9 +20,10 @@ CREATE TABLE IF NOT EXISTS artefacts
     name VARCHAR(255) NOT NULL,
     type VARCHAR(255) NOT NULL,
     material VARCHAR(255) NOT NULL
-);
+    );
 
-CREATE TABLE IF NOT EXISTS loans (
+CREATE TABLE IF NOT EXISTS loans
+(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     isApproved BOOLEAN NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -31,24 +32,23 @@ CREATE TABLE IF NOT EXISTS loans (
     artefactName VARCHAR(255) NOT NULL,
     startDate DATE NOT NULL,
     endDate DATE NOT NULL
-);
+    );
 
-create table IF NOT EXISTS rooms (
+create table IF NOT EXISTS rooms
+(
     id       int auto_increment PRIMARY KEY,
     roomNum  TEXT null,
     roomName TEXT null,
     capacity int  null
 );
 
-CREATE TABLE IF NOT EXISTS images (
-  id int auto_increment PRIMARY KEY,
-  name
-  varchar
+CREATE TABLE IF NOT EXISTS images
 (
-  255
-) NOT NULL,
-  data longblob NOT NULL
-);
+    id int auto_increment PRIMARY KEY,
+    name
+    varchar(255) NOT NULL,
+    data longblob NOT NULL
+    );
 
 DELETE FROM artefacts;
 ALTER TABLE artefacts AUTO_INCREMENT = 1;
@@ -63,20 +63,20 @@ DELETE FROM images;
 ALTER TABLE images AUTO_INCREMENT = 1;
 
 INSERT INTO artefacts (historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, depth, insurance, name, type, material) VALUES
-('Ancient Egypt', 'Greek', 'Egypt', '101a', 'Unknown', '1323-01-01', 25.0, 50.0, 10.0, 2000000.0, 'Sarcophagus of Tutankhamun', 'Furniture', 'Wood'),
-('Renaissance', 'Victorian', 'Italy', '101b', 'Leonardo da Vinci', '1503-01-01', 77.0, 53.0, 2.0, 1000000.0, 'Mona Lisa', 'Painting', ''),
-('Ancient Egypt', 'Renaissance', 'Egypt', 'd04', 'Unknown', '1300-01-01', 30.0, 60.0, 15.0, 500000.0, 'Sarcophagus', 'Furniture', 'Metal'),
-('Impressionism', 'Greek', 'France', 'c10', 'Claude Monet', '1872-01-01', 81.0, 60.0, 3.0, 750000.0, 'Impression thingy', 'Painting', '');
+                                                                                                                                                          ('Ancient Egypt', 'Greek', 'Egypt', '101a', 'Unknown', '1323-01-01', 25.0, 50.0, 10.0, 2000000.0, 'Sarcophagus of Tutankhamun', 'Furniture', 'Wood'),
+                                                                                                                                                          ('Renaissance', 'Victorian', 'Italy', '101b', 'Leonardo da Vinci', '1503-01-01', 77.0, 53.0, 2.0, 1000000.0, 'Mona Lisa', 'Painting', ''),
+                                                                                                                                                          ('Ancient Egypt', 'Renaissance', 'Egypt', 'd04', 'Unknown', '1300-01-01', 30.0, 60.0, 15.0, 500000.0, 'Sarcophagus', 'Furniture', 'Metal'),
+                                                                                                                                                          ('Impressionism', 'Greek', 'France', 'c10', 'Claude Monet', '1872-01-01', 81.0, 60.0, 3.0, 750000.0, 'Impression thingy', 'Painting', '');
 
 INSERT INTO loans (isApproved, name, contactInfo, telNum, artefactName, startDate, endDate) VALUES
-(FALSE, "Bob", "Bob@email.com", "1234567890", "Mona Lisa", '2024-07-01', '2024-12-01'),
-(TRUE, "Alice", "Alice@email.com", 987654321, "Sarcophagus of Tutankhamun", '2024-06-15', '2024-11-15');
+                                                                                                (FALSE, "Bob", "Bob@email.com", "1234567890", "Mona Lisa", '2024-07-01', '2024-12-01'),
+                                                                                                (TRUE, "Alice", "Alice@email.com", 987654321, "Sarcophagus of Tutankhamun", '2024-06-15', '2024-11-15');
 
 INSERT INTO rooms (roomNum, roomName, capacity) VALUES
-('101a', 'Ancient Artifacts', 5),
-('101b', 'Renaissance Paintings', 3),
-('c10', 'Modern Art', 4),
-('d04', 'Sculpture Gallery', 2);
+                                                    ('101a', 'Ancient Artifacts', 5),
+                                                    ('101b', 'Renaissance Paintings', 3),
+                                                    ('c10', 'Modern Art', 4),
+                                                    ('d04', 'Sculpture Gallery', 2);
 
 INSERT INTO `images` (`id`, `name`, `data`) VALUES (1, 'Sarcophagus of Tutankhamun table.jpg',
                                                     x'ffd8ffe000104a46494600010200000100010000ffdb004300080606070605080707070909080a0c140d0c0b0b0c1912130f141d1a1f1e1d1a1c1c20242e2720222c231c1c2837292c30313434341f27393d38323c2e333432ffdb0043010909090c0b0c180d0d1832211c213232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232ffc0001108008c008c03012200021101031101ffc4001f0000010501010101010100000000000000000102030405060708090a0bffc400b5100002010303020403050504040000017d01020300041105122131410613516107227114328191a1082342b1c11552d1f02433627282090a161718191a25262728292a3435363738393a434445464748494a535455565758595a636465666768696a737475767778797a838485868788898a92939495969798999aa2a3a4a5a6a7a8a9aab2b3b4b5b6b7b8b9bac2c3c4c5c6c7c8c9cad2d3d4d5d6d7d8d9dae1e2e3e4e5e6e7e8e9eaf1f2f3f4f5f6f7f8f9faffc4001f0100030101010101010101010000000000000102030405060708090a0bffc400b51100020102040403040705040400010277000102031104052131061241510761711322328108144291a1b1c109233352f0156272d10a162434e125f11718191a262728292a35363738393a434445464748494a535455565758595a636465666768696a737475767778797a82838485868788898a92939495969798999aa2a3a4a5a6a7a8a9aab2b3b4b5b6b7b8b9bac2c3c4c5c6c7c8c9cad2d3d4d5d6d7d8d9dae2e3e4e5e6e7e8e9eaf2f3f4f5f6f7f8f9faffda000c03010002110311003f00f7fa28a2800a28a2800a28a2800a28a2800a28a2800a28a2800a28a2800a28a2800a28a2800a4cd29e94dcd002e68cd3734b9a005cd19a4cd2138eb400ecd19a89a78d7f8b3f4e6a26bafeea7e66802d6690baaf538fad5233c8dd4e3e94cc82724f3ef40174dc463a127e828fb427a37e555074a75005a1321ef4e0ea7a1aa98a5c5005bcd19aaa091d09a70761ce78f7a00b19a5a823983385ce4fb0a9e8010f4a6d57d4ef469fa74b7457223c71f5207f5ac38fc456973c3dcb464f67181fa71401d0b4b1a7de603db35135e20fbaa4fd78aa313c72aee89d5c7aa906a4e077e680256b995ba6147b5332cdf7893f534014e02900d029d8a5c528140098a5c52e2945301a147a53b07d6971c64f03de93cc0480a0b13400a3767a6690baae771c1f4ac76d6e6beb19ee743b3fed3f22e5ada58d66107cc8db64da5c6188e719c038ebde8b4f14e8a6e16daf1a5d32f1b8106a51f92cc7d158fc8fff000163401a31df5bcf7f358c13c4d75022493441b2d1ab676961db3838ab62dc139918b1fd2b8ff0ef3f167c6c7d20d3d7ff0021b9aede8011142f00003da9f48296801194329560083d41159175e1cd2eeb24db0898ff00142767e838fd2b60f4a6d00735ff0008740877437d728fd8e178fc80ac9d52fefbc3baa697a74f742ee5d4e478ed54c79dcca0120927e5e0fad7755e7de3dff91fbe1eff00d7fcff00fa2c5006c7f6fbdab88f50b09add8f420707e99ebf81ad1b7d56c6e7fd5dca67fbadf29fd6b526822b984c53c69246472ac322b9bd6b43d134ed3ae350b9bb6d3ed6dd0c9248cdb9147d0f3f80e4f41401ba2940cf415e6be11f104be20d4aeacf4c4bd83ecf124f8b9223df1bfdc603271918383d88e6bd0adad6f0ae27931ff02cd004e5913ef1e7d07348ad2487f76981ea6a68ed634e48dc7d4d4d40102db64e6462c7dab1fc63e23b7f07f85af355711f988bb2de3638124a7eeafd33c9f606b7eb8ab553e2bf8813df4833a5f871dadad94f496f08fde49ff0052107b963400bf0ef51f0f43e18b2d374ff001058ea3758692e1d2601e499d8bbb6c386196638c8e98aebee6d6def2ddedeea08e785c61a395032b0f7078358bab7823c31aee5b51d0ec6690ffcb5f28249ff007d2e0feb589ff0addf4fe7c3be2ad734900fcb09b8fb4c23fe01267f9d0043e11d3ac7c3ff0012fc57a5dadaa5a43716f69756b122e14c61595cafb07cf1d066bd06bc935cb3f19787354d3fc55abdf69ba95a694c527b8b780c33b5bc842b875fba40e1b8e8726bd62391258d648d8323a865607820f43400f1d69d4d1d69d4001e94da71e94da004af34f8a1a845a4f8a7c0da8ce93491417b31290466476251400aa3924935e975e7be2165d73e2f78634c83e6fec68a6d46edc7f00601117ea4f3f434017c6b7e33d6b0349f0ec3a3db9e975ad4bba4c7b4119273fef30aa7aaf802ef51d3a5b9d6f5cbfd76f610268ad582c36acc87704f253839c6dcb12706bbfe941200cd0079bf84e78aefe2ff008b2e6060d0cb6566f191dd4c6a47e95e91d2bcc3c0f6c967f147c6a884044312a26795049603d31ce07d2bd15a6e6802c1900a8da7c74aae5c9a4a009bed5b48c838cf3819ae5bc01e7c361acbdc5a5c5b19f5bbc9a359e328cc8cf956c1e70457454e00d005b12834f041ef54c669ea48f5a007de5a417f653d9dca09209e368a543fc4ac3047e46b96f875733a68773a1ddc9e65ce8774f60d21ff009688b831b7fdf247e55d4f98ca33b4b7d3ad725e07594eb7e30964b5b88524d5cb46d2c45048a235195c8e471d6803b41d69d4d1d69d4001e94da71e95197028021bebc834eb0b8bdba7d96f6f1b4b231ecaa327f9578ee81a378e750867f1ce8daadb5b5e6b3234cfa7dd47f2bc209f286e39fe1e9c0e08e6ba9f8a13497f61a3f86a3731a6b9a825b4f20ea215f99c0f73815d7c6121863860411c51a84441d1540c003f0a00e0a3f8a5a86892adb78d3c3975a6b9381756c3cc85be9cff002663ed5d8e97e23d2bc41117d275182ec6325236f9d7ea870c3f1156a48d2689e2951648dc6191d432b0f707835c56aff0afc3da84a2e6c165d22ed4e564b338507d76741ff012b4011d87fc4a3e32eaf0cbf2a6b5671dc407d5906187e61bf4aef2bc5fc43a478d3c3771a7eb5a85f2ead69a4ca1e3bb0dfbc456600abe7e620f0392d8f5af64b6b88af2d61ba81b743322c887d548c8a0092940a5c5380a004029c05285a9563a0062a64d4aa94f0a052d00262968a28001d69d483ad2d00237dd35564dd568f4a61506803cd3c7b7053c5be04410ccec35566251090a36aae49edd73f406bba1d2aeb4791c77a81a123a500454e141523b5028020bfb08354d36e74fb91fb9ba89a17f60c319fc3afe15c8fc31be99b41b9d16f4ff00a6e8f70d6d229ebb7271f86430fc0576f5c2d8422d3e36ea71c3f2a5ee96b712a8e85c1519fd3f53401dd81522a53d63a900c50035500a938a4a280173466928a005cd19a4a2801475a753475a7500069b4ea2801b4119ed4ea2802368c1ed519801ed5628a00a6d0c8a328327d0d705690eb0ff001b9eee4d1ee62b0fecbf24dd3464c64fca7018719cf18ebc74af49a2801b8a29d4500368a751400da29d4500368a75140082968a2800a28a2800a28a2800a28a2800a28a2800a28a2800a28a2800a28a2800a28a2800a28a2803ffd9'),
