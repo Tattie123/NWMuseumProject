@@ -10,6 +10,7 @@ import org.museum.artefacts.artefacts3d.Sculpture;
 import org.museum.data.DataBase;
 import org.museum.data.Inventory;
 import org.museum.other.Loan;
+import org.museum.other.Room;
 
 import java.sql.Date;
 import java.util.Objects;
@@ -159,78 +160,103 @@ public class UI
                                 Welcome
                                 1. Add a new Artefact
                                 2. Set Artefact Insurance Value
-                                3. Search for Artefact by Name
-                                4. Search for Artefact by Room
-                                5. Search for Artefact by Type
-                                6. View information about Artefact
-                                7. View All Loans
-                                8. View images of Artefact
-                                9. Set Insurance Value of Artefact
-                                10. Authorise external Loan
-                                11. Exit To Staff""");
+                                3. Add new Room
+                                4. View information about Artefact
+                                5. View All Loans
+                                6. View images of Artefact
+                                7. Authorise external Loan
+                                8. Exit To Staff""");
             String choice = scanner.next();
             switch (choice)
             {
                 case "1" -> RequestLoan();
                 case "2" -> SetInsurance();
-                case "3" -> SearchArtefactByName();
-                case "4" -> SearchArtefactByRoom();
-                case "5" -> SearchArtefactByType();
-                case "6" -> ViewArtefactInfo();
-                case "7" -> System.out.println("Not implemented yet..."); //todo: implement View All Loans
-                case "8" -> ViewImagesOfArtefact();
-                case "9" ->
-                {
-                    System.out.println("Enter Password");
-                    String password = scanner.next();
-                    if (password.equals("Password"))
-                    {
-                        System.out.println("Changing User");
-                        StaffUI();
-                    }else
-                    {
-                        System.out.println("Incorrect Password");
-                    }
-                }
-                case "10" -> AuthorizeLoan();
-                case "11" -> run = false;
+                case "3" -> AddRoom();
+                case "4" -> ViewArtefactInfo();
+                case "5" -> getAllLoans();
+                case "6" -> ViewImagesOfArtefact();
+                case "7" -> AuthorizeLoan();
+                case "8" -> run = false;
                 default -> System.out.println("Invalid choice, please try again.");
             }
         }while(run);
     }
 
-    private static void AuthorizeLoan()
+    private static void AddRoom()
     {
-        System.out.println(Inventory.getLoans(false));
+        Inventory.getInstance();
+
+        System.out.println("Please enter the number of the room you wish to add:");
+        String roomNum = scanner.next();
+        System.out.println("Please enter the name of the room you wish to add:");
+        String roomName = scanner.next();
+        System.out.println("Please enter the capacity of the room you wish to add:");
+        String roomcapacitystr = scanner.next();
+
+        int roomcapacity = Integer.parseInt(roomcapacitystr);
+
+        Room room = new Room(roomNum, roomName, roomcapacity);
+        Inventory.getInstance().addRoom(room);
+        System.out.println("Room added successfully.");
+    }
+
+    /**
+     * Retrieves and prints all loan requests from the Inventory.
+     */
+    private static void getAllLoans()
+    {
         for (Loan loan : Inventory.getLoans(false))
         {
-            System.out.println("Loan approved: " + loan.isApproved());
-            if (!loan.isApproved())
-            {
-                System.out.println("Pending Loan for Artefact: " + loan.getArtefactName() + " requested by " + loan.getName() + " from " + loan.getStartDate() + " to " + loan.getEndDate());
-            }
-        }
-        System.out.println("Please enter the name of the artefact loan you wish to authorise:");
-        String artefactName = scanner.next();
-        Inventory theInventory = Inventory.getInstance();
-        try
-        {
-            Loan loan = theInventory.getLoanByArtefactName(artefactName, false);
-            if (loan != null)
-            {
-                loan.authorizeLoan();
-                System.out.println("Loan authorised successfully for artefact: " + artefactName);
-            } else
-            {
-                System.out.println("Loan not found.");
-            }
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error while Authorising Loan: " + e.getMessage());
+            System.out.println("Requester Name: " + loan.getName());
+            System.out.println("Contact Info: " + loan.getContactInfo());
+            System.out.println("Telephone Number: " + loan.getTelNum());
+            System.out.println("Artefact Name: " + loan.getArtefactName());
+            System.out.println("Loan Start Date: " + loan.getStartDate());
+            System.out.println("Loan End Date: " + loan.getEndDate());
+            System.out.println("Loan Approved: " + loan.isApproved() + "\n");
         }
     }
 
+    /**
+     * Prompts the user to authorize a loan request by artefact name.
+     *
+     * @throws Exception if any operation (e.g. database access) fails
+     */
+    private static void AuthorizeLoan() throws Exception
+    {
+        for (Loan loan : Inventory.getLoans(false))
+        {
+            System.out.println("Requester Name: " + loan.getName());
+            System.out.println("Contact Info: " + loan.getContactInfo());
+            System.out.println("Telephone Number: " + loan.getTelNum());
+            System.out.println("Artefact Name: " + loan.getArtefactName());
+            System.out.println("Loan Start Date: " + loan.getStartDate());
+            System.out.println("Loan End Date: " + loan.getEndDate());
+            System.out.println("Loan Approved: " + loan.isApproved() + "\n");
+        }
+        System.out.println("Please enter the name of the artefact loan you wish to authorise:");
+        String artefactName = scanner.next();
+        Loan loan = Inventory.getInstance().getLoanByArtefactName(artefactName, false);
+        if (loan == null)
+        {
+            System.out.println("Loan could not be found for selected artefact");
+            return;
+        }
+        System.out.println("Confirm Approval? (Y/n) for artefact: " + loan.getArtefactName());
+        if (scanner.next().equalsIgnoreCase("Y"))
+        {
+            loan.authorizeLoan();
+            System.out.println("Loan authorised successfully for artefact: " + loan.getArtefactName());
+        } else
+        {
+            System.out.println("Loan not authorised for artefact: " + loan.getArtefactName());
+        }
+    }
+
+    /**
+     * Prompts the user for artefact name and image file path, then adds the image to the artefact.
+     * Errors during the process are caught and printed.
+     */
     private static void AddImage()
     {
         System.out.println("Please enter the name of the artefact you wish to add an image to:");
@@ -266,10 +292,10 @@ public class UI
         }
     }
 
-        /**
-         * Lists all artefacts by querying the Inventory and printing the result to stdout.
-         * Errors during listing are caught and printed.
-         */
+    /**
+     * Lists all artefacts by querying the Inventory and printing the result to stdout.
+     * Errors during listing are caught and printed.
+     */
     private static void ListArtefacts()
     {
         Inventory theInventory = Inventory.getInstance();
@@ -295,6 +321,12 @@ public class UI
         String artefactName = scanner.next();
         System.out.println("Please enter the insurance value:");
         double insuranceValue = scanner.nextDouble();
+        if (insuranceValue < 0)
+        {
+            System.out.println("Insurance value cannot be negative Please Try again.");
+            SetInsurance();
+            return;
+        }
         Inventory theInventory = Inventory.getInstance();
         try
         {
@@ -321,7 +353,7 @@ public class UI
     {
         System.out.println("Please enter the name of the artefact you wish to move:");
         String artefactName = scanner.next();
-        System.out.println("Please enter the name of the room you wish to move the artefact to:");
+        System.out.println("Please enter the name of the room you wish to move the artefact to:");  //todo: add option to move to room number aswell as name
         String roomName = scanner.next();
 
         if (roomName.isEmpty() || artefactName.isEmpty())
@@ -334,7 +366,7 @@ public class UI
             System.out.println("Artefact moved successfully.");
         } else
         {
-            System.out.println("Failed to move artefact.");
+            System.out.println("Failed to move artefact Please try again.");
         }
     }
 
@@ -543,6 +575,16 @@ public class UI
                 return;
             }
         }
+        for (Loan loan : Inventory.getLoans(false))
+        {
+            System.out.println(loan.getArtefactName());
+            if (loan.getArtefactName() != null && loan.getArtefactName().toLowerCase().contains(artefactName.toLowerCase()))
+            {
+                System.out.println("Artefact is already on loan, Please try again later or with a different artefact.");
+                RequestLoan();
+                return;
+            }
+        }
         System.out.println("Please enter the start date of the loan (YYYY-MM-DD):");
         String startDate = scanner.next();
         if (Date.valueOf(startDate).before(new Date(System.currentTimeMillis())))
@@ -560,6 +602,8 @@ public class UI
             return;
         }
         Loan loan = new Loan(false, name, contactInfo, telNum, artefactName, Date.valueOf(startDate), Date.valueOf(endDate));
+        Inventory.getInstance().addLoan(loan);
+        System.out.println("Loan request submitted successfully.");
     }
 
     /**

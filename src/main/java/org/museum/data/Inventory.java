@@ -5,7 +5,6 @@ import org.museum.other.Room;
 import org.museum.artefacts.Artefact;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -35,7 +34,6 @@ public final class Inventory
         DataBase.PullArtefacts(testMode);
         Inventory.getInstance();
         Room room = DataBase.getRoomFromName(roomName, testMode);
-        assert room != null;
         if (room.getCurrentSpace(testMode) <= 0)
             throw new Exception("Room is at full capacity.");
         else
