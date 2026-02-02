@@ -195,7 +195,7 @@ public class DataBase
                 {
                     try
                     {
-                        materialEnum = Material.fromString(material);
+                        materialEnum = Material. fromString(material);
                     } catch (Exception e)
                     {
                         throw new IllegalArgumentException("Unknown material type: " + e);
