@@ -1,6 +1,7 @@
 package org.museum.data;
 
 
+import jdk.jfr.Name;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.museum.artefacts.Painting;
@@ -20,6 +21,7 @@ class InventoryTest
     }
 
     @Test
+    @Name("17")
     void getInstance()
     {
         Inventory inventory1 = Inventory.getInstance();
@@ -28,6 +30,7 @@ class InventoryTest
     }
 
     @Test
+    @Name("18")
     void addArtefact() throws Exception
     {
         Painting painting = new Painting("Historic Era", "Style", "Origin Country", "Current Room", "Author", java.sql.Date.valueOf("2000-01-01"), 10.0, 20.0, 1000.0, "",  true);
