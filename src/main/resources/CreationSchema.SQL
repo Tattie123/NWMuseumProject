@@ -1,8 +1,8 @@
 CREATE
-DATABASE IF NOT EXISTS museumproject;
+DATABASE IF NOT EXISTS museumprojectTesting;
 
 USE
-museumproject;
+museumprojectTesting;
 
 CREATE TABLE IF NOT EXISTS artefacts
 (
