@@ -97,6 +97,7 @@ public class UI
         boolean run = true;
         do
         {
+            //todo: should maybe either remove add artefact or add option to add room since can be done by adding artefact to a non existent room then selecting to create that room
             System.out.println("""
                                 
                                 Welcome
@@ -105,7 +106,7 @@ public class UI
                                 3. List all Artefact
                                 4. Move Artefact to another Room
                                 5. Search for Artefact by Name
-                                6. Search for Artefact by org.museum.other.Room
+                                6. Search for Artefact by Room
                                 7. Search for Artefact by Type
                                 8. View information about Artefact
                                 9. View images of Artefact
@@ -154,7 +155,6 @@ public class UI
         boolean run = true;
         do
         {
-
             System.out.println("""
                                 
                                 Welcome
@@ -396,10 +396,33 @@ public class UI
         double width = scanner.nextDouble();
         System.out.println("Please enter the height of the artefact:");
         double height = scanner.nextDouble();
-        System.out.println("Please enter the type of the artefact:");
+        System.out.println("Please enter the type of the artefact: (Furniture, Pottery, Sculpture, Misc, Painting)");
         String type = scanner.next();
+        if (!type.equals("Furniture") && !type.equals("Pottery") && !type.equals("Sculpture") && !type.equals("Misc") && !type.equals("Painting"))
+        {
+            System.out.println("Invalid artefact type. Please enter 1 to try again or any other key to exit.");
+            String choice = scanner.next();
+            if (choice.equals("1"))
+            {
+                AddArtefact(TestMode);
+            }
+            return;
+        }
         System.out.println("Please enter the current room the artefact is in:");
         String currentRoom = scanner.next();
+        if (!DataBase.getRooms().isEmpty() || !DataBase.getRooms().contains(currentRoom))
+        {
+            System.out.println("Invalid room name, or no room with that name could be found. Please enter 1 to try again, 2 to create the room: " + currentRoom + " or any other key to exit.");
+            String choice = scanner.next();
+            if (choice.equals("1"))
+            {
+                AddArtefact(TestMode);
+            } else if (choice.equals("2"))
+            {
+                AddRoom();
+            }
+            return;
+        }
         Artefact artefact = null;
         try
         {
@@ -411,19 +434,22 @@ public class UI
                 case "Misc" -> artefact = new Misc(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name, TestMode);
                 case "Painting" -> artefact = new Painting(historicEra, style, originCountry, currentRoom, author, dateOfCreation, width, height, name, TestMode);
                 default -> {
+                    System.out.println("Unknown artefact type. Artefact not added.");
+                    return;
                 }
+
             }
         } catch (Exception e)
         {
             throw new RuntimeException(e);
         }
+
         if (!Inventory.addArtefact(artefact))
         {
             System.out.println("Failed to add artefact.");
             return;
         }
         System.out.println("Artefact added successfully.");
-
     }
 
 
