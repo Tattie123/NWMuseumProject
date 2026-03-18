@@ -74,6 +74,9 @@ public class UI
         }while(run);
     }
 
+    /**
+     *
+     */
     private static void ViewAllImages()
     {
         Inventory theInventory = Inventory.getInstance();
