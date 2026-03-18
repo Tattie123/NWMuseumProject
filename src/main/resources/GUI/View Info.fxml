@@ -10,7 +10,7 @@
   modification, are permitted provided that the following conditions
   are met:
 
-  - Redistributions of source code must retain the above copyright
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25" fx:controller="org.GUI.ViewInfoController">
     notice, this list of conditions and the following disclaimer.
   - Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in
@@ -79,7 +79,7 @@
         </MenuBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <Button layoutX="-6.0" layoutY="13.0" mnemonicParsing="false" prefWidth="75.0" text="Back"/>
+                <Button fx:id="BackButton" layoutX="-6.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back"/>
                 <Text layoutX="243.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artefact Name"
                       wrappingWidth="82.705078125"/>
                 <Text layoutX="69.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artefact Current Room"

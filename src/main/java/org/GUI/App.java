@@ -11,7 +11,8 @@ public class App extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Login Menu.fxml"));
+        SceneManager.setPrimaryStage(primaryStage);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Start Page.fxml"));
         Parent root = loader.load();
 
         primaryStage.setTitle("Museum");

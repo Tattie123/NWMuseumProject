@@ -35,7 +35,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25">
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25" fx:controller="org.GUI.StaffMenuController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -78,13 +78,13 @@
         </MenuBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <Button layoutX="153.0" layoutY="24.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="335.0"
+                <Button fx:id="BackButton" layoutX="153.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="25.0" prefWidth="335.0"
                         text="Back"/>
-                <Button layoutX="14.0" layoutY="88.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0"
+                <Button fx:id="MoveArtefact" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" onAction="#handleMoveArtefact" prefHeight="150.0" prefWidth="150.0"
                         text="Move Artefact"/>
-                <Button layoutX="246.0" layoutY="88.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0"
+                <Button fx:id="AddArtefact" layoutX="246.0" layoutY="88.0" mnemonicParsing="false" onAction="#handleAddArtefact" prefHeight="150.0" prefWidth="150.0"
                         text="Add Artefact"/>
-                <Button layoutX="476.0" layoutY="88.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0"
+                <Button fx:id="AddImage" layoutX="476.0" layoutY="88.0" mnemonicParsing="false" onAction="#handleAddImage" prefHeight="150.0" prefWidth="150.0"
                         text="Add Image"/>
             </children>
         </AnchorPane>

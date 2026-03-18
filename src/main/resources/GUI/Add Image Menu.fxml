@@ -78,12 +78,12 @@
         </MenuBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <Button layoutY="14.0" mnemonicParsing="false" prefWidth="75.0" text="Back"/>
-                <ComboBox layoutX="240.0" layoutY="27.0" prefHeight="25.0" prefWidth="160.0"
+                <Button fx:id="BackButton" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back"/>
+                <ComboBox fx:id="ArtefactComboBox" layoutX="240.0" layoutY="27.0" prefHeight="25.0" prefWidth="160.0"
                           promptText="Select Artefact Name"/>
                 <Label layoutX="240.0" layoutY="179.0" prefHeight="17.0" prefWidth="160.0"
                        text="Drag Image Here To Upload"/>
-                <Button layoutX="240.0" layoutY="336.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="160.0"
+                <Button fx:id="UploadImageButton" layoutX="240.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleUploadImage" prefHeight="25.0" prefWidth="160.0"
                         text="Upload Image"/>
             </children>
         </AnchorPane>

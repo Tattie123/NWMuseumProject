@@ -37,7 +37,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25">
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25" fx:controller="org.GUI.ViewAllImagesController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -80,17 +80,17 @@
         </MenuBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <Button layoutX="-6.0" layoutY="14.0" mnemonicParsing="false" prefWidth="75.0" text="Back"/>
+                <Button fx:id="BackButton" layoutX="-6.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back"/>
                 <ImageView fitHeight="331.0" fitWidth="460.0" layoutX="155.0" layoutY="14.0" pickOnBounds="true"
                            preserveRatio="true">
                     <image>
                         <Image url="@OIP.jpg"/>
                     </image>
                 </ImageView>
-                <Button layoutX="327.0" layoutY="349.0" mnemonicParsing="false" prefWidth="100.0" text="Fit"/>
-                <Button layoutX="227.0" layoutY="349.0" mnemonicParsing="false" prefWidth="100.0" text="Next"/>
-                <Button layoutX="127.0" layoutY="349.0" mnemonicParsing="false" prefWidth="100.0" text="Previous"/>
-                <Button layoutX="427.0" layoutY="349.0" minHeight="5.0" mnemonicParsing="false" prefWidth="100.0"
+                <Button fx:id="FitButton" layoutX="327.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleFit" prefWidth="100.0" text="Fit"/>
+                <Button fx:id="NextButton" layoutX="227.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleNext" prefWidth="100.0" text="Next"/>
+                <Button fx:id="PreviousButton" layoutX="127.0" layoutY="349.0" mnemonicParsing="false" onAction="#handlePrevious" prefWidth="100.0" text="Previous"/>
+                <Button fx:id="ResetZoomButton" layoutX="427.0" layoutY="349.0" minHeight="5.0" mnemonicParsing="false" onAction="#handleResetZoom" prefWidth="100.0"
                         text="Reset Zoom"/>
             </children>
         </AnchorPane>
