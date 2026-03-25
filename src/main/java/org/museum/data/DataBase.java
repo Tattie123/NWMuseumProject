@@ -37,12 +37,15 @@ public class DataBase
 
         // If running on GitHub CI, use CI properties
         if (System.getenv("GITHUB_ACTIONS") != null) {
+            System.out.println("Running in GitHub CI environment, using CI database properties.");
             propertiesFile = "db-ci.properties";
         } else if (testmode)
         {
+            System.out.println("Test mode enabled, using test database properties.");
             propertiesFile = "db-testing.properties";
         } else
         {
+            System.out.println("Using production database properties.");
             propertiesFile = "db.properties";
         }
 
@@ -327,9 +330,9 @@ public class DataBase
             var ps = connection.prepareStatement(
                     "INSERT INTO rooms (roomNum, roomName, capacity) " +
                             "VALUES (?, ?, ?)");
-            ps.setString(1, room.getRoomNum());
-            ps.setString(2, room.getRoomName());
-            ps.setInt(3, room.getCapacity());
+            ps.setString(1, room.roomNum());
+            ps.setString(2, room.roomName());
+            ps.setInt(3, room.capacity());
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e)
@@ -648,6 +651,33 @@ public class DataBase
             Room room = new Room(rs.getString("roomNum"), rs.getString("roomName"), rs.getInt("capacity"));
             Inventory.getInstance().addRoom(room);
             return room;
+        } catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Update an artefact's current room value in the database.
+     *
+     * @param artefactName artefact name to update
+     * @param roomNum room number to assign
+     * @param testMode when true use test DB properties
+     * @return true if update affected rows
+     * @throws Exception on DB errors
+     */
+    public static boolean updateArtefactRoom(String artefactName, String roomNum, boolean testMode) throws Exception
+    {
+        if (connection == null)
+            connection = getConnection(testMode);
+
+        try
+        {
+            var ps = connection.prepareStatement("UPDATE artefacts SET currentRoom = ? WHERE name = ?;");
+            ps.setString(1, roomNum);
+            ps.setString(2, artefactName);
+            int rows = ps.executeUpdate();
+            return rows > 0;
         } catch (SQLException e)
         {
             throw new RuntimeException(e);

@@ -8,30 +8,24 @@ import java.util.List;
 /**
  * Represents a physical room in the museum with capacity metadata.
  */
-public class Room
+public record Room(String roomNum, String roomName, int capacity)
 {
-    private final String roomNum;
-    private final String roomName;
-    private final int capacity;
-
     /**
      * Construct a Room instance.
      *
-     * @param roomNum internal room number
+     * @param roomNum  internal room number
      * @param roomName human-readable room name
      * @param capacity capacity integer
      */
-    public Room(String roomNum, String roomName, int capacity)
+    public Room
     {
-        this.roomNum = roomNum;
-        this.roomName = roomName;
-        this.capacity = capacity;
     }
 
     /**
      * @return internal room number
      */
-    public String getRoomNum()
+    @Override
+    public String roomNum()
     {
         return roomNum;
     }
@@ -39,7 +33,8 @@ public class Room
     /**
      * @return human-readable room name
      */
-    public String getRoomName()
+    @Override
+    public String roomName()
     {
         return roomName;
     }
@@ -70,10 +65,5 @@ public class Room
     public String getName()
     {
         return roomName;
-    }
-
-    public int getCapacity()
-    {
-        return capacity;
     }
 }

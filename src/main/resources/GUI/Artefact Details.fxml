@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.GUI.ArtefactDetailsController" prefWidth="500" prefHeight="360">
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+            <HBox spacing="10">
+                <VBox spacing="6">
+                    <Label text="Name:" style="-fx-font-weight: bold;" />
+                    <Label text="Type:" style="-fx-font-weight: bold;" />
+                    <Label text="Location:" style="-fx-font-weight: bold;" />
+                </VBox>
+                <VBox spacing="6">
+                    <Label fx:id="nameLabel" text="-" />
+                    <Label fx:id="typeLabel" text="-" />
+                    <Label fx:id="locationLabel" text="-" />
+                </VBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <ImageView fx:id="thumbnail" fitWidth="120" fitHeight="90" preserveRatio="true" />
+            </HBox>
+
+            <Label text="Description:" style="-fx-font-weight: bold;" />
+            <TextArea fx:id="descriptionArea" editable="false" wrapText="true" prefRowCount="8" />
+        </VBox>
+    </center>
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+            <children>
+                <Button text="View Images" fx:id="viewImagesButton" />
+                <Button text="Request Loan" fx:id="requestLoanButton" />
+                <Button text="Close" fx:id="closeButton" />
+            </children>
+        </HBox>
+    </bottom>
+</BorderPane>
+

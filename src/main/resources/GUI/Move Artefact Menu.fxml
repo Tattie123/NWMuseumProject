@@ -80,6 +80,8 @@
             <children>
                 <Button fx:id="BackButton" layoutY="20.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back"/>
                 <ComboBox fx:id="ArtefactComboBox" layoutX="81.0" layoutY="154.0" prefWidth="150.0" promptText="Select Artefact"/>
+                <Label layoutX="81.0" layoutY="124.0" text="Current Room:" />
+                <Label fx:id="CurrentRoomLabel" layoutX="200.0" layoutY="124.0" text="-" />
                 <ComboBox fx:id="RoomComboBox" layoutX="397.0" layoutY="154.0" prefWidth="150.0" promptText="Select New Room"/>
                 <Button fx:id="MoveButton" layoutX="220.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleMoveArtefact" prefHeight="25.0" prefWidth="200.0"
                         text="Move Artefact"/>

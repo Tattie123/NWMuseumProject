@@ -81,10 +81,12 @@
                 <Button fx:id="BackButton" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back"/>
                 <ListView fx:id="RoomListView" layoutX="220.0" layoutY="27.0" prefHeight="200.0" prefWidth="200.0"/>
                 <TextField fx:id="RoomNameField" layoutX="240.0" layoutY="239.0" prefHeight="25.0" prefWidth="160.0"
-                           text="Enter New Room Name"/>
+                           promptText="Enter New Room Name"/>
                 <TextField fx:id="RoomNumberField" layoutX="240.0" layoutY="276.0" prefHeight="25.0" prefWidth="160.0"
-                           text="Enter New Room Number"/>
-                <Button fx:id="AddRoomButton" layoutX="240.0" layoutY="315.0" mnemonicParsing="false" onAction="#handleAddRoom" prefHeight="25.0" prefWidth="160.0"
+                           promptText="Enter New Room Number"/>
+                <Label layoutX="240.0" layoutY="306.0" text="Capacity:" />
+                <TextField fx:id="RoomCapacityField" layoutX="300.0" layoutY="303.0" prefHeight="25.0" prefWidth="100.0" promptText="100"/>
+                <Button fx:id="AddRoomButton" layoutX="240.0" layoutY="335.0" mnemonicParsing="false" onAction="#handleAddRoom" prefHeight="25.0" prefWidth="160.0"
                         text="Add New Room"/>
                 <Label layoutX="276.0" layoutY="6.0" text="List of All Rooms"/>
             </children>

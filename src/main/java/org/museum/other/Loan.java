@@ -25,7 +25,7 @@ public class Loan
      */
     public Loan(boolean isApproved, String name, String contactInfo, String telNum, String artefactName, java.sql.Date startDate, java.sql.Date endDate)
     {
-        this.isApproved = isApproved;
+        Loan.isApproved = isApproved;
         this.name = name;
         this.contactInfo = contactInfo;
         this.telNum = telNum;
