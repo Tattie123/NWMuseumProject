@@ -29,6 +29,8 @@ public class App extends Application
             primaryStage.setTitle("Museum");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
+
+            primaryStage.setResizable(false);
         } catch (Exception e)
         {
             ErrorController.showError("Database Connection Failed", "Unable to connect to the database. \n\nDetails: " + e.getMessage());

@@ -15,6 +15,7 @@ import org.museum.other.Room;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Arrays;
 
 public class AddArtefactController {
     @FXML
@@ -32,8 +33,6 @@ public class AddArtefactController {
     @FXML
     private ComboBox<String> HistoricEraCombo;
     @FXML
-    private ComboBox<String> OriginCountryCombo2;
-    @FXML
     private DatePicker CreationDatePicker;
     @FXML
     private TextField WidthField;
@@ -48,24 +47,50 @@ public class AddArtefactController {
     @FXML
     public void initialize() {
         // populate type choices and rooms
-        TypeCombo.setItems(FXCollections.observableArrayList("Painting", "Misc", "Furniture", "Pottery", "Sculpture"));
+        if (TypeCombo != null) {
+            TypeCombo.setItems(FXCollections.observableArrayList("Painting", "Misc", "Furniture", "Pottery", "Sculpture"));
+        } else {
+            System.err.println("AddArtefactController.initialize: TypeCombo was not injected. Check fx:id in FXML.");
+        }
+
+        // populate historic eras
+        if (HistoricEraCombo != null) {
+            HistoricEraCombo.setItems(FXCollections.observableArrayList(
+                    Arrays.asList("Prehistoric", "Ancient", "Classical", "Medieval", "Renaissance", "Early Modern", "Industrial", "Modern", "Contemporary")
+            ));
+        } else {
+            System.err.println("AddArtefactController.initialize: HistoricEraCombo was not injected. Check fx:id in FXML.");
+        }
+
+        // populate origin country combo with some common choices
+        List<String> countries = Arrays.asList("United Kingdom", "France", "Italy", "Greece", "Egypt", "China", "India", "Germany", "Spain", "Netherlands", "United States", "Unknown");
+        if (OriginCountryCombo1 != null) {
+            OriginCountryCombo1.setItems(FXCollections.observableArrayList(countries));
+        } else {
+            System.err.println("AddArtefactController.initialize: OriginCountryCombo1 was not injected. Check fx:id in FXML.");
+        }
+
         try {
             List<Room> rooms = DataBase.getRooms();
-            CurrentRoomCombo.setItems(FXCollections.observableArrayList(rooms));
-            CurrentRoomCombo.setCellFactory(lv -> new javafx.scene.control.ListCell<Room>() {
-                @Override
-                protected void updateItem(Room item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) setText(""); else setText(item.roomName() + " (" + item.roomNum() + ")");
-                }
-            });
-            CurrentRoomCombo.setButtonCell(new javafx.scene.control.ListCell<Room>() {
-                @Override
-                protected void updateItem(Room item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) setText(""); else setText(item.roomName() + " (" + item.roomNum() + ")");
-                }
-            });
+            if (CurrentRoomCombo != null) {
+                CurrentRoomCombo.setItems(FXCollections.observableArrayList(rooms));
+                CurrentRoomCombo.setCellFactory(lv -> new javafx.scene.control.ListCell<Room>() {
+                    @Override
+                    protected void updateItem(Room item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) setText(""); else setText(item.roomName() + " (" + item.roomNum() + ")");
+                    }
+                });
+                CurrentRoomCombo.setButtonCell(new javafx.scene.control.ListCell<Room>() {
+                    @Override
+                    protected void updateItem(Room item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) setText(""); else setText(item.roomName() + " (" + item.roomNum() + ")");
+                    }
+                });
+            } else {
+                System.err.println("AddArtefactController.initialize: CurrentRoomCombo was not injected. Check fx:id in FXML.");
+            }
         } catch (Exception e) {
             System.err.println("Unable to load rooms for Add Artefact: " + e.getMessage());
         }

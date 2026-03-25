@@ -85,8 +85,8 @@
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
                 <Button fx:id="BackButton" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back" />
-                <TextField fx:id="UsernameField" layoutX="230.0" layoutY="60.0" promptText="UserName" />
-                <TextField fx:id="PasswordField" layoutX="230.0" layoutY="163.0" promptText="Password" />
+                <TextField fx:id="UsernameField" layoutX="230.0" layoutY="60.0" promptText="USERNAME" />
+                <TextField fx:id="PasswordField" layoutX="230.0" layoutY="163.0" promptText="PASSWORD" />
                 <Button fx:id="LoginAsStaff" layoutX="176.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleLoginAsStaff" prefHeight="25.0" prefWidth="115.0" text="Login As Staff" />
                 <Button fx:id="LoginAsManager" layoutX="305.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleLoginAsManager" prefHeight="25.0" prefWidth="115.0" text="Login As Manager" />
             </children>

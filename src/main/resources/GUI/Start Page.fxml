@@ -72,24 +72,19 @@
         <ListView fx:id="ArtefactList" fixedCellSize="24.0" layoutX="154.0" layoutY="88.0" prefHeight="226.0" prefWidth="268.0" />
         <Button fx:id="ViewAllImages" layoutX="22.0" layoutY="324.0" mnemonicParsing="false" onAction="#handleViewAllImages" prefHeight="22.0" prefWidth="170.0" text="View Images Of Artefacts" />
         <Button fx:id="LoginAsOtherUser" layoutX="443.0" layoutY="324.0" mnemonicParsing="false" onAction="#handleLoginAsOtherUser" prefHeight="22.0" prefWidth="170.0" text="Login As Other User" />
-        <ListView fx:id="RoomList" fixedCellSize="24.0" layoutX="453.0" layoutY="88.0" prefHeight="226.0" prefWidth="153.0" />
+        <ListView fx:id="RoomList" fixedCellSize="24.0" layoutX="436.0" layoutY="88.0" prefHeight="226.0" prefWidth="190.0" />
         <Label layoutX="174.0" layoutY="25.0" text="Search By: " />
-        <Label layoutX="22.0" layoutY="158.0" prefHeight="25.0" prefWidth="106.0" text="Right Click Artefact " />
+        <Label layoutX="15.0" layoutY="89.0" prefHeight="25.0" prefWidth="112.0" text="Right Click Artefacts" />
         <Label layoutX="479.0" layoutY="39.0" prefHeight="25.0" prefWidth="99.0" text="List Of All Rooms " />
         <Label layoutX="440.0" layoutY="64.0" prefHeight="25.0" prefWidth="176.0" text="Click To Show Artefacts In Room" />
-        <Label layoutX="58.0" layoutY="51.0" prefHeight="25.0" prefWidth="119.0" text="List Of All Artefacts" />
-      <VBox layoutX="232.0" layoutY="26.0" prefHeight="75.0" prefWidth="220.0">
-         <children>
+        <VBox layoutX="232.0" layoutY="26.0" prefHeight="75.0" prefWidth="220.0">
             <HBox spacing="8.0">
-                <children>
-                    <RadioButton fx:id="SearchByName" mnemonicParsing="false" onAction="#handleSearchByName" text="Name" />
-                    <RadioButton fx:id="SearchByType" mnemonicParsing="false" onAction="#handleSearchByType" text="Type" />
-                    <Button fx:id="ShowAll" mnemonicParsing="false" onAction="#handleShowAll" text="Show All" />
-                </children>
+                <RadioButton fx:id="SearchByName" mnemonicParsing="false" onAction="#handleSearchByName" text="Name" />
+                <RadioButton fx:id="SearchByType" mnemonicParsing="false" onAction="#handleSearchByType" text="Type" />
+                <Button fx:id="ShowAll" mnemonicParsing="false" onAction="#handleShowAll" text="Show All" />
             </HBox>
-            <Label fx:id="SearchModeLabel" text="Searching by: Name" />
-         </children>
-      </VBox>
-      <Label layoutX="21.0" layoutY="193.0" prefHeight="25.0" prefWidth="99.0" text="For More Options" />
+        </VBox>
+      <Label layoutX="15.0" layoutY="102.0" prefHeight="25.0" prefWidth="99.0" text="For More Options" />
+        <Label layoutX="236.0" layoutY="65.0" prefHeight="25.0" prefWidth="105.0" text="List Of All Artefacts" />
     </AnchorPane>
 </VBox>

@@ -79,19 +79,19 @@
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
                 <Button fx:id="BackButton" layoutY="17.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back" />
-                <TextField layoutX="63.0" layoutY="53.0" prefHeight="25.0" prefWidth="160.0" promptText="Enter Artefact Name" />
-                <TextField layoutX="63.0" layoutY="112.0" prefHeight="25.0" prefWidth="160.0" promptText="Enter Artefact Style" />
-                <ComboBox layoutX="63.0" layoutY="175.0" prefHeight="25.0" prefWidth="160.0" promptText="Select Origin Country" />
-                <ComboBox layoutX="245.0" layoutY="53.0" prefHeight="25.0" prefWidth="160.0" promptText="Select Type" />
-                <ComboBox layoutX="245.0" layoutY="112.0" prefHeight="25.0" prefWidth="160.0" promptText="Select Current Room" />
-                <ComboBox layoutX="245.0" layoutY="175.0" prefHeight="25.0" prefWidth="160.0" promptText="Select Historic Era" />
-                <DatePicker layoutX="433.0" layoutY="175.0" />
+                <TextField fx:id="ArtefactNameField" layoutX="63.0" layoutY="53.0" prefHeight="25.0" prefWidth="160.0" promptText="Enter Artefact Name" />
+                <TextField fx:id="StyleField" layoutX="63.0" layoutY="112.0" prefHeight="25.0" prefWidth="160.0" promptText="Enter Artefact Style" />
+                <ComboBox fx:id="OriginCountryCombo1" layoutX="63.0" layoutY="175.0" prefHeight="25.0" prefWidth="160.0" promptText="Select Origin Country" />
+                <ComboBox fx:id="TypeCombo" layoutX="245.0" layoutY="53.0" prefHeight="25.0" prefWidth="160.0" promptText="Select Type" />
+                <ComboBox fx:id="CurrentRoomCombo" layoutX="245.0" layoutY="112.0" prefHeight="25.0" prefWidth="160.0" promptText="Select Current Room" />
+                <ComboBox fx:id="HistoricEraCombo" layoutX="245.0" layoutY="175.0" prefHeight="25.0" prefWidth="160.0" promptText="Select Historic Era" />
+                <DatePicker fx:id="CreationDatePicker" layoutX="433.0" layoutY="175.0" />
                 <Label layoutX="440.0" layoutY="151.0" prefHeight="17.0" prefWidth="134.0" text="Date Of Creation:" />
-                <TextField layoutX="279.0" layoutY="228.0" prefHeight="25.0" prefWidth="83.0" promptText="Enter Width" />
-                <TextField layoutX="279.0" layoutY="284.0" prefHeight="25.0" prefWidth="83.0" promptText="Enter Height" />
+                <TextField fx:id="WidthField" layoutX="279.0" layoutY="228.0" prefHeight="25.0" prefWidth="83.0" promptText="Enter Width" />
+                <TextField fx:id="HeightField" layoutX="279.0" layoutY="284.0" prefHeight="25.0" prefWidth="83.0" promptText="Enter Height" />
                 <Label layoutX="313.0" layoutY="262.0" prefHeight="17.0" prefWidth="14.0" text="By" />
                 <Button fx:id="SubmitButton" layoutX="205.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleAddArtefact" prefHeight="25.0" prefWidth="253.0" text="Add Artefact" />
-            <TextField layoutX="440.0" layoutY="53.0" prefHeight="25.0" prefWidth="160.0" promptText="Enter Artefact Author" />
+                <TextField fx:id="AuthorField" layoutX="440.0" layoutY="53.0" prefHeight="25.0" prefWidth="160.0" promptText="Enter Artefact Author" />
             </children>
         </AnchorPane>
     </children>

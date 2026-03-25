@@ -33,9 +33,11 @@
 -->
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.GUI.AddImageMenuController" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -81,8 +83,14 @@
                 <Button fx:id="BackButton" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back"/>
                 <ComboBox fx:id="ArtefactComboBox" layoutX="240.0" layoutY="27.0" prefHeight="25.0" prefWidth="160.0"
                           promptText="Select Artefact Name"/>
-                <Label layoutX="240.0" layoutY="179.0" prefHeight="17.0" prefWidth="160.0"
-                       text="Drag Image Here To Upload"/>
+                <StackPane fx:id="DropPane" layoutX="240.0" layoutY="179.0" prefHeight="120.0" prefWidth="160.0"
+                           onDragOver="#handleDragOver" onDragDropped="#handleDragDropped"
+                           onDragEntered="#handleDragEnter" onDragExited="#handleDragExit">
+                    <children>
+                        <ImageView fx:id="ImagePreview" fitWidth="160.0" fitHeight="120.0" preserveRatio="true" />
+                        <Label fx:id="DropLabel" text="Drag Image Here To Upload" />
+                    </children>
+                </StackPane>
                 <Button fx:id="UploadImageButton" layoutX="240.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleUploadImage" prefHeight="25.0" prefWidth="160.0"
                         text="Upload Image"/>
             </children>

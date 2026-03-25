@@ -81,7 +81,7 @@
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
                 <Button fx:id="BackButton" layoutX="-6.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back"/>
-                <ImageView fitHeight="331.0" fitWidth="460.0" layoutX="155.0" layoutY="14.0" pickOnBounds="true"
+                <ImageView fx:id="ImageView" fitHeight="331.0" fitWidth="460.0" layoutX="155.0" layoutY="14.0" pickOnBounds="true"
                            preserveRatio="true">
                     <image>
                         <Image url="@OIP.jpg"/>

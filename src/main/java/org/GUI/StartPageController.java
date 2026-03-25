@@ -202,7 +202,7 @@ public class StartPageController implements Initializable
                         viewImages.setOnAction(evt -> {
                             try {
                                 var images = DataBase.getImageFromArtefact(item.getName(), false);
-                                if (images == null || images.isEmpty()) {
+                                if (images.isEmpty()) {
                                     ErrorController.showError("No Images", "No images found for artefact: " + item.getName());
                                 } else {
                                     Inventory.getInstance().ViewImagesOfArtefact(images);

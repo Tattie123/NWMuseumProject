@@ -10,6 +10,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
+          MYSQL_ROOT_USER: root
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: museumprojecttesting
         ports:
@@ -36,6 +37,10 @@ jobs:
             echo "Waiting for MySQL..."
             sleep 3
           done
+
+      - name: Initialize database schema
+        run: |
+         mysql -h 127.0.0.1 -u root -proot museumprojecttesting < museumprojecttesting.sql
 
       - name: Run tests
         run: mvn test
