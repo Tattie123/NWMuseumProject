@@ -4,7 +4,8 @@ import java.sql.Date;
 
 public class Loan
 {
-    private static boolean isApproved;
+    // approval state for this loan (was mistakenly static previously)
+    private boolean isApproved;
     private final String name;
     private final String contactInfo;
     private final String telNum; // Must be String since numbers are too large / start with 0 or +
@@ -25,7 +26,7 @@ public class Loan
      */
     public Loan(boolean isApproved, String name, String contactInfo, String telNum, String artefactName, java.sql.Date startDate, java.sql.Date endDate)
     {
-        Loan.isApproved = isApproved;
+        this.isApproved = isApproved;
         this.name = name;
         this.contactInfo = contactInfo;
         this.telNum = telNum;
@@ -39,7 +40,7 @@ public class Loan
      */
     public boolean isApproved()
     {
-        return isApproved;
+        return this.isApproved;
     }
 
     /**
@@ -92,6 +93,22 @@ public class Loan
 
     public void authorizeLoan()
     {
-        isApproved = true;
+        this.isApproved = true;
+    }
+
+    /**
+     * Revoke approval for this loan.
+     */
+    public void revokeApproval()
+    {
+        this.isApproved = false;
+    }
+
+    /**
+     * Set approval state explicitly.
+     */
+    public void setApproved(boolean approved)
+    {
+        this.isApproved = approved;
     }
 }

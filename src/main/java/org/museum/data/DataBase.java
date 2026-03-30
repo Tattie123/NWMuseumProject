@@ -608,6 +608,9 @@ public class DataBase
                 throw new RuntimeException(e);
             }
 
+        // clear existing in-memory loans so we don't duplicate when pulling
+        Inventory.getInstance().clearLoans();
+
         try
         {
             var ps = connection.prepareStatement("SELECT * FROM loans;");
@@ -628,6 +631,33 @@ public class DataBase
         } catch (SQLException e)
         {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Update the approval state of a loan in the database by artefact name.
+     */
+    public static boolean updateLoanApproval(String artefactName, boolean approved, boolean testMode)
+    {
+        if (connection == null)
+            try
+            {
+                connection = getConnection(testMode);
+            } catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+
+        try
+        {
+            var ps = connection.prepareStatement("UPDATE loans SET isApproved = ? WHERE artefactName = ?;");
+            ps.setBoolean(1, approved);
+            ps.setString(2, artefactName);
+            int rows = ps.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e)
+        {
+            return false;
         }
     }
 

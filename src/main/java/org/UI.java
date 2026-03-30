@@ -249,6 +249,9 @@ public class UI
         if (scanner.next().equalsIgnoreCase("Y"))
         {
             loan.authorizeLoan();
+            try {
+                org.museum.data.DataBase.updateLoanApproval(loan.getArtefactName(), true, false);
+            } catch (Exception ignored) {}
             System.out.println("Loan authorised successfully for artefact: " + loan.getArtefactName());
         } else
         {

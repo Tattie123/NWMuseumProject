@@ -81,6 +81,8 @@
                 <Button fx:id="BackButton" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back"/>
                 <ListView fx:id="LoanListView" layoutX="220.0" layoutY="39.0" prefHeight="200.0" prefWidth="200.0"/>
                 <Label layoutX="267.0" layoutY="18.0" text="List Of All Artefacts: "/>
+                <Button fx:id="ApproveButton" layoutX="220.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleApprove" prefWidth="95.0" text="Approve"/>
+                <Button fx:id="UnapproveButton" layoutX="325.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleUnapprove" prefWidth="95.0" text="Unapprove"/>
             </children>
         </AnchorPane>
     </children>

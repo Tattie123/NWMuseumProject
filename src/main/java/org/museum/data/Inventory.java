@@ -450,6 +450,15 @@ public final class Inventory
         inv.Loans.add(loan);
     }
 
+    /**
+     * Clear the in-memory loans list so it can be repopulated from the database
+     */
+    public void clearLoans()
+    {
+        Inventory inv = getInstance();
+        inv.Loans = new ArrayList<>();
+    }
+
     public void addRoom(Room room)
     {
         if (room == null) return;

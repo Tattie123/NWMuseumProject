@@ -52,20 +52,25 @@ public class RoomMenuController {
 
     @FXML
     public void handleAddRoom() {
+
         String roomName = RoomNameField.getText();
         String roomNumber = RoomNumberField.getText();
         String capText = (RoomCapacityField == null) ? "" : RoomCapacityField.getText();
-        if (roomName == null || roomName.isBlank() || roomNumber == null || roomNumber.isBlank()) {
+        int capacity = 5;
+
+        try {
+            if (capText != null && !capText.isBlank())
+                capacity = Integer.parseInt(capText);
+        } catch (NumberFormatException nfe) {
+            ErrorController.showError("Validation Error", "Capacity must be a whole number. Using default 100.");
+        }
+
+        if (roomName == null || roomName.isBlank() || roomNumber == null || roomNumber.isBlank() || Integer.parseInt(capText) <= 0) {
             ErrorController.showError("Validation Error", "Room name and number must be provided.");
             return;
         }
 
-        int capacity = 100;
-        try {
-            if (capText != null && !capText.isBlank()) capacity = Integer.parseInt(capText);
-        } catch (NumberFormatException nfe) {
-            ErrorController.showError("Validation Error", "Capacity must be a whole number. Using default 100.");
-        }
+
 
         try {
             Room r = new Room(roomNumber, roomName, capacity);
