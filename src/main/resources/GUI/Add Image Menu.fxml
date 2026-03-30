@@ -33,66 +33,61 @@
 -->
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.GUI.AddImageMenuController" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25">
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.GUI.AddImageMenuController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="New"/>
-                        <MenuItem mnemonicParsing="false" text="Open…"/>
-                        <Menu mnemonicParsing="false" text="Open Recent"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem mnemonicParsing="false" text="Close"/>
-                        <MenuItem mnemonicParsing="false" text="Save"/>
-                        <MenuItem mnemonicParsing="false" text="Save As…"/>
-                        <MenuItem mnemonicParsing="false" text="Revert"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem mnemonicParsing="false" text="Preferences…"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem mnemonicParsing="false" text="Quit"/>
+                        <MenuItem mnemonicParsing="false" text="New" />
+                        <MenuItem mnemonicParsing="false" text="Open…" />
+                        <Menu mnemonicParsing="false" text="Open Recent" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                        <MenuItem mnemonicParsing="false" text="Save" />
+                        <MenuItem mnemonicParsing="false" text="Save As…" />
+                        <MenuItem mnemonicParsing="false" text="Revert" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Preferences…" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Quit" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Undo"/>
-                        <MenuItem mnemonicParsing="false" text="Redo"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem mnemonicParsing="false" text="Cut"/>
-                        <MenuItem mnemonicParsing="false" text="Copy"/>
-                        <MenuItem mnemonicParsing="false" text="Paste"/>
-                        <MenuItem mnemonicParsing="false" text="Delete"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem mnemonicParsing="false" text="Select All"/>
-                        <MenuItem mnemonicParsing="false" text="Unselect All"/>
+                        <MenuItem mnemonicParsing="false" text="Undo" />
+                        <MenuItem mnemonicParsing="false" text="Redo" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Cut" />
+                        <MenuItem mnemonicParsing="false" text="Copy" />
+                        <MenuItem mnemonicParsing="false" text="Paste" />
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Select All" />
+                        <MenuItem mnemonicParsing="false" text="Unselect All" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About MyHelloApp"/>
+                        <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <Button fx:id="BackButton" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back"/>
-                <ComboBox fx:id="ArtefactComboBox" layoutX="240.0" layoutY="27.0" prefHeight="25.0" prefWidth="160.0"
-                          promptText="Select Artefact Name"/>
-                <StackPane fx:id="DropPane" layoutX="240.0" layoutY="179.0" prefHeight="120.0" prefWidth="160.0"
-                           onDragOver="#handleDragOver" onDragDropped="#handleDragDropped"
-                           onDragEntered="#handleDragEnter" onDragExited="#handleDragExit">
+                <Button fx:id="BackButton" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" prefWidth="75.0" text="Back" />
+                <ComboBox fx:id="ArtefactComboBox" layoutX="240.0" layoutY="27.0" prefHeight="25.0" prefWidth="160.0" promptText="Select Artefact Name" />
+                <StackPane fx:id="DropPane" layoutX="240.0" layoutY="179.0" onDragDropped="#handleDragDropped" onDragEntered="#handleDragEnter" onDragExited="#handleDragExit" onDragOver="#handleDragOver" prefHeight="120.0" prefWidth="160.0">
                     <children>
-                        <ImageView fx:id="ImagePreview" fitWidth="160.0" fitHeight="120.0" preserveRatio="true" />
                         <Label fx:id="DropLabel" text="Drag Image Here To Upload" />
                     </children>
                 </StackPane>
-                <Button fx:id="UploadImageButton" layoutX="240.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleUploadImage" prefHeight="25.0" prefWidth="160.0"
-                        text="Upload Image"/>
+                <Button fx:id="UploadImageButton" layoutX="240.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleUploadImage" prefHeight="25.0" prefWidth="160.0" text="Upload Image" />
+                  <ImageView fx:id="ImagePreview" fitHeight="375.0" fitWidth="654.0" layoutX="-17.0" layoutY="1.0" preserveRatio="true" />
             </children>
         </AnchorPane>
     </children>
