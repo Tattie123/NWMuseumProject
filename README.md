@@ -16,6 +16,7 @@ Latest Release
 </a>
 </p>
 
+<h2>Deployment</h2>
 <p>Recommended Database Installation Instructions<br>
 
 - Follow Default Xampp Installation Instructions.<br>
@@ -25,7 +26,7 @@ Latest Release
 - Press the Admin Action for MySQL.<br>
 - Press the IMPORT button and select CreationSchema.sql, press the Import button.</p>
 
-<p>Running the Application<br>
+<p>
 Download Release from github
   
 - Double click on the Start.bat file.<br>
