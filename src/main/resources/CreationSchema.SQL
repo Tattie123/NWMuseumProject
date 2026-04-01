@@ -1,8 +1,8 @@
 CREATE
-DATABASE IF NOT EXISTS museumprojectTesting;
+DATABASE IF NOT EXISTS museumprojecttesting;
 
 USE
-museumprojectTesting;
+museumprojecttesting;
 
 CREATE TABLE IF NOT EXISTS artefacts
 (
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS artefacts
     name VARCHAR(255) NOT NULL,
     type VARCHAR(255) NOT NULL,
     material VARCHAR(255) NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS loans
 (

@@ -31,13 +31,36 @@ public final class Inventory
 
     public static boolean moveArtefactToRoom(String artefactName, String roomName, boolean testMode) throws Exception
     {
+        // Ensure artefacts are loaded
         DataBase.PullArtefacts(testMode);
-        Inventory.getInstance();
-        Room room = DataBase.getRoomFromName(roomName, testMode);
-        if (room.getCurrentSpace(testMode) <= 0)
+        Inventory inv = Inventory.getInstance();
+
+        // roomName argument may be roomNum or roomName; try to resolve to roomNum
+        String roomNum = roomName;
+        try {
+            // if provided a room name that isn't a number, search by name
+            Room r = null;
+            try {
+                r = DataBase.getRoomFromName(roomName, testMode);
+            } catch (Exception ignored) {
+                // try fallback: assume roomName is actually a roomNum
+            }
+            if (r != null) roomNum = r.roomNum();
+        } catch (Exception ignored) {}
+
+        // ensure room has space
+        Room target = DataBase.getRoomFromName(roomNum, testMode);
+        if (target.getCurrentSpace(testMode) <= 0)
             throw new Exception("Room is at full capacity.");
-        else
+
+        // update DB
+        boolean updated = DataBase.updateArtefactRoom(artefactName, roomNum, testMode);
+        if (updated) {
+            // refresh in-memory artefacts
+            Inventory.getInstance().UpdateArtefactsFromDB(testMode);
             return true;
+        }
+        return false;
     }
 
     /**
@@ -77,7 +100,7 @@ public final class Inventory
      * @param testMode use test DB if true
      * @throws Exception on DB errors
      */
-    private void UpdateArtefactsFromDB(boolean testMode) throws Exception
+    public void UpdateArtefactsFromDB(boolean testMode) throws Exception
     {
         List<Artefact> artefactsFromDB = DataBase.PullArtefacts(testMode);
         if (artefactsFromDB != null)
@@ -311,9 +334,9 @@ public final class Inventory
                 double newScale = Math.max(0.01, Math.min(10.0, oldScale + delta));
                 if (newScale == oldScale) return;
 
-                // zoom around mouse position
-                double mx = e.getX();
-                double my = e.getY();
+                // zoom around the center of the image panel (user requested)
+                double mx = imagePanel.getWidth() / 2.0;
+                double my = imagePanel.getHeight() / 2.0;
                 double imgX = (mx - tx[0]) / oldScale;
                 double imgY = (my - ty[0]) / oldScale;
                 tx[0] = mx - imgX * newScale;
@@ -425,6 +448,15 @@ public final class Inventory
             inv.Loans = new ArrayList<>();
         }
         inv.Loans.add(loan);
+    }
+
+    /**
+     * Clear the in-memory loans list so it can be repopulated from the database
+     */
+    public void clearLoans()
+    {
+        Inventory inv = getInstance();
+        inv.Loans = new ArrayList<>();
     }
 
     public void addRoom(Room room)

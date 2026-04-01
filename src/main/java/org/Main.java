@@ -1,5 +1,8 @@
 package org;
 
+import javafx.application.Application;
+import org.GUI.App;
+
 public class Main
 {
     /**
@@ -10,9 +13,11 @@ public class Main
      */
     public static void main(String[] args)
     {
+
         try
         {
-            UI.ResearcherUI();
+            //UI.ResearcherUI();
+            Application.launch(App.class, args);
         } catch (Exception e)
         {
             throw new RuntimeException(e);
