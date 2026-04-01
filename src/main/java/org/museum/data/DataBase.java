@@ -37,15 +37,13 @@ public class DataBase
 
         // If running on GitHub CI, use CI properties
         if (System.getenv("GITHUB_ACTIONS") != null) {
-            System.out.println("Running in GitHub CI environment, using CI database properties.");
             propertiesFile = "db-ci.properties";
         } else if (testmode)
         {
-            System.out.println("Test mode enabled, using test database properties.");
             propertiesFile = "db-testing.properties";
         } else
         {
-            System.out.println("Using production database properties.");
+            //System.out.println("Using production database properties.");
             propertiesFile = "db.properties";
         }
 

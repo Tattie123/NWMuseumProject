@@ -33,6 +33,9 @@ public class ViewAllImagesController {
     private final List<Image> images = new ArrayList<>();
     private int index = 0;
 
+    // when another controller wants to show a specific set of images we keep them here
+    private static List<java.awt.image.BufferedImage> pendingBufferedImages = null;
+
     // interactive transform state
     private double scale = 1.0;
     private double translateX = 0.0;
@@ -44,29 +47,38 @@ public class ViewAllImagesController {
     private double dragStartTranslateX;
     private double dragStartTranslateY;
 
+    public static void setImages(List<BufferedImage> images)
+    {
+        if (images == null) {
+            pendingBufferedImages = null;
+            return;
+        }
+        // make a copy to avoid accidental modification by caller
+        pendingBufferedImages = new ArrayList<>(images);
+    }
+
     @FXML
     public void initialize() {
         loadAllImages();
 
-        // install interaction handlers on the ImageView
+
+        //todo: some images zoom on the bottem right corner
         ImageView.setOnScroll((ScrollEvent se) -> {
             if (ImageView.getImage() == null) return;
+
             double delta = se.getDeltaY();
-            double factor = Math.pow(1.0015, delta); // smooth zoom
+            double factor = Math.pow(1.0015, delta);
 
-            // mouse coordinates relative to image view
-            double mx = se.getX();
-            double my = se.getY();
-
-            // image coordinates before scale
-            double imgX = (mx - translateX) / scale;
-            double imgY = (my - translateY) / scale;
-
+            double oldScale = scale;
             scale = clamp(scale * factor, 0.05, 10.0);
 
-            // adjust translate so the point under the mouse remains under the mouse after scaling
-            translateX = mx - imgX * scale;
-            translateY = my - imgY * scale;
+            // mouse position relative to ImageView
+            double mouseX = se.getX();
+            double mouseY = se.getY();
+
+            // adjust translation so zoom happens around mouse
+            translateX = mouseX - (mouseX - translateX) * (scale / oldScale);
+            translateY = mouseY - (mouseY - translateY) * (scale / oldScale);
 
             updateTransforms();
             se.consume();
@@ -113,7 +125,16 @@ public class ViewAllImagesController {
 
     private void loadAllImages() {
         try {
-            List<BufferedImage> bis = DataBase.getAllImages(false);
+            // clear any previously loaded images (controller may be reused)
+            images.clear();
+
+            List<BufferedImage> bis = null;
+            if (pendingBufferedImages != null) {
+                bis = pendingBufferedImages;
+            } else {
+                bis = DataBase.getAllImages(false);
+            }
+
             if (bis != null) {
                 for (BufferedImage bi : bis) {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -125,6 +146,9 @@ public class ViewAllImagesController {
                     images.add(fx);
                 }
             }
+
+            // clear pending after consuming so subsequent opens show all images again
+            pendingBufferedImages = null;
             if (!images.isEmpty()) showImage(0);
         } catch (Exception e) {
             System.err.println("Unable to load images: " + e.getMessage());
@@ -193,13 +217,5 @@ public class ViewAllImagesController {
     public void handlePrevious() {
         if (images.isEmpty()) return;
         showImage(index - 1);
-    }
-
-    @FXML
-    public void handleResetZoom() {
-        scale = 1.0;
-        translateX = 0.0;
-        translateY = 0.0;
-        updateTransforms();
     }
 }

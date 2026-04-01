@@ -39,8 +39,6 @@ public class StartPageController implements Initializable
     @FXML
     private Label SearchModeLabel;
 
-    private ObservableList<Artefact> artefactObservable;
-
     @FXML
     public void handleViewAllImages() {
         SceneManager.switchScene("View All Images.fxml");
@@ -81,6 +79,7 @@ public class StartPageController implements Initializable
             Inventory.getInstance().UpdateArtefactsFromDB(false);
 
             var artifacts = Inventory.getInstance().getArtifacts();
+            ObservableList<Artefact> artefactObservable;
             if (artifacts != null) {
                 artefactObservable = FXCollections.observableArrayList(artifacts);
             } else {
@@ -205,7 +204,8 @@ public class StartPageController implements Initializable
                                 if (images.isEmpty()) {
                                     ErrorController.showError("No Images", "No images found for artefact: " + item.getName());
                                 } else {
-                                    Inventory.getInstance().ViewImagesOfArtefact(images);
+                                    ViewAllImagesController.setImages(images);
+                                    SceneManager.switchScene("View All Images.fxml");
                                 }
                             } catch (Exception e) {
                                 ErrorController.showError("Image Error", "Unable to load images: " + e.getMessage(), e);
@@ -259,11 +259,10 @@ public class StartPageController implements Initializable
                 }
             });
 
-            System.out.println("StartPageController initialized with " + (Inventory.getInstance().getArtifacts() == null ? 0 : Inventory.getInstance().getArtifacts().size()) + " artefacts.");
+            //System.out.println("StartPageController initialized with " + (Inventory.getInstance().getArtifacts() == null ? 0 : Inventory.getInstance().getArtifacts().size()) + " artefacts.");
 
         } catch (Exception e)
         {
-            // show a user friendly error popup instead of throwing
             ErrorController.showError("Database Error", "Unable to load artefacts: " + e.getMessage(), e);
         }
 

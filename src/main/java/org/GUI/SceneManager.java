@@ -23,7 +23,7 @@ public class SceneManager {
 
         String resourcePath = "/GUI/" + fxmlFile;
         URL res = SceneManager.class.getResource(resourcePath);
-        System.out.println("SceneManager: switching to resourcePath='" + resourcePath + "', resolved=" + res);
+        //System.out.println("SceneManager: switching to resourcePath='" + resourcePath + "', resolved=" + res);
         if (res == null) {
             ErrorController.showError("Scene Error", "FXML resource not found: " + resourcePath);
             return;

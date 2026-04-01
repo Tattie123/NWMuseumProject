@@ -334,9 +334,9 @@ public final class Inventory
                 double newScale = Math.max(0.01, Math.min(10.0, oldScale + delta));
                 if (newScale == oldScale) return;
 
-                // zoom around mouse position
-                double mx = e.getX();
-                double my = e.getY();
+                // zoom around the center of the image panel (user requested)
+                double mx = imagePanel.getWidth() / 2.0;
+                double my = imagePanel.getHeight() / 2.0;
                 double imgX = (mx - tx[0]) / oldScale;
                 double imgY = (my - ty[0]) / oldScale;
                 tx[0] = mx - imgX * newScale;

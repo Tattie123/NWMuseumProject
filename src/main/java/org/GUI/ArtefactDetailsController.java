@@ -76,7 +76,6 @@ public class ArtefactDetailsController {
             List<BufferedImage> imgs = DataBase.getImageFromArtefact(a.getName(), false);
             if (imgs != null && !imgs.isEmpty()) {
                 BufferedImage bi = imgs.get(0);
-                // convert BufferedImage to JavaFX Image without using SwingFXUtils
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ImageIO.write(bi, "png", baos);
                 baos.flush();
