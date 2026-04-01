@@ -1,5 +1,21 @@
 <H1>NW MUSEUM PROJECT</H1>
 <H2>Written in java with maven and mysql</H2>
+
+<ul>
+  <li>Java</li>
+  <li>Maven</li>
+  <li>MySQL</li>
+  <li>XAMPP</li>
+</ul>
+
+<h2>Releases</h2>
+<p>
+The latest stable version of the application can be downloaded here:
+<a href="https://github.com/Tattie123/NWMuseumProject/releases/latest">
+Latest Release
+</a>
+</p>
+
 <p>Recommended Database Installation Instructions<br>
 
 - Follow Default Xampp Installation Instructions.<br>
@@ -10,11 +26,11 @@
 - Press the IMPORT button and select CreationSchema.sql, press the Import button.</p>
 
 <p>Running the Application<br>
+Download Release from github
   
-- Double click on the RunMuseum.bat file.<br>
-- To Login as other user the username and password is: (lowercase)<br>
+- Double click on the Start.bat file.<br>
 
-<br>
+- To Login as other user the username and password is:
 
 - **All logins are lower case:**
 
