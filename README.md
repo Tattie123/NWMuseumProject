@@ -23,8 +23,8 @@
   | UserName| staff    | manager  |
   | Password| staff    | manager  |
   
-> [!ImageSize]
-> You May wish to edit the MySQL .ini settings file to allow a higher packet size to be uploaded depending on the size of Images you upload.
+> [!NOTE]
+> You may need to edit your MySQL `.ini` configuration file to allow a larger packet size, depending on the size of the images you upload.
 
-> [!UploadImages]
-> To Add Images Either Drag them onto the page or press upload to open file browser
+> [!TIP]
+> To upload images, either drag and drop them onto the page or click the upload button to open the file browser.
